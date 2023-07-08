@@ -1,0 +1,19 @@
+{
+  "name": "smc-hardhat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@matterlabs/hardhat-zksync-solc": "^0.4.1",
+    "hardhat": "^2.16.1"
+  },
+  "dependencies": {
+    "@thirdweb-dev/contracts": "^3.6.0",
+    "zksync-web3": "^0.14.3"
+  }
+}
