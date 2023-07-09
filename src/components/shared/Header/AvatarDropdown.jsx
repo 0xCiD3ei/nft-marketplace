@@ -1,14 +1,10 @@
-import { Popover, Transition } from "@headlessui/react";
-import { avatarImgs } from "src/contains/fakeData";
-import { Fragment, useContext} from "react";
+import {Popover, Transition} from "@headlessui/react";
+import {avatarImgs} from "src/assets/contains/fakeData";
+import {Fragment} from "react";
 import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
-import { NFTMarketplaceContext } from "src/context/NFTMarketplaceContext";
-
 
 export default function AvatarDropdown() {
-
-  const { currentAccount } = useContext(NFTMarketplaceContext);
 
   return (
     <div className="AvatarDropdown">

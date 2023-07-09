@@ -3,6 +3,7 @@ import {persistor, store} from "src/redux/store";
 import {PersistGate} from "redux-persist/integration/react";
 import {ToastContainer} from "react-toastify";
 
+import "src/styles/index.scss";
 import 'src/styles/globals.css';
 import "src/assets/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "rc-slider/assets/index.css";

@@ -4,7 +4,7 @@ import ButtonClose from "../ButtonClose/ButtonClose";
 import Logo from "../Logo/Logo";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { NAVIGATION_DEMO_2 } from "src/data/navigation";
+import { NAVIGATION_DEMO_2 } from "src/assets/data/navigation";
 import ButtonPrimary from "../Button/ButtonPrimary";
 import SocialsList from "../SocialsList/SocialsList";
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";

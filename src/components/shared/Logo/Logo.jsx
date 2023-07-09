@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoImg from "src/images/logo.svg";
-import logoLightImg from "src/images/logo-light.svg";
+import logoImg from "src/assets/images/logo.svg";
+import logoLightImg from "src/assets/images/logo-light.svg";
 
 const Logo = ({ img = logoImg, imgLight = logoLightImg, className = "" }) => {
   return (

@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import facebook from "src/images/socials/facebook.svg";
-import vimeo from "src/images/socials/vimeo.svg";
-import twitter from "src/images/socials/twitter.svg";
-import telegram from "src/images/socials/telegram.svg";
-import youtube from "src/images/socials/youtube.svg";
+import facebook from "src/assets/images/socials/facebook.svg";
+import vimeo from "src/assets/images/socials/vimeo.svg";
+import twitter from "src/assets/images/socials/twitter.svg";
+import telegram from "src/assets/images/socials/telegram.svg";
+import youtube from "src/assets/images/socials/youtube.svg";
 
 const socials = [
   { name: "Facebook", icon: facebook, href: "#" },

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Logo from "../Logo/Logo";
 import MenuBar from "../MenuBar/MenuBar";
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
@@ -7,11 +7,8 @@ import AvatarDropdown from "./AvatarDropdown";
 import Input from "../Input/Input";
 import ButtonPrimary from "../Button/ButtonPrimary";
 import Navigation from "../Navigation/Navigation";
-import { NFTMarketplaceContext } from "src/context/NFTMarketplaceContext";
-
 const Header = () => {
-  const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
-
+  
   return (
     <div className="nc-HeaderLogged relative w-full z-40 ">
       <div className={`nc-MainNav2Logged relative z-10 ${"onTop"}`}>
@@ -62,21 +59,21 @@ const Header = () => {
                 <NotifyDropdown />
               </div>
               <div></div>
-              {currentAccount == "" ? (
-                <ButtonPrimary
-                  sizeClass="px-4 py-2 sm:px-5"
-                  onClick={() => connectWallet()}
-                >
-                  Connect Wallet
-                </ButtonPrimary>
-              ) : (
+              {/*{currentAccount == "" ? (*/}
+              {/*  <ButtonPrimary*/}
+              {/*    sizeClass="px-4 py-2 sm:px-5"*/}
+              {/*    onClick={() => connectWallet()}*/}
+              {/*  >*/}
+              {/*    Connect Wallet*/}
+              {/*  </ButtonPrimary>*/}
+              {/*) : (*/}
                 <ButtonPrimary
                   sizeClass="px-4 py-2 sm:px-5"
                   to={"/page-upload-item"}
                 >
                   Create
                 </ButtonPrimary>
-              )}
+              {/*)}*/}
 
               <div></div>
               <AvatarDropdown />

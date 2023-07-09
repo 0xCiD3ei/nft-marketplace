@@ -1,6 +1,6 @@
-import { avatarColors } from "src/contains/contants";
-import { avatarImgs } from "src/contains/fakeData";
-import VerifyIcon from "src/components/VerifyIcon";
+import { avatarColors } from "src/assets/contains/contants";
+import { avatarImgs } from "src/assets/contains/fakeData";
+import VerifyIcon from "src/components/app/VerifyIcon";
 import Image from "next/image";
 
 const Avatar = ({
