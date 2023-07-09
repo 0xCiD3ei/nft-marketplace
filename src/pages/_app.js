@@ -10,10 +10,12 @@ import "rc-slider/assets/index.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((page) => page)
+  
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </PersistGate>
       <ToastContainer
         position="bottom-right"
