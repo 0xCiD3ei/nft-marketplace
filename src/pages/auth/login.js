@@ -1,30 +1,8 @@
-import facebookSvg from "src/assets/images/Facebook.svg";
-import twitterSvg from "src/assets/images/Twitter.svg";
-import googleSvg from "src/assets/images/Google.svg";
-import {Helmet} from "react-helmet";
 import Input from "src/components/shared/Input/Input";
 import Link from "next/link";
-import Image from "next/image";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import AuthLayout from "src/components/layouts/AuthLayout";
 
-const loginSocials = [
-  {
-    name: "Continue with Facebook",
-    href: "#",
-    icon: facebookSvg,
-  },
-  {
-    name: "Continue with Twitter",
-    href: "#",
-    icon: twitterSvg,
-  },
-  {
-    name: "Continue with Google",
-    href: "#",
-    icon: googleSvg,
-  },
-];
 
 export default function LoginPage({className = ""}) {
   return (
