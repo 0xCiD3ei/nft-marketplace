@@ -7,7 +7,7 @@ const PasswordValidation = z.string().min(8, 'Password length error');
 
 class AuthService {
   async register(payload) {
-    const oldUser = UserModel.exists({
+    const oldUser = await UserModel.exists({
       email: payload.email
     })
     

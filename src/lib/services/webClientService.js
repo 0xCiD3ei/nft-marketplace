@@ -15,7 +15,8 @@ class WebClientService {
   
   async register(payload) {
     const {data} = await this.api('auth/register', {
-      payload
+      email: payload.email,
+      password: payload.password
     }, {
       method: 'POST'
     })
@@ -32,4 +33,5 @@ class WebClientService {
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new WebClientService();
