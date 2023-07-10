@@ -2,7 +2,7 @@ import React, { useEffect, useId, useRef } from "react";
 import Heading from "../Heading/Heading";
 import CardCategory from "../CardCategory/CardCategory";
 import Glide from "@glidejs/glide";
-import { nftsCatImgs } from "src/contains/fakeData";
+import { nftsCatImgs } from "src/assets/contains/fakeData";
 
 const ntfsCatNames = [
   "Arts",

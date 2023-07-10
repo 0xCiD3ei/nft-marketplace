@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectCurrentMediaRunning } from "src/app/slices/mediaRunning";
+import { selectCurrentMediaRunning } from "src/redux/slices/mediaRunning.slice";
 
 const VideoForNft = ({
   nftId,
@@ -9,8 +9,8 @@ const VideoForNft = ({
   const currentMediaRunning = useSelector(selectCurrentMediaRunning);
 
   const IS_PLAY =
-    currentMediaRunning.nftId === nftId &&
-    currentMediaRunning.state === "playing";
+    currentMediaRunning?.nftId === nftId &&
+    currentMediaRunning?.state === "playing";
 
   if (!IS_PLAY) {
     return null;

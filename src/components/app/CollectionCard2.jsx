@@ -1,7 +1,7 @@
-import { nftsImgs, _getPersonNameRd } from "src/contains/fakeData";
+import { nftsImgs, _getPersonNameRd } from "src/assets/contains/fakeData";
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
 import VerifyIcon from "./VerifyIcon";
 
 const CollectionCard2 = ({

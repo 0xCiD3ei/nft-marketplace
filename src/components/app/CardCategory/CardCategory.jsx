@@ -1,6 +1,6 @@
-import NcImage from "src/shared/NcImage/NcImage";
+import NcImage from "src/components/shared/NcImage/NcImage";
 import Link from "next/link";
-import images1 from "src/images/nfts/cat1.webp";
+import images1 from "src/assets/images/nfts/cat1.webp";
 
 const COLORS = [
   "bg-pink-500",

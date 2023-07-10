@@ -1,15 +1,15 @@
 import React from "react";
 import Link from "next/link";
-import NextPrev from "src/shared/NextPrev/NextPrev";
-import NcImage from "src/shared/NcImage/NcImage";
-import Avatar from "src/shared/Avatar/Avatar";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
+import NextPrev from "src/components/shared/NextPrev/NextPrev";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import LikeButton from "../LikeButton";
 import ItemTypeVideoIcon from "../ItemTypeVideoIcon";
-import { nftsLargeImgs } from "src/contains/fakeData";
+import { nftsLargeImgs } from "src/assets/contains/fakeData";
 import TimeCountDown from "./TimeCountDown";
-import collectionPng from "src/images/nfts/collection.png";
+import collectionPng from "src/assets/images/nfts/collection.png";
 import VerifyIcon from "../VerifyIcon";
 
 const CardLarge = ({

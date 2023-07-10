@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
 import VerifyIcon from "./VerifyIcon";
-import { nftsImgs } from "src/contains/fakeData";
+import { nftsImgs } from "src/assets/contains/fakeData";
 
 const CollectionCard = ({
   className,

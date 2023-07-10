@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { nftsLargeImgs } from "src/contains/fakeData";
-import CardLarge from "src/components/CardLarge/CardLarge";
+import { nftsLargeImgs } from "src/assets/contains/fakeData";
+import CardLarge from "src/components/app/CardLarge/CardLarge";
 
 const SectionLargeSlider = ({ className = "" }) => {
   const [indexActive, setIndexActive] = useState(0);

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
-import { nftsAbstracts, personNames } from "src/contains/fakeData";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import { nftsAbstracts, personNames } from "src/assets/contains/fakeData";
 import VerifyIcon from "../VerifyIcon";
 import FollowButton from "../FollowButton";
 

@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
-import { nftsImgs } from "src/contains/fakeData";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import { nftsImgs } from "src/assets/contains/fakeData";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
-import ButtonPlayMusicRunningContainer from "src/containers/PageHome/ButtonPlayMusicRunningContainer";
+import ButtonPlayMusicRunningContainer from "src/components/containers/PageHome/ButtonPlayMusicRunningContainer";
 import { nanoid } from "@reduxjs/toolkit";
 import VideoForNft from "./VideoForNft";
 

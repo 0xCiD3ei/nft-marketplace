@@ -1,8 +1,8 @@
-import ButtonCircle from "src/shared/Button/ButtonCircle";
-import rightImg from "src/images/SVG-subcribe2.png";
-import NcImage from "src/shared/NcImage/NcImage";
-import Badge from "src/shared/Badge/Badge";
-import Input from "src/shared/Input/Input";
+import ButtonCircle from "src/components/shared/Button/ButtonCircle";
+import rightImg from "src/assets/images/SVG-subcribe2.png";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import Badge from "src/components/shared/Badge/Badge";
+import Input from "src/components/shared/Input/Input";
 import { ArrowSmRightIcon } from "@heroicons/react/outline";
 
 const SectionSubscribe = ({ className = "" }) => {

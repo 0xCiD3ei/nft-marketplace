@@ -1,8 +1,8 @@
 import Heading from "./Heading/Heading";
-import { nftsAbstracts } from "src/contains/fakeData";
+import { nftsAbstracts } from "src/assets/contains/fakeData";
 import CardNFTMusic from "./CardNFTMusic";
 import CardNFTMusic2 from "./CardNFTMusic2";
-import bg1 from "src/images/bg1.avif";
+import bg1 from "src/assets/images/bg1.avif";
 
 const SectionMagazine = ({ className = "" }) => {
   return (

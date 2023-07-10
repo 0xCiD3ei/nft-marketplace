@@ -5,8 +5,8 @@ import {
   changeStateMediaRunning,
   addNewIdListAudio,
   selectCurrentMediaRunning,
-} from "src/app/slices/mediaRunning";
-import iconPlaying from "src/images/icon-playing.gif";
+} from "src/redux/slices/mediaRunning.slice";
+import iconPlaying from "src/assets/images/icon-playing.gif";
 import isSafariBrowser from "src/utils/isSafariBrowser";
 
 const ButtonPlayMusicRunningContainer = ({
@@ -20,7 +20,7 @@ const ButtonPlayMusicRunningContainer = ({
   const currentMediaRunning = useSelector(selectCurrentMediaRunning);
   const dispatch = useDispatch();
 
-  const mediaState = currentMediaRunning.state;
+  const mediaState = currentMediaRunning?.state;
 
   useEffect(() => {
     // check safari
@@ -68,7 +68,7 @@ const ButtonPlayMusicRunningContainer = ({
     }
 
     // IF NOT EXIST MEDIA
-    if (!currentMediaRunning.nftId || !currentMediaRunning.state) {
+    if (!currentMediaRunning?.nftId || !currentMediaRunning?.state) {
       return handleClickNewAudio();
     }
 

@@ -1,9 +1,9 @@
 import FollowButton from "../FollowButton";
 import VerifyIcon from "../VerifyIcon";
-import { _getPersonNameRd } from "src/contains/fakeData";
+import { _getPersonNameRd } from "src/assets/contains/fakeData";
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import Badge from "src/shared/Badge/Badge";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import Badge from "src/components/shared/Badge/Badge";
 
 const CardAuthorBox = ({ className = "", index }) => {
   return (

@@ -5,9 +5,9 @@ import CardAuthorBox3 from "../CardAuthorBox3/CardAuthorBox3";
 import CardAuthorBox4 from "../CardAuthorBox4/CardAuthorBox4";
 import Heading from "../Heading/Heading";
 import NavItem from "../NavItem";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
-import Nav from "src/shared/Nav/Nav";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
+import Nav from "src/components/shared/Nav/Nav";
 import SortOrderFilter from "./SortOrderFilter";
 
 const SectionGridAuthorBox = ({

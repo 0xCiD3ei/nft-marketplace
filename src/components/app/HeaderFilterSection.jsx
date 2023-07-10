@@ -1,9 +1,9 @@
 import React from "react";
 import Heading from "./Heading/Heading";
-import Nav from "src/shared/Nav/Nav";
-import NavItem from "src/shared/NavItem/NavItem";
+import Nav from "src/components/shared/Nav/Nav";
+import NavItem from "src/components/shared/NavItem/NavItem";
 import { ChevronDownIcon } from "@heroicons/react/outline";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import TabFilters from "./TabFilters";
 import { Transition } from "@headlessui/react";
 

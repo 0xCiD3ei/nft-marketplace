@@ -3,10 +3,10 @@ import Link from "next/link";
 import Heading from "./Heading/Heading";
 import Glide from "@glidejs/glide";
 import CardNFTVideo from "./CardNFTVideo";
-import slide1 from "src/images/slides/slide1.avif";
-import slide2 from "src/images/slides/slide2.avif";
-import slide3 from "src/images/slides/slide3.avif";
-import slide4 from "src/images/slides/slide4.avif";
+import slide1 from "src/assets/images/slides/slide1.avif";
+import slide2 from "src/assets/images/slides/slide2.avif";
+import slide3 from "src/assets/images/slides/slide3.avif";
+import slide4 from "src/assets/images/slides/slide4.avif";
 
 const SectionSliderCardNftVideo = ({ className = "", itemClassName = "" }) => {
   const sliderRef = useRef(null);

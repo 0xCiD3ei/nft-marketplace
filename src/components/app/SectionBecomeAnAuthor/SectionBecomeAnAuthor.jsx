@@ -1,9 +1,9 @@
-import NcImage from "src/shared/NcImage/NcImage";
-import rightImgDemo from "src/images/rightLargeImg.png";
-import rightLargeImgDark from "src/images/rightLargeImgDark.png";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import Logo from "src/shared/Logo/Logo";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import rightImgDemo from "src/assets/images/rightLargeImg.png";
+import rightLargeImgDark from "src/assets/images/rightLargeImgDark.png";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import Logo from "src/components/shared/Logo/Logo";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 
 const SectionBecomeAnAuthor = ({ className = "" }) => {
   return (

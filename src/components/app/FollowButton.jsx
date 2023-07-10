@@ -1,6 +1,6 @@
 import React from "react";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 
 const FollowButton = ({
   className = "relative z-10",

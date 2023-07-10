@@ -1,7 +1,7 @@
 import React from "react";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
-import rightImg from "src/images/about-hero-right.png";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
+import rightImg from "src/assets/images/about-hero-right.png";
 import { SearchIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 

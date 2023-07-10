@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectCurrentMediaRunning } from "src/app/slices/mediaRunning";
+import { selectCurrentMediaRunning } from "src/redux/slices/mediaRunning.slice";
 import { useTimeoutFn } from "react-use";
 import isSafariBrowser from "src/utils/isSafariBrowser";
 
@@ -15,11 +15,11 @@ const AudioForNft = ({
   let [, , resetIsShowing] = useTimeoutFn(() => setIsShowing(true), 200);
 
   const IS_PLAY =
-    currentMediaRunning.nftId === nftId &&
-    currentMediaRunning.state === "playing";
+    currentMediaRunning?.nftId === nftId &&
+    currentMediaRunning?.state === "playing";
 
   useEffect(() => {
-    if (currentMediaRunning.state === "paused") {
+    if (currentMediaRunning?.state === "paused") {
       setIsShowing(false);
       resetIsShowing();
     }

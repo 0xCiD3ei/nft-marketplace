@@ -1,10 +1,10 @@
 import React from "react";
 import { nanoid } from "@reduxjs/toolkit";
-import ButtonPlayMusicRunningContainer from "src/containers/PageHome/ButtonPlayMusicRunningContainer";
-import { nftsAbstracts } from "src/contains/fakeData";
+import ButtonPlayMusicRunningContainer from "src/components/containers/PageHome/ButtonPlayMusicRunningContainer";
+import { nftsAbstracts } from "src/assets/contains/fakeData";
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
 import AudioForNft from "./AudioForNft";
 import Prices from "./Prices";
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Heading from "src/shared/Heading/Heading";
-import NcImage from "src/shared/NcImage/NcImage";
-import NcPlayIcon from "src/shared/NcPlayIcon/NcPlayIcon";
+import Heading from "src/components/shared/Heading/Heading";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import NcPlayIcon from "src/components/shared/NcPlayIcon/NcPlayIcon";
 import isSafariBrowser from "src/utils/isSafariBrowser";
-import bg13 from "src/images/bg/bg13.avif";
+import bg13 from "src/assets/images/bg/bg13.avif";
 
 const VIDEOS_DEMO = [
   {

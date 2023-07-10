@@ -1,8 +1,8 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
-import { nftsImgs, _getPersonNameRd } from "src/contains/fakeData";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import { nftsImgs, _getPersonNameRd } from "src/assets/contains/fakeData";
 import VerifyIcon from "../VerifyIcon";
 
 const CardAuthorBox2 = ({ className = "" }) => {

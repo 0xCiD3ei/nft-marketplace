@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect } from "react";
-import NextPrev from "src/shared/NextPrev/NextPrev";
+import NextPrev from "src/components/shared/NextPrev/NextPrev";
 
 const solutions = [
   {

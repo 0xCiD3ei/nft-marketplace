@@ -2,16 +2,16 @@ import React, { useEffect, useId, useRef } from "react";
 import Link from "next/link";
 import Heading from "./Heading/Heading";
 import Glide from "@glidejs/glide";
-import Nav from "src/shared/Nav/Nav";
+import Nav from "src/components/shared/Nav/Nav";
 import NavItem from "./NavItem";
 import CollectionCard from "./CollectionCard";
 import CollectionCard2 from "./CollectionCard2";
-import Next from "src/shared/NextPrev/Next";
-import Prev from "src/shared/NextPrev/Prev";
-import bg5 from "src/images/bg/bg5.avif";
-import bg6 from "src/images/bg/bg6.avif";
-import bg7 from "src/images/bg/bg7.avif";
-import bg8 from "src/images/bg/bg8.avif";
+import Next from "src/components/shared/NextPrev/Next";
+import Prev from "src/components/shared/NextPrev/Prev";
+import bg5 from "src/assets/images/bg/bg5.avif";
+import bg6 from "src/assets/images/bg/bg6.avif";
+import bg7 from "src/assets/images/bg/bg7.avif";
+import bg8 from "src/assets/images/bg/bg8.avif";
 
 const SectionSliderCollections = ({ className = "", cardStyle = "style1" }) => {
   const [tabActive, setTabActive] = React.useState("Last 24 hours");
