@@ -1,5 +1,4 @@
-/** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme")
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 // Custom color with css variable color in __theme_color.scss
 function customColors(cssVar) {
@@ -15,13 +14,8 @@ function customColors(cssVar) {
 }
 
 module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './public/index.html'
-  ],
-  darkMode: "class",
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  darkMode: "class", 
   theme: {
     container: {
       center: true,
@@ -35,6 +29,7 @@ module.exports = {
       display: ["var(--font-display)", ...defaultTheme.fontFamily.sans],
       body: ["var(--font-body)", ...defaultTheme.fontFamily.sans],
     },
+    
     extend: {
       colors: {
         primary: {
@@ -75,15 +70,14 @@ module.exports = {
         },
       },
     },
-    variants: {
-      extend: {},
-    },
-    plugins: [
-      require("@tailwindcss/typography"),
-      require("@tailwindcss/forms"),
-      require("@tailwindcss/line-clamp"),
-      require("@tailwindcss/aspect-ratio"),
-    ],
   },
-  plugins: [],
-}
+  variants: {
+    extend: {},
+  },
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
+};
