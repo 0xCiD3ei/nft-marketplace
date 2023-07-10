@@ -1,6 +1,3 @@
-import facebookSvg from "src/assets/images/Facebook.svg";
-import twitterSvg from "src/assets/images/Twitter.svg";
-import googleSvg from "src/assets/images/Google.svg";
 import Input from "src/components/shared/Input/Input";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import Link from "next/link";
@@ -8,38 +5,26 @@ import AuthLayout from "src/components/layouts/AuthLayout";
 import {useState} from "react";
 import webClientService from "src/lib/services/webClientService";
 import {toast} from "react-toastify";
+import {useRouter} from "next/router";
 
-const loginSocials = [
-  {
-    name: "Continue with Facebook",
-    href: "#",
-    icon: facebookSvg,
-  },
-  {
-    name: "Continue with Twitter",
-    href: "#",
-    icon: twitterSvg,
-  },
-  {
-    name: "Continue with Google",
-    href: "#",
-    icon: googleSvg,
-  },
-];
-
-export default function RegisterPage({className = ""}) {
+export default function RegisterPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const onSignUp = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const response = await webClientService.register({
       email, password
     })
     if(response.code === 200) {
-      toast.success("Registration success")
+      toast.success("Registration success");
+      await router.push('/auth/login');
     }else {
       toast.error(response.message)
     }
+    setLoading(false);
   }
   
   const onChangeInput = (type, e) => {
@@ -78,7 +63,12 @@ export default function RegisterPage({className = ""}) {
             onChange={(e) => onChangeInput("password", e)}
           />
         </label>
-        <ButtonPrimary onClick={onSignUp}>Continue</ButtonPrimary>
+        <ButtonPrimary
+          loading={loading}
+          onClick={onSignUp}
+        >
+          Continue
+        </ButtonPrimary>
       </form>
       
       {/* ==== */}
