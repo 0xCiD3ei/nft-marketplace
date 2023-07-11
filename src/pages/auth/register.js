@@ -9,15 +9,15 @@ import {useRouter} from "next/router";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("");
+  const [state, setState] = useState({
+    email: "",
+    password: ""
+  })
   const [loading, setLoading] = useState(false);
   const onSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await webClientService.register({
-      email, password
-    })
+    const response = await webClientService.register(state);
     if(response.code === 200) {
       toast.success("Registration success");
       await router.push('/auth/login');
@@ -27,14 +27,11 @@ export default function RegisterPage() {
     setLoading(false);
   }
   
-  const onChangeInput = (type, e) => {
-    const value = e.target.value;
-    if (type === "email") {
-      setEmail(value);
-    }
-    if (type === "password") {
-      setPassword(value);
-    }
+  const onChangeInput = (field, e) => {
+    setState({
+      ...state,
+      [field]: e.target.value
+    })
   }
   
   return (
@@ -48,7 +45,8 @@ export default function RegisterPage() {
             type="email"
             placeholder="example@example.com"
             className="mt-1"
-            value={email}
+            name="email"
+            value={state.email}
             onChange={(e) => onChangeInput("email", e)}
           />
         </label>
@@ -59,7 +57,8 @@ export default function RegisterPage() {
           <Input
             type="password"
             className="mt-1"
-            value={password}
+            name="password"
+            value={state.password}
             onChange={(e) => onChangeInput("password", e)}
           />
         </label>

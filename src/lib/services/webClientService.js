@@ -5,7 +5,8 @@ class WebClientService {
   
   async login(payload) {
     const {data} = await this.api('auth/login', {
-      payload
+      email: payload.email,
+      password: payload.password
     }, {
       method: 'POST'
     })

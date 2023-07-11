@@ -11,7 +11,7 @@ async function loginRoute(req, res) {
   await req.session.save();
   
   res.json({
-    status: 200,
+    code: 200,
     message: 'Login success'
   })
 }

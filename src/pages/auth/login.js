@@ -2,12 +2,44 @@ import Input from "src/components/shared/Input/Input";
 import Link from "next/link";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import AuthLayout from "src/components/layouts/AuthLayout";
+import {useCallback, useState} from "react";
+import webClientService from "src/lib/services/webClientService";
+import {toast} from "react-toastify";
+import {useRouter} from "next/router";
 
 
-export default function LoginPage({className = ""}) {
+export default function LoginPage() {
+  const router = useRouter();
+  const [state,setState] = useState({
+    email: "",
+    password: ""
+  })
+  const [loading, setLoading] = useState(false);
+  
+  const onSignIn = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const response = await webClientService.login(state);
+    console.log(response);
+    if(response.code === 200) {
+      toast.success(response?.message);
+      await router.push('/');
+    } else {
+      toast.error(response?.message);
+    }
+    setLoading(false);
+  }
+  
+  const onChangeInput = (field, e) => {
+    setState({
+      ...state,
+      [field]: e.target.value
+    })
+  }
+  
   return (
     <>
-      <form className="grid grid-cols-1 gap-6" action="#" method="post">
+      <form className="grid grid-cols-1 gap-6">
         <label className="block">
           <span className="text-neutral-800 dark:text-neutral-200">
             Email address
@@ -16,18 +48,32 @@ export default function LoginPage({className = ""}) {
             type="email"
             placeholder="example@example.com"
             className="mt-1"
+            name="email"
+            value={state.email}
+            onChange={(e) => onChangeInput("email", e)}
           />
         </label>
         <label className="block">
           <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
             Password
-            <Link href="/forgot-pass" className="text-sm text-green-600">
+            <Link href="#" className="text-sm text-green-600">
               Forgot password?
             </Link>
           </span>
-          <Input type="password" className="mt-1" />
+          <Input
+            type="password"
+            className="mt-1"
+            name="password"
+            value={state.password}
+            onChange={(e) => onChangeInput("password", e)}
+          />
         </label>
-        <ButtonPrimary type="submit">Continue</ButtonPrimary>
+        <ButtonPrimary
+          loading={loading}
+          onClick={onSignIn}
+        >
+          Continue
+        </ButtonPrimary>
       </form>
       
       {/* ==== */}
