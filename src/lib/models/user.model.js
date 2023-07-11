@@ -19,7 +19,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['admin', 'user'],
     default: 'user'
-  }
+  },
+  followedIds : [
+    {
+      type: String
+    }
+  ]
 })
 
 export const UserModel = (mongoose.models.User || mongoose.model('User', UserSchema));
