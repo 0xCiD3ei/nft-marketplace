@@ -1,7 +1,7 @@
-import {withSessionRoute} from "src/lib/withSession";
+ import {withSessionRoute} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import authService from "src/lib/services/authService";
-import withApiErrorHandler from "src/lib/withApiErrorHandler";
+import withApiErrorHandler from "src/lib/middlewares/withApiErrorHandler";
 
 async function loginRoute(req, res) {
   await dbConnect();

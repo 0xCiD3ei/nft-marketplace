@@ -25,6 +25,14 @@ class WebClientService {
     return data;
   }
   
+  async logout() {
+    const {data} = await this.api('auth/logout', {}, {
+      method: 'POST'
+    })
+    
+    return data;
+  }
+  
   api(endPoint, data, options) {
     return axios({
       url: `${this.apiBase}/${endPoint}`,

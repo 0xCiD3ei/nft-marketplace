@@ -3,8 +3,25 @@ import {avatarImgs} from "src/assets/contains/fakeData";
 import {Fragment} from "react";
 import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
+import {useRouter} from "next/router";
+import webClientService from "src/lib/services/webClientService";
+import {toast} from "react-toastify";
 
 export default function AvatarDropdown() {
+  const router = useRouter();
+  const onLogout = async () => {
+    console.log(123)
+    const response = await webClientService.logout();
+    
+    console.log(response);
+    
+    if(response.code === 200) {
+      toast.success(response?.message)
+      await router.replace('/auth/login');
+    } else {
+      toast.error(response?.message);
+    }
+  }
 
   return (
     <div className="AvatarDropdown">
@@ -266,8 +283,8 @@ export default function AvatarDropdown() {
                           />
                         </svg>
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Disconnect"}</p>
+                      <div className="ml-4" onClick={onLogout}>
+                        <p className="text-sm font-medium">{"Logout"}</p>
                       </div>
                     </Link>
                   </div>
