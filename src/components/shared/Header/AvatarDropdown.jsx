@@ -10,10 +10,7 @@ import {toast} from "react-toastify";
 export default function AvatarDropdown() {
   const router = useRouter();
   const onLogout = async () => {
-    console.log(123)
     const response = await webClientService.logout();
-    
-    console.log(response);
     
     if(response.code === 200) {
       toast.success(response?.message)
