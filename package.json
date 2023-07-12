@@ -23,6 +23,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "ethers": "^6.6.2",
+    "http-status": "^1.6.2",
     "ipfs-http-client": "^60.0.1",
     "iron-session": "^6.3.1",
     "mongoose": "^7.3.2",

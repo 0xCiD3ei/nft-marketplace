@@ -33,6 +33,15 @@ class WebClientService {
     return data;
   }
   
+  async getCategories() {
+    const {data} = await this.api('categories', {}, {
+      method: 'GET'
+    })
+    return data;
+  }
+  
+  
+  
   api(endPoint, data, options) {
     return axios({
       url: `${this.apiBase}/${endPoint}`,

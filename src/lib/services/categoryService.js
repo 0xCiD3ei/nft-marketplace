@@ -3,14 +3,18 @@ import {ApiError} from "src/lib/errors/ApiError";
 
 class CategoryService {
   async create(payload) {
-      const oldCategory = await CategoryModel.exists({
-        name: payload.name
-      })
-      if(oldCategory) throw new ApiError({
-        code: 409,
-        message: "Category already exists"
-      })
+    const oldCategory = await CategoryModel.exists({
+      name: payload.name
+    })
+    if(oldCategory) throw new ApiError({
+      code: 409,
+      message: "Category already exists"
+    })
     return await CategoryModel.create(payload)
+  }
+  
+  async getCategories() {
+    return await CategoryModel.find({});
   }
 }
 
