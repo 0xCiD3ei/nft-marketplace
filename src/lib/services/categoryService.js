@@ -16,6 +16,12 @@ class CategoryService {
   async getCategories() {
     return await CategoryModel.find({});
   }
+  
+  async getCategory(id) {
+    return await CategoryModel.find({
+      _id: id
+    });
+  }
 }
 
 export default new CategoryService();
