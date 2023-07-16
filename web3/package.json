@@ -1,19 +1,17 @@
 {
-  "name": "smc-hardhat",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "hardhat-javascript-starter",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx thirdweb@latest detect",
+    "deploy": "npx thirdweb@latest deploy",
+    "release": "npx thirdweb@latest release"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "@matterlabs/hardhat-zksync-solc": "^0.4.1",
-    "hardhat": "^2.16.1"
+    "@matterlabs/hardhat-zksync-solc": "^0.3.17",
+    "hardhat": "^2.13.0"
   },
   "dependencies": {
-    "@thirdweb-dev/contracts": "^3.6.0",
+    "@openzeppelin/contracts": "^4.9.2",
+    "@thirdweb-dev/contracts": "^3",
     "zksync-web3": "^0.14.3"
   }
 }
