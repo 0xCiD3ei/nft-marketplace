@@ -12,6 +12,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.2",
     "@thirdweb-dev/contracts": "^3",
+    "fs": "^0.0.1-security",
     "zksync-web3": "^0.14.3"
   }
 }
