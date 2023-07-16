@@ -7,11 +7,16 @@ import AvatarDropdown from "./AvatarDropdown";
 import Input from "../Input/Input";
 import ButtonPrimary from "../Button/ButtonPrimary";
 import Navigation from "../Navigation/Navigation";
+import {useAddress, useMetamask} from "@thirdweb-dev/react";
 const Header = () => {
+  const address = useAddress();
+  const connectWithMetamask = useMetamask();
+  
+  console.log('address', address)
   
   return (
     <div className="nc-HeaderLogged relative w-full z-40 ">
-      <div className={`nc-MainNav2Logged relative z-10 ${"onTop"}`}>
+      <div className={`nc-MainNav2Logged relative z-10 onTop`}>
         <div className="container py-5 relative flex justify-between items-center space-x-4 xl:space-x-8">
           <div className="flex justify-start flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10">
             <Logo />
@@ -59,22 +64,21 @@ const Header = () => {
                 <NotifyDropdown />
               </div>
               <div></div>
-              {/*{currentAccount == "" ? (*/}
-              {/*  <ButtonPrimary*/}
-              {/*    sizeClass="px-4 py-2 sm:px-5"*/}
-              {/*    onClick={() => connectWallet()}*/}
-              {/*  >*/}
-              {/*    Connect Wallet*/}
-              {/*  </ButtonPrimary>*/}
-              {/*) : (*/}
+              {!address ? (
                 <ButtonPrimary
                   sizeClass="px-4 py-2 sm:px-5"
-                  to={"/page-upload-item"}
+                  onClick={() => connectWithMetamask()}
+                >
+                  Connect Wallet
+                </ButtonPrimary>
+              ) : (
+                <ButtonPrimary
+                  sizeClass="px-4 py-2 sm:px-5"
+                  to={"upload-nft"}
                 >
                   Create
                 </ButtonPrimary>
-              {/*)}*/}
-
+              )}
               <div></div>
               <AvatarDropdown />
             </div>

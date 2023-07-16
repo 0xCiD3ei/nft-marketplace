@@ -10,10 +10,7 @@ import SocialsList from "../SocialsList/SocialsList";
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
 import ButtonSecondary from "../Button/ButtonSecondary";
 
-import { NFTMarketplaceContext } from "src/context/NFTMarketplaceContext";
-
 const NavMobile = ({ data = NAVIGATION_DEMO_2, onClickClose }) => {
-  const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
 
   const _renderMenuChild = (item) => {
     return (
@@ -132,15 +129,16 @@ const NavMobile = ({ data = NAVIGATION_DEMO_2, onClickClose }) => {
         {data.map(_renderItem)}
       </ul>
       <div className="flex items-center justify-between py-6 px-5 space-x-2">
-        {currentAccount == "" ? (
-          <ButtonSecondary onClick={() => connectWallet()} className="flex-1">
+        {/*{currentAccount == "" ? */}
+        {/*  (*/}
+          <ButtonSecondary className="flex-1">
             Connect Wallet
           </ButtonSecondary>
-        ) : (
-          <ButtonPrimary href={"/page-upload-item"} className="!px-10">
-            Create
-          </ButtonPrimary>
-        )}
+        {/*) : (*/}
+        {/*  <ButtonPrimary href={"/page-upload-item"} className="!px-10">*/}
+        {/*    Create*/}
+        {/*  </ButtonPrimary>*/}
+        {/*)}*/}
       </div>
     </div>
   );

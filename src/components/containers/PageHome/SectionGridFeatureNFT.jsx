@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import CardNFT2 from "src/components/app/CardNFT";
 import HeaderFilterSection from "src/components/app/HeaderFilterSection";
-import { NFTMarketplaceContext } from "src/context/NFTMarketplaceContext";
 
 const SectionGridFeatureNFT = () => {
 

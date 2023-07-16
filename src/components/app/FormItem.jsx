@@ -1,4 +1,4 @@
-import Label from "src/components/Label/Label";
+import Label from "src/components/app/Label/Label";
 import React from "react";
 
 const FormItem = ({ children, className = "", label, desc }) => {
