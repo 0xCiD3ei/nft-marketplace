@@ -5,12 +5,11 @@ import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
 import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import Input from "../Input/Input";
-import ButtonPrimary from "../Button/ButtonPrimary";
 import Navigation from "../Navigation/Navigation";
-import {useAddress, useMetamask} from "@thirdweb-dev/react";
+import {ConnectWallet, useAddress} from "@thirdweb-dev/react";
 const Header = () => {
+  const theme = localStorage.getItem("theme");
   const address = useAddress();
-  const connectWithMetamask = useMetamask();
   
   console.log('address', address)
   
@@ -64,21 +63,13 @@ const Header = () => {
                 <NotifyDropdown />
               </div>
               <div></div>
-              {!address ? (
-                <ButtonPrimary
-                  sizeClass="px-4 py-2 sm:px-5"
-                  onClick={() => connectWithMetamask()}
-                >
-                  Connect Wallet
-                </ButtonPrimary>
-              ) : (
-                <ButtonPrimary
-                  sizeClass="px-4 py-2 sm:px-5"
-                  to={"upload-nft"}
-                >
-                  Create
-                </ButtonPrimary>
-              )}
+              <ConnectWallet
+                theme={theme}
+                className={
+                  "nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors " +
+                  "text-sm sm:text-base font-medium dark:text-neutral-200 ttnc-ButtonPrimary disabled:bg-opacity-70 " +
+                  "bg-primary-6000 hover:bg-primary-700 text-neutral-50 px-4 py-2 sm:px-5"}
+              />
               <div></div>
               <AvatarDropdown />
             </div>

@@ -9,8 +9,10 @@ import ButtonPrimary from "../Button/ButtonPrimary";
 import SocialsList from "../SocialsList/SocialsList";
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
 import ButtonSecondary from "../Button/ButtonSecondary";
+import {ConnectWallet} from "@thirdweb-dev/react";
 
 const NavMobile = ({ data = NAVIGATION_DEMO_2, onClickClose }) => {
+  const theme = localStorage.getItem("theme");
 
   const _renderMenuChild = (item) => {
     return (
@@ -128,17 +130,15 @@ const NavMobile = ({ data = NAVIGATION_DEMO_2, onClickClose }) => {
       <ul className="flex flex-col py-6 px-2 space-y-1">
         {data.map(_renderItem)}
       </ul>
-      <div className="flex items-center justify-between py-6 px-5 space-x-2">
-        {/*{currentAccount == "" ? */}
-        {/*  (*/}
-          <ButtonSecondary className="flex-1">
-            Connect Wallet
-          </ButtonSecondary>
-        {/*) : (*/}
-        {/*  <ButtonPrimary href={"/page-upload-item"} className="!px-10">*/}
-        {/*    Create*/}
-        {/*  </ButtonPrimary>*/}
-        {/*)}*/}
+      
+      <div className="flex items-center justify-center py-6 px-5 space-x-2">
+        <ConnectWallet
+          theme={theme}
+          className={
+            "nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors " +
+            "text-sm sm:text-base font-medium dark:text-neutral-200 ttnc-ButtonPrimary disabled:bg-opacity-70 " +
+            "bg-primary-6000 hover:bg-primary-700 text-neutral-50 px-4 py-2 sm:px-5"}
+        />
       </div>
     </div>
   );
