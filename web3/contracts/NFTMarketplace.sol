@@ -61,15 +61,16 @@ contract NFTMarketplace is ERC721URIStorage {
       payable(msg.sender),
       payable(address(this)),
       _price,
+      false,
       false
     );
     
     _transfer(msg.sender, address(this), _tokenId);
     emit MarketItemCreated(
-      tokenId,
+      _tokenId,
       msg.sender,
       address(this),
-      price,
+      _price,
       false,
       false
     );
@@ -132,17 +133,17 @@ contract NFTMarketplace is ERC721URIStorage {
     uint256 currentIndex = 0;
     
     for(uint256 i = 0; i < totalItemCount; i++) {
-      if(nftImages[i + 1].owner == msg.sender) {
+      if(nftImages[i + 1].seller == msg.sender) {
         itemCount += 1;
       }
     }
     MarketItem[] memory items = new MarketItem[](itemCount);
     for(uint256 i = 0; i < totalItemCount; i++) {
-      if(nftImages[i + 1].creator == msg.sender) {
+      if(nftImages[i + 1].seller == msg.sender) {
         uint256 currentId = i + 1;
-        MarketItem[] storage currentItem = nftImages[currentId];
-        items[currentIndex] == currentItem;
-        currentIndex +=1;
+        MarketItem storage currentItem = nftImages[currentId];
+        items[currentIndex] = currentItem;
+        currentIndex += 1;
       }
     }
     return items;
@@ -163,7 +164,7 @@ contract NFTMarketplace is ERC721URIStorage {
     for(uint256 i = 0; i < totalItemCount; i++) {
       if(nftImages[i + 1].owner == msg.sender) {
         uint256 currentId = i + 1;
-        MarketItem[] storage currentItem = nftImages[currentId];
+        MarketItem storage currentItem = nftImages[currentId];
         currentIndex += 1;
       }
     }
