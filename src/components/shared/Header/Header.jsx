@@ -8,7 +8,6 @@ import Input from "../Input/Input";
 import Navigation from "../Navigation/Navigation";
 import {ConnectWallet, useAddress} from "@thirdweb-dev/react";
 const Header = () => {
-  const theme = localStorage.getItem("theme");
   const address = useAddress();
   
   console.log('address', address)
@@ -64,11 +63,7 @@ const Header = () => {
               </div>
               <div></div>
               <ConnectWallet
-                theme={theme}
-                className={
-                  "nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors " +
-                  "text-sm sm:text-base font-medium dark:text-neutral-200 ttnc-ButtonPrimary disabled:bg-opacity-70 " +
-                  "bg-primary-6000 hover:bg-primary-700 text-neutral-50 px-4 py-2 sm:px-5"}
+                theme={typeof localStorage !== "undefined" && localStorage.theme === "light" ? "light" : "dark"}
               />
               <div></div>
               <AvatarDropdown />
