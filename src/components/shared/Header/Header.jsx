@@ -6,12 +6,8 @@ import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import Input from "../Input/Input";
 import Navigation from "../Navigation/Navigation";
-import {ConnectWallet, useAddress} from "@thirdweb-dev/react";
+import {ConnectWallet} from "@thirdweb-dev/react";
 const Header = () => {
-  const address = useAddress();
-  
-  console.log('address', address)
-  
   return (
     <div className="nc-HeaderLogged relative w-full z-40 ">
       <div className={`nc-MainNav2Logged relative z-10 onTop`}>
