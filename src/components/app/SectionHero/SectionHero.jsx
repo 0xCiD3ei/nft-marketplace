@@ -28,7 +28,7 @@ const SectionHero = ({
               <span className="">Explore</span>
               <SearchIcon className="w-5 h-5 ml-2.5" />
             </ButtonPrimary>
-            <ButtonSecondary to="/page-upload-item">
+            <ButtonSecondary to="/upload-item">
               <span>Create</span>
               <svg className="w-5 h-5 ml-2.5" viewBox="0 0 24 24" fill="none">
                 <path
