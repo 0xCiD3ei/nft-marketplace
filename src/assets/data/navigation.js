@@ -13,7 +13,7 @@ const otherPageChildMenus = [
   },
   {
     id: ncNanoId(),
-    href: "/page-search",
+    href: "/search",
     name: "Search page",
   },
   {

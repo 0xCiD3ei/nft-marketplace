@@ -29,9 +29,11 @@ export const NFTMarketplaceContext = React.createContext();
 export const NFTMarketplaceProvider = ({ children }) => {
   const { contract } = useContract("0x40b3851f39B336aB5Dd4FbAEc4915139455bD8aa");
   const { data: listingPrice } = useContractRead(contract, "getListingPrice");
+  const {data: NFTs} = useContractRead(contract, "getAllNFTs");
 
   const { mutateAsync: createToken } = useContractWrite(contract, "createToken");
   const { mutateAsync: resellToken } = useContractWrite(contract, "resellToken");
+  const { mutateAsync: tokenURI} = useContractWrite(contract, "tokenURI")
   const address = useAddress();
 
   const router = useRouter();
@@ -89,18 +91,22 @@ export const NFTMarketplaceProvider = ({ children }) => {
       // const provider = new ethers.providers.JsonRpcProvider();
       // const contract = fetchContract(provider);
 
-      const data = await contract.call("getAllNFTs");
+      // const data = await contract.call("getAllNFTs");
 
       const items = await Promise.all(
-        data.map(
-          async ({ tokenId, seller, owner, price: unformattedPrice, category }) => {
-            const tokenURI = await contract.call("tokenURI", [tokenId]);
+        NFTs.map(
+          async ({ tokenId, seller, owner, price: unformulatedPrice, category }) => {
+            const _tokenURI = await tokenURI({
+              args: [tokenId],
+            });
+            
+            console.log("tokenURI", _tokenURI);
 
             const {
-              data: { image, name, description, categpory },
-            } = await axios.get(tokenURI);
+              data: { image, name, description },
+            } = await axios.get(_tokenURI);
             const price = ethers.utils.formatUnits(
-              unformattedPrice.toString(),
+              unformulatedPrice.toString(),
               "ether"
             );
 

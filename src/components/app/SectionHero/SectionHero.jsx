@@ -24,7 +24,7 @@ const SectionHero = ({
             {subHeading}
           </span>
           <div className="pt-7 flex  space-x-4">
-            <ButtonPrimary to="/page-search">
+            <ButtonPrimary to="/search">
               <span className="">Explore</span>
               <SearchIcon className="w-5 h-5 ml-2.5" />
             </ButtonPrimary>

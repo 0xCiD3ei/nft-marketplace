@@ -23,7 +23,7 @@ const SectionBecomeAnAuthor = ({ className = "" }) => {
           <ButtonPrimary to="/page-upload-item" className="">
             Create item
           </ButtonPrimary>
-          <ButtonSecondary to="/page-search" className="">
+          <ButtonSecondary to="/search" className="">
             Discover more
           </ButtonSecondary>
         </div>
