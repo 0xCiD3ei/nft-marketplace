@@ -9,6 +9,7 @@ import 'src/styles/globals.css';
 import "src/assets/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "rc-slider/assets/index.css";
 import 'react-toastify/dist/ReactToastify.css';
+import {NFTMarketplaceProvider} from "src/context/NFTMarketplaceContext";
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
@@ -17,7 +18,9 @@ export default function App({ Component, pageProps }) {
     <ThirdwebProvider activeChain={ChainId.Mumbai}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          {getLayout(<Component {...pageProps} />)}
+          <NFTMarketplaceProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </NFTMarketplaceProvider>
         </PersistGate>
         <ToastContainer
           position="bottom-right"

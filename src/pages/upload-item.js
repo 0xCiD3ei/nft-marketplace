@@ -1,7 +1,6 @@
 import MainLayout from "src/components/layouts/MainLayout";
-import {nftsImgs} from "src/assets/contains/fakeData";
 import {Helmet} from "react-helmet";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import Input from "src/components/shared/Input/Input";
 import FormItem from "src/components/app/FormItem";
@@ -11,45 +10,14 @@ import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import NcImage from "src/components/shared/NcImage/NcImage";
 import Label from "src/components/app/Label/Label";
 import Textarea from "src/components/shared/Textarea/Textarea";
-import {useNetworkMismatch, useNetwork, useContract, ChainId} from "@thirdweb-dev/react";
+import {withSessionSsr} from "src/lib/middlewares/withSession";
+import dbConnect from "src/lib/dbConnect";
+import categoryService from "src/lib/services/categoryService";
+import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 
-const plans = [
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[0],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[1],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[2],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[3],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[4],
-  },
-  {
-    name: "Crypto Legend - Professor",
-    featuredImage: nftsImgs[5],
-  },
-];
-
-
-export default function UploadNftPage({className = ""}) {
-  const networkMismatch = useNetworkMismatch();
-  const [, switchNetwork] = useNetwork();
-  
-  const { contract: marketplace } = useContract("0x88eC24b1b48aE9C757286AC2e9144a636a124118", "marketplace");
-  
-  console.log(marketplace);
-  
-  const [selected, setSelected] = useState(plans[1]);
+export default function UploadItemPage({className = "", categories, user}) {
+  const {uploadToIPFS, createNFT} = useContext(NFTMarketplaceContext);
+  const [selected, setSelected] = useState(categories[0]._id);
   const [fileUrl, setFileUrl] = useState("");
   const [formValues, setFormValues] = useState({
     name: "",
@@ -58,28 +26,15 @@ export default function UploadNftPage({className = ""}) {
   });
   
   const handleOnchangeFile = async (e) => {
-    // const url = await uploadToIPFS(e.target.files[0]);
-    // setFileUrl(url);
+    const url = await uploadToIPFS(e.target.files[0]);
+    console.log("image", url);
+    setFileUrl(url);
   };
   
   const handleOnchangeInput = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
-  
-  const onUploadNft = async (e) => {
-    
-    try {
-      if (networkMismatch) {
-        switchNetwork && await switchNetwork(ChainId.Mumbai);
-        return;
-      }
-      
-      e.preventDefault();
-    }catch (e) {
-      console.log(e)
-    }
-  }
   
   return (
     <div
@@ -211,10 +166,10 @@ export default function UploadNftPage({className = ""}) {
                   Server size
                 </RadioGroup.Label>
                 <div className="flex overflow-auto py-2 space-x-4 customScrollBar">
-                  {plans.map((plan, index) => (
+                  {categories.map((category, index) => (
                     <RadioGroup.Option
                       key={index}
-                      value={plan}
+                      value={category._id}
                       className={({ active, checked }) =>
                         `${
                           active
@@ -241,7 +196,7 @@ export default function UploadNftPage({className = ""}) {
                                   >
                                     <NcImage
                                       containerClassName="aspect-w-1 aspect-h-1 rounded-full overflow-hidden"
-                                      src={plan.featuredImage}
+                                      src={category.image}
                                     />
                                   </RadioGroup.Description>
                                   {checked && (
@@ -252,11 +207,11 @@ export default function UploadNftPage({className = ""}) {
                                 </div>
                                 <RadioGroup.Label
                                   as="p"
-                                  className={`font-semibold mt-3  ${
+                                  className={`font-semibold mt-3 w-[126px]  ${
                                     checked ? "text-white" : ""
                                   }`}
                                 >
-                                  {plan.name}
+                                  {category.name}
                                 </RadioGroup.Label>
                               </div>
                             </div>
@@ -293,14 +248,16 @@ export default function UploadNftPage({className = ""}) {
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
               <ButtonPrimary
                 className="flex-1"
-                onClick={async () => {}
-                  // await createNFT({
-                  //   name: formValues.name,
-                  //   description: formValues.description,
-                  //   price: formValues.price,
-                  //   image: fileUrl,
-                  // })
-                }
+                onClick={async () => {
+                  await createNFT({
+                    name: formValues.name,
+                    description: formValues.description,
+                    price: formValues.price,
+                    image: fileUrl,
+                    category: selected,
+                    owner: user._id
+                  })
+                }}
               >
                 Upload item
               </ButtonPrimary>
@@ -313,8 +270,26 @@ export default function UploadNftPage({className = ""}) {
   );
 }
 
-UploadNftPage.getLayout = (page) => (
+UploadItemPage.getLayout = (page) => (
   <MainLayout>
     {page}
   </MainLayout>
 )
+
+export const getServerSideProps = withSessionSsr(async (ctx) => {
+  await dbConnect();
+  try {
+    const data = await categoryService.getCategories();
+    return {
+      props: {
+        categories: JSON.parse(JSON.stringify(data)),
+        user: ctx.req.session.user || null
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      notFound: true
+    }
+  }
+})

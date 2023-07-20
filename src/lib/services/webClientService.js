@@ -40,6 +40,13 @@ class WebClientService {
     return data;
   }
   
+  async createNFT(payload) {
+    const {data} = await this.api('nfts/create', payload, {
+      method: 'POST'
+    })
+    return data;
+  }
+  
   
   
   api(endPoint, data, options) {

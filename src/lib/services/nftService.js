@@ -2,7 +2,7 @@ import {NftModel} from "src/lib/models/nft.model";
 import {ApiError} from "src/lib/errors/ApiError";
 
 class nftService {
-  create(payload) {
+  createNFT(payload) {
     return NftModel.create(payload);
   }
   
@@ -15,4 +15,4 @@ class nftService {
   }
 }
 
-export default new NftService();
+export default new nftService();

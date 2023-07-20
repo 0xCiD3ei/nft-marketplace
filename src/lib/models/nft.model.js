@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const NftSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true
   },
@@ -14,14 +14,14 @@ const NftSchema = new mongoose.Schema({
     ref: 'Category',
     required: true
   },
-  ownerId: {
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
   address: String,
   image: String,
-  price: Number,
+  price: String,
 }, {
   timestamps: true
 })
