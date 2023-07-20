@@ -7,20 +7,20 @@ module.exports = {
   defaultNetwork: "polygon_mumbai",
   networks: {
     hardhat: {
-      chainId: 80001,
+      chainId: 80001
     },
     polygon_mumbai: {
       url: RPC_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
-    },
+      accounts: [`0x${PRIVATE_KEY}`]
+    }
   },
   solidity: {
     version: "0.8.9",
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200,
-      },
-    },
-  },
+        runs: 200
+      }
+    }
+  }
 };
