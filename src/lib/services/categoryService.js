@@ -13,6 +13,14 @@ class CategoryService {
     return await CategoryModel.create(payload)
   }
   
+  async updateCategory(payload) {
+    return await CategoryModel.findOneAndUpdate({
+      _id: payload.id
+    }, payload.data, {
+      new: true
+    })
+  }
+  
   async getCategories() {
     return await CategoryModel.find({});
   }
