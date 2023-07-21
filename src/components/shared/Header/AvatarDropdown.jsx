@@ -1,14 +1,34 @@
 import {Popover, Transition} from "@headlessui/react";
 import {avatarImgs} from "src/assets/contains/fakeData";
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import webClientService from "src/lib/services/webClientService";
 import {toast} from "react-toastify";
+import {useAddress} from "@thirdweb-dev/react";
 
 export default function AvatarDropdown() {
+  const [profile, setProfile] = useState();
   const router = useRouter();
+  const address = useAddress();
+  
+  useEffect(() => {
+    (async () => {
+      const {data} = await webClientService.getProfile();
+      setProfile(data);
+    })();
+  }, [])
+  
+  function shortenMiddleString(inputStr, leftLength, rightLength) {
+    if (inputStr?.length <= leftLength + rightLength) {
+      return inputStr;
+    }
+    const leftPart = inputStr?.slice(0, leftLength);
+    const rightPart = inputStr?.slice(-rightLength);
+    
+    return leftPart + "..." + rightPart;
+  }
   const onLogout = async () => {
     const response = await webClientService.logout();
     
@@ -29,7 +49,7 @@ export default function AvatarDropdown() {
               className={`inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <Avatar
-                imgUrl={avatarImgs[7]}
+                imgUrl={avatarImgs[9]}
                 sizeClass="w-8 h-8 sm:w-9 sm:h-9"
               />
             </Popover.Button>
@@ -46,11 +66,10 @@ export default function AvatarDropdown() {
                 <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
                     <div className="flex items-center space-x-3">
-                      <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
-
+                      <Avatar imgUrl={avatarImgs[9]} sizeClass="w-12 h-12" />
                       <div className="flex-grow">
-                        <h4 className="font-semibold">Unnamed</h4>
-                        <p className="text-xs text-ellipsis mt-0.5">0xc4c16ab5ac7d...b21a</p>
+                        <h4 className="font-semibold">{profile ? profile?.fullName : "Unnamed"}</h4>
+                        <p className="text-xs text-ellipsis mt-0.5">{address ? shortenMiddleString(address, 14, 4): "--"}</p>
                       </div>
                     </div>
 

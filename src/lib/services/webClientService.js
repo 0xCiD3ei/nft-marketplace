@@ -47,6 +47,13 @@ class WebClientService {
     return data;
   }
   
+  async getProfile() {
+    const {data} = await this.api('user/profile', {}, {
+      method: 'GET'
+    })
+    return data;
+  }
+  
   
   
   api(endPoint, data, options) {
