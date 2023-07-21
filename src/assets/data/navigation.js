@@ -18,7 +18,7 @@ const otherPageChildMenus = [
   },
   {
     id: ncNanoId(),
-    href: "/page-author",
+    href: "/author",
     name: "Author Profile",
   },
   {

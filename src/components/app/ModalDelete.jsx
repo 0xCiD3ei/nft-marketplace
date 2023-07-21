@@ -1,6 +1,6 @@
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
-import NcModal from "src/shared/NcModal/NcModal";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
+import NcModal from "src/components/shared/NcModal/NcModal";
 
 const ModalDelete = ({ show, onCloseModalDelete }) => {
   const handleClickSubmitForm = () => {

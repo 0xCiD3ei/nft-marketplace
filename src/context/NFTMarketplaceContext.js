@@ -192,7 +192,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
   //     await transaction.wait();
   //     toast.success("Buy NFT successfully!");
-  //     router.push("/page-author");
+  //     router.push("/author");
   //   } catch (error) {
   //     toast.error("Error while buying NFT");
   //   }

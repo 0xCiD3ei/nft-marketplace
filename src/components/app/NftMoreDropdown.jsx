@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NcDropDown from "src/shared/NcDropDown/NcDropDown";
+import NcDropDown from "src/components/shared/NcDropDown/NcDropDown";
 import ModalDelete from "./ModalDelete";
 import ModalEdit from "./ModalEdit";
 import ModalReportItem from "./ModalReportItem";

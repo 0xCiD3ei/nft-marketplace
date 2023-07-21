@@ -1,4 +1,4 @@
-import NcDropDown from "src/shared/NcDropDown/NcDropDown";
+import NcDropDown from "src/components/shared/NcDropDown/NcDropDown";
 
 const ButtonDropDownShare = ({
   className = "py-1.5 px-3 flex rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer ",

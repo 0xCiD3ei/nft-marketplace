@@ -7,7 +7,7 @@ import VerifyIcon from "../VerifyIcon";
 
 const CardAuthorBox2 = ({ className = "" }) => {
   <Link
-    href={"/page-author"}
+    href={"/author"}
     className={`nc-CardAuthorBox2 flex flex-col overflow-hidden [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] ${className}`}
     data-nc-id="CardAuthorBox2"
   >

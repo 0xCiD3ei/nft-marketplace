@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import Button from "src/shared/Button/Button";
+import Button from "src/components/shared/Button/Button";
 
 const ButtonDropdown = ({ translate, children, ...args }) => {
   return (

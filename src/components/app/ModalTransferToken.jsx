@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import ButtonPrimary from "src/shared/Button/ButtonPrimary";
-import ButtonSecondary from "src/shared/Button/ButtonSecondary";
-import Input from "src/shared/Input/Input";
-import NcModal from "src/shared/NcModal/NcModal";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
+import Input from "src/components/shared/Input/Input";
+import NcModal from "src/components/shared/NcModal/NcModal";
 
 const ModalTransferToken = ({ show, onCloseModalTransferToken }) => {
   const textareaRef = useRef(null);

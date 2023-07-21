@@ -79,7 +79,7 @@ const CardAuthorBox4 = ({ className = "", following, authorIndex }) => {
         </div>
       </div>
 
-      <Link href={"/page-author"} className="absolute inset-0"></Link>
+      <Link href={"/author"} className="absolute inset-0"></Link>
     </div>
   );
 };
