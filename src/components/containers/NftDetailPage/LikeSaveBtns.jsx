@@ -1,5 +1,5 @@
-import ButtonDropDownShare from "src/components/ButtonDropDownShare";
-import NftMoreDropdown from "src/components/NftMoreDropdown";
+import ButtonDropDownShare from "src/components/app/ButtonDropDownShare";
+import NftMoreDropdown from "src/components/app/NftMoreDropdown";
 
 const LikeSaveBtns = ({ price, onChangePrice }) => {
   return (

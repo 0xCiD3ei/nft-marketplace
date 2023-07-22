@@ -1,7 +1,7 @@
 import { Tab } from "@headlessui/react";
-import { personNames } from "src/contains/fakeData";
-import Avatar from "src/shared/Avatar/Avatar";
-import VerifyIcon from "src/components/VerifyIcon";
+import { personNames } from "src/assets/contains/fakeData";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import VerifyIcon from "src/components/app/VerifyIcon";
 
 const TabDetail = () => {
   const TABS = ["Bid History", "Provenance", "Owner"];
