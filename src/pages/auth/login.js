@@ -6,6 +6,7 @@ import {useCallback, useState} from "react";
 import webClientService from "src/lib/services/webClientService";
 import {toast} from "react-toastify";
 import {useRouter} from "next/router";
+import {signIn} from "next-auth/react";
 
 
 export default function LoginPage() {
@@ -19,13 +20,17 @@ export default function LoginPage() {
   const onSignIn = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await webClientService.login(state);
-    console.log(response);
-    if(response.code === 200) {
-      toast.success(response?.message);
-      await router.push('/');
-    } else {
-      toast.error(response?.message);
+    const status = await signIn('credentials', {
+      redirect: false,
+      email: state.email,
+      password: state.password,
+      callbackUrl: '/'
+    })
+    if(status.ok) {
+      toast.success("Login successfully");
+      await router.push(status.url)
+    }else {
+      toast.error("Login failed");
     }
     setLoading(false);
   }
