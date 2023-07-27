@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class WebClientService {
-  apiBase = process.env.NEXT_PUBLIC_API_BASE || '/api/v1';
+  apiBase = process.env.NEXT_PUBLIC_API_BASE || '/api';
   
   async login(payload) {
     const {data} = await this.api('auth/login', {
