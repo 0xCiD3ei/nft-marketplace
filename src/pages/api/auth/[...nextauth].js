@@ -59,9 +59,13 @@ const authOptions = {
       return true;
     },
     async jwt({token, trigger, session}) {
+      const user = await getUserByEmail({email: token.email});
+      token.user = user;
       return token;
     },
     async session({ session, token }) {
+      session.isLoggedIn = true;
+      session.user = token.user;
       return session;
     },
   },
@@ -75,10 +79,20 @@ async function signInWithOAuth({ account, profile }) {
   const user = await UserModel.findOne({ email: profile.email });
   
   if (user) return;
-  const newUser = await UserModel.create({
+  await UserModel.create({
     fullName: profile.name,
     email: profile.email,
     avatar: profile.picture,
     provider: account.provider
   });
+}
+
+async function getUserByEmail({email}) {
+  const user = await UserModel.findOne({email}).select('-password');
+  if(!user) throw new ApiError({
+    code: 404,
+    message: 'Email does not exist'
+  })
+  
+  return {...user._doc, _id: user._id.toString()}
 }
