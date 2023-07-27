@@ -3,22 +3,26 @@ import twitterSvg from "src/assets/images/Twitter.svg";
 import googleSvg from "src/assets/images/Google.svg";
 import Image from "next/image";
 import {Helmet} from "react-helmet";
+import {signIn} from "next-auth/react";
 
 const loginSocials = [
   {
     name: "Continue with Facebook",
     href: "#",
     icon: facebookSvg,
+    onClick: () => {console.log("facebook")}
   },
   {
     name: "Continue with Twitter",
     href: "#",
     icon: twitterSvg,
+    onClick: () => {console.log("twitter")}
   },
   {
     name: "Continue with Google",
     href: "#",
     icon: googleSvg,
+    onClick: () => signIn("google", {callbackUrl: "/"})
   },
 ];
 
@@ -36,6 +40,7 @@ export default function AuthLayout({children, title}) {
           <div className="grid gap-3">
             {loginSocials.map((item, index) => (
               <a
+                onClick={item.onClick}
                 key={index}
                 href={item.href}
                 className="flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"

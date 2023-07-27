@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 import webClientService from "src/lib/services/webClientService";
 import {toast} from "react-toastify";
 import {useAddress} from "@thirdweb-dev/react";
+import {signOut} from "next-auth/react";
 
 export default function AvatarDropdown() {
   const [profile, setProfile] = useState();
@@ -30,14 +31,11 @@ export default function AvatarDropdown() {
     return leftPart + "..." + rightPart;
   }
   const onLogout = async () => {
-    const response = await webClientService.logout();
-    
-    if(response.code === 200) {
-      toast.success(response?.message)
-      await router.replace('/auth/login');
-    } else {
-      toast.error(response?.message);
-    }
+   await signOut({
+     redirect: false
+   });
+   await router.push("/auth/login");
+   toast.success("Logout successfully");
   }
 
   return (
