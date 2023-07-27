@@ -78,7 +78,8 @@ async function signInWithOAuth({ account, profile }) {
 
   const user = await UserModel.findOne({ email: profile.email });
   
-  if (user) return;
+  if (user) return true;
+  
   await UserModel.create({
     fullName: profile.name,
     email: profile.email,

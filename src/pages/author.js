@@ -22,7 +22,9 @@ import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/Sect
 import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import {toast} from "react-toastify";
-export default function AuthorPage({className = "", user}) {
+import {useSession} from "next-auth/react";
+export default function AuthorPage({className = ""}) {
+  const session = useSession();
   const address = useAddress();
   const [categories] = useState([
     "Collectibles",
@@ -31,8 +33,6 @@ export default function AuthorPage({className = "", user}) {
     "Following",
     "Followers",
   ]);
-  
-  console.log("user", user);
   
   
   return (
@@ -54,14 +54,14 @@ export default function AuthorPage({className = "", user}) {
           <div className="relative bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 p-5 lg:p-8 rounded-3xl md:rounded-[40px] shadow-xl flex flex-col md:flex-row">
             <div className="w-32 lg:w-44 flex-shrink-0 mt-12 sm:mt-0">
               <NcImage
-                src={nftsImgs[5]}
+                src={session?.data?.user?.avatar ? session?.data?.user?.avatar : nftsImgs[5]}
                 containerClassName="aspect-w-1 aspect-h-1 rounded-3xl overflow-hidden"
               />
             </div>
             <div className="pt-5 md:pt-1 md:ml-6 xl:ml-14 flex-grow">
               <div className="max-w-screen-sm ">
                 <h2 className="inline-flex items-center text-2xl sm:text-3xl lg:text-4xl font-semibold">
-                  <span>{user?.fullName || "Unnamed"}</span>
+                  <span>{session ? session?.data?.user?.fullName : "Unnamed"}</span>
                   <VerifyIcon
                     className="ml-2"
                     iconClass="w-6 h-6 sm:w-7 sm:h-7 xl:w-8 xl:h-8"
@@ -254,12 +254,3 @@ AuthorPage.getLayout = (page) => (
     {page}
   </MainLayout>
 )
-
-export const getServerSideProps = withSessionSsr(async (ctx) => {
-  await dbConnect();
-  return {
-    props: {
-      user: ctx.req.session.user || null
-    },
-  }
-})

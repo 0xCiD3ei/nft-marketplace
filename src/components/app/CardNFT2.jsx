@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Avatar from "src/shared/Avatar/Avatar";
-import NcImage from "src/shared/NcImage/NcImage";
-import { nftsImgs } from "src/contains/fakeData";
+import Avatar from "src/components/shared/Avatar/Avatar";
+import NcImage from "src/components/shared/NcImage/NcImage";
+import { nftsImgs } from "src/components/contains/fakeData";
 import ItemTypeImageIcon from "./ItemTypeImageIcon";
 import ItemTypeVideoIcon from "./ItemTypeVideoIcon";
 import LikeButton from "./LikeButton";

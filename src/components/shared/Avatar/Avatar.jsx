@@ -11,6 +11,8 @@ const Avatar = ({
   userName,
   hasChecked,
   hasCheckedClass = "w-4 h-4 bottom-1 -right-0.5",
+  width = 48,
+  height  = 48
 }) => {
   const url = imgUrl || "";
   const name = userName || "John Doe";
@@ -31,6 +33,8 @@ const Avatar = ({
           className={`absolute inset-0 w-full h-full object-cover ${radius}`}
           src={url}
           alt={name}
+          width={width}
+          height={height}
         />
       )}
       <span className="wil-avatar__name"></span>
