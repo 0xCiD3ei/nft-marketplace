@@ -88,7 +88,7 @@ const CardNFT = ({
       </div>
 
       <Link
-        href={{ pathname: "nft-detail", query: NFT }}
+        href={`nft/${NFT.tokenId}`}
         className="absolute inset-0"
       ></Link>
     </div>
