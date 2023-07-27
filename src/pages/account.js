@@ -7,9 +7,19 @@ import Textarea from "src/components/shared/Textarea/Textarea";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import {useAddress} from "@thirdweb-dev/react";
 import {toast} from "react-toastify";
+import {useSession} from "next-auth/react";
+import {useState} from "react";
 
 export default function AccountPage({className = ""}) {
+  const session = useSession();
   const address = useAddress();
+  const [formValues, setFormValues] = useState({
+    fullName: session?.data?.user?.fullName,
+    email: session?.data?.user?.email,
+    bio: "",
+    avatar: session?.data?.user?.avatar,
+  })
+  
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
       <Helmet>
@@ -32,7 +42,7 @@ export default function AccountPage({className = ""}) {
           <div className="flex flex-col md:flex-row">
             <div className="flex-shrink-0 flex items-start">
               <div className="relative rounded-full overflow-hidden flex">
-                <Avatar sizeClass="w-32 h-32" imgUrl="" />
+                <Avatar sizeClass="w-32 h-32" imgUrl={formValues.avatar} />
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                   <svg
                     width="30"
@@ -61,8 +71,12 @@ export default function AccountPage({className = ""}) {
             <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-5 sm:space-y-6 md:sm:space-y-7">
               {/* ---- */}
               <div>
-                <Label>Username</Label>
-                <Input className="mt-1.5" defaultValue="Unnamed" />
+                <Label>Full Name</Label>
+                <Input
+                  className="mt-1.5"
+                  placeholder="Enter your full name"
+                  value={formValues.fullName}
+                />
               </div>
               
               {/* ---- */}
@@ -77,6 +91,7 @@ export default function AccountPage({className = ""}) {
                     className="!rounded-l-none"
                     name="email"
                     placeholder="example@email.com"
+                    value={formValues.email}
                   />
                 </div>
               </div>
@@ -89,6 +104,7 @@ export default function AccountPage({className = ""}) {
                   className="mt-1.5"
                   name="bio"
                   placeholder="Something about yourself in a few word."
+                  value={formValues.bio}
                 />
               </div>
               
