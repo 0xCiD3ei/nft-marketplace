@@ -7,16 +7,19 @@ import CardNFT from "src/components/app/CardNFT";
 import BackgroundSection from "src/components/app/BackgroundSection/BackgroundSection";
 import SectionSliderCollections from "src/components/app/SectionSliderCollections";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import Pagination from "src/components/shared/Pagination/Pagination";
+import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 
 export default function SearchPage({className= ""}) {
+  const [NFTs, setNFTs] = useState([]);
   const {fetchNFTs} =useContext(NFTMarketplaceContext);
   
   useEffect(() => {
     (async () => {
-      const response = await fetchNFTs();
-      console.log(response);
+      const data = await fetchNFTs();
+      setNFTs(data);
     })();
   }, [])
   
@@ -91,18 +94,18 @@ export default function SearchPage({className= ""}) {
           
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-            {[]?.length > 0 ? (
-              [].map((item) => <CardNFT key={item.tokenId} NFT={item} />)
+            {NFTs?.length > 0 ? (
+              NFTs.map((item) => <CardNFT key={item.tokenId} NFT={item} />)
             ) : (
               <p>Loading...</p>
             )}
           </div>
           
           {/* PAGINATION */}
-          {/* <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             <Pagination />
             <ButtonPrimary loading>Show me more</ButtonPrimary>
-          </div> */}
+          </div>
         </main>
         
         {/* === SECTION 5 === */}
