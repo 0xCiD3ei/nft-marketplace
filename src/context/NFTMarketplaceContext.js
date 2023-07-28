@@ -4,7 +4,14 @@ import {useRouter} from "next/router";
 import axios from "axios";
 import {create as ipfsHttpClient} from "ipfs-http-client";
 import {toast} from 'react-toastify';
-import {useAddress, useContract, useContractRead, useContractWrite} from "@thirdweb-dev/react";
+import {
+  useAddress,
+  useContract,
+  useContractRead,
+  useContractWrite,
+  useMintNFT,
+  useNFTCollection, useNFTs
+} from "@thirdweb-dev/react";
 import webClientService from "src/lib/services/webClientService";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -27,15 +34,16 @@ const client = ipfsHttpClient({
 export const NFTMarketplaceContext = React.createContext();
 
 export const NFTMarketplaceProvider = ({ children }) => {
+  const address = useAddress();
   const { contract } = useContract("0x40b3851f39B336aB5Dd4FbAEc4915139455bD8aa");
+  const nftCollection = useContract("0xd00Ec18b6886834EB86480234Cb3922eC969F313", "nft-collection").contract;
   const { data: listingPrice } = useContractRead(contract, "getListingPrice");
   const {data: NFTs} = useContractRead(contract, "getAllNFTs");
 
   const { mutateAsync: createToken } = useContractWrite(contract, "createToken");
   const { mutateAsync: resellToken } = useContractWrite(contract, "resellToken");
-  const { mutateAsync: tokenURI} = useContractWrite(contract, "tokenURI")
-  const address = useAddress();
-
+  const { mutateAsync: tokenURI} = useContractWrite(contract, "tokenURI");
+  const { mutateAsync: mintNft, isLoading: mintLoading, error: mintError } = useMintNFT(nftCollection);
   const router = useRouter();
 
   const uploadToIPFS = async (file) => {
@@ -47,21 +55,32 @@ export const NFTMarketplaceProvider = ({ children }) => {
     }
   };
 
-  const createNFT = async ({ name, description, price, image, category, owner }) => {
-    if (!name || !description || !price || !image || !category || !owner) {
+  const createNFT = async ({ name, description, price, image, category }) => {
+    if (!name || !description || !price || !image || !category) {
       return toast.error("Data is missing");
     }
+    
+    const response = await mintNft({
+      metadata: {
+        name: name,
+        description: description,
+        image: image,
+      },
+      to: address
+    })
+    
+    console.log('mint nft', response);
 
-    const data = JSON.stringify({ name, description, price, image, category, owner });
-    try {
-      const added = await client.add(data);
-      const url = `https://ipfs.io/ipfs/${added.path}`;
-      await createSale(url, price);
-      await webClientService.createNFT({ name, description, price, image, category, owner });
-      toast.success("Create NFT successfully!");
-    } catch (error) {
-      toast.error("Error while creating NFT");
-    }
+    // const data = JSON.stringify({ name, description, price, image, category, owner });
+    // try {
+    //   const added = await client.add(data);
+    //   const url = `https://ipfs.io/ipfs/${added.path}`;
+    //   await createSale(url, price);
+    //   await webClientService.createNFT({ name, description, price, image, category, owner });
+    //   toast.success("Create NFT successfully!");
+    // } catch (error) {
+    //   toast.error("Error while creating NFT");
+    // }
   };
 
   const createSale = async (url, formInputPrice, isReselling, id) => {
@@ -87,15 +106,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
   const fetchNFTs = async () => {
     try {
-      // const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_POLYGON_MUMBAI_RPC);
-      // const provider = new ethers.providers.JsonRpcProvider();
-      // const contract = fetchContract(provider);
-
-      // const data = await contract.call("getAllNFTs");
-
       const items = await Promise.all(
         NFTs.map(
-          async ({ tokenId, seller, owner, price: unformulatedPrice, category }) => {
+          async ({ tokenId, seller, owner, price: unformulatedPrice }) => {
             const _tokenURI = await tokenURI({
               args: [tokenId],
             });
@@ -103,7 +116,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
             console.log("tokenURI", _tokenURI);
 
             const {
-              data: { image, name, description },
+              data: { image, name, description, category },
             } = await axios.get(_tokenURI);
             const price = ethers.utils.formatUnits(
               unformulatedPrice.toString(),
@@ -201,6 +214,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
   return (
     <NFTMarketplaceContext.Provider
       value={{
+        nftCollection,
         uploadToIPFS,
         createNFT,
         fetchNFTs,

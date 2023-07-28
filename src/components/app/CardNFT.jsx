@@ -2,7 +2,6 @@ import Link from "next/link";
 import Avatar from "src/components/shared/Avatar/Avatar";
 import NcImage from "src/components/shared/NcImage/NcImage";
 import ItemTypeImageIcon from "./ItemTypeImageIcon";
-import ItemTypeVideoIcon from "./ItemTypeVideoIcon";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
 import { ClockIcon } from "@heroicons/react/outline";
@@ -10,7 +9,7 @@ import { ClockIcon } from "@heroicons/react/outline";
 const CardNFT = ({
   className = "",
   isLiked,
-  NFT = { image: "", name: "", price: "", description: "" },
+  nft,
 }) => {
   const renderAvatars = () => {
     return (
@@ -44,15 +43,15 @@ const CardNFT = ({
         <div>
           <NcImage
             containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
-            src={NFT.image}
+            src={nft.metadata.image || ""}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
         </div>
-        {Math.random() > 0.5 ? (
-          <ItemTypeVideoIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        ) : (
+        {/*{Math.random() > 0.5 ? (*/}
+        {/*  <ItemTypeVideoIcon className="absolute top-3 left-3 !w-9 !h-9" />*/}
+        {/*) : (*/}
           <ItemTypeImageIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        )}
+        {/*)}*/}
         <LikeButton
           liked={isLiked}
           className="absolute top-3 right-3 z-10 !h-9"
@@ -68,14 +67,14 @@ const CardNFT = ({
           </span>
         </div>
         <h2 className={`text-lg font-medium`}>
-          {NFT.name} #{Math.floor(Math.random() * 1000) + 1000}
+          {nft.metadata.name} #{Math.floor(Math.random() * 1000) + 1000}
         </h2>
 
         <div className="w-2d4 w-full border-b border-neutral-100 dark:border-neutral-700"></div>
 
         <div className="flex justify-between items-end ">
           <Prices
-            price={NFT.price}
+            price={nft.metadata.price}
             labelTextClassName="bg-white dark:bg-neutral-900 dark:group-hover:bg-neutral-800 group-hover:bg-neutral-50"
           />
           <div className="flex items-center text-sm text-neutral-500 dark:text-neutral-400">
@@ -88,7 +87,7 @@ const CardNFT = ({
       </div>
 
       <Link
-        href={`nft/${NFT.tokenId}`}
+        href={`nft/${nft.metadata.id}`}
         className="absolute inset-0"
       ></Link>
     </div>

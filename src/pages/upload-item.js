@@ -15,20 +15,18 @@ import dbConnect from "src/lib/dbConnect";
 import categoryService from "src/lib/services/categoryService";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 
-export default function UploadItemPage({className = "", categories, user}) {
-  const {uploadToIPFS, createNFT} = useContext(NFTMarketplaceContext);
+export default function UploadItemPage({className = "", categories}) {
+  const {createNFT} = useContext(NFTMarketplaceContext);
   const [selected, setSelected] = useState(categories[0]._id);
-  const [fileUrl, setFileUrl] = useState("");
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
     price: "",
+    file: ""
   });
   
   const handleOnchangeFile = async (e) => {
-    const url = await uploadToIPFS(e.target.files[0]);
-    console.log("image", url);
-    setFileUrl(url);
+    setFormValues({ ...formValues, file: e.target.files[0] });
   };
   
   const handleOnchangeInput = (event) => {
@@ -253,9 +251,8 @@ export default function UploadItemPage({className = "", categories, user}) {
                     name: formValues.name,
                     description: formValues.description,
                     price: formValues.price,
-                    image: fileUrl,
+                    image: formValues.file,
                     category: selected,
-                    owner: user._id
                   })
                 }}
               >
@@ -283,7 +280,6 @@ export const getServerSideProps = withSessionSsr(async (ctx) => {
     return {
       props: {
         categories: JSON.parse(JSON.stringify(data)),
-        user: ctx.req.session.user || null
       },
     };
   } catch (e) {

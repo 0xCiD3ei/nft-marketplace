@@ -11,17 +11,20 @@ import {useContext, useEffect, useState} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Pagination from "src/components/shared/Pagination/Pagination";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
+import {useNFTs} from "@thirdweb-dev/react";
 
 export default function SearchPage({className= ""}) {
-  const [NFTs, setNFTs] = useState([]);
-  const {fetchNFTs} =useContext(NFTMarketplaceContext);
+  // const [NFTs, setNFTs] = useState([]);
+  const {nftCollection} =useContext(NFTMarketplaceContext);
+  const { data: nfts, isLoading, error } = useNFTs(nftCollection, { start: 0, count: 100 });
   
-  useEffect(() => {
-    (async () => {
-      const data = await fetchNFTs();
-      setNFTs(data);
-    })();
-  }, [])
+  console.log(nfts)
+  // useEffect(() => {
+  //   (async () => {
+  //     const data = await fetchNFTs();
+  //     setNFTs(data);
+  //   })();
+  // }, [])
   
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="searchPage">
@@ -94,8 +97,8 @@ export default function SearchPage({className= ""}) {
           
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-            {NFTs?.length > 0 ? (
-              NFTs.map((item) => <CardNFT key={item.tokenId} NFT={item} />)
+            {nfts?.length > 0 ? (
+              nfts.map((item) => <CardNFT key={item?.metadata?.id} nft={item} />)
             ) : (
               <p>Loading...</p>
             )}
