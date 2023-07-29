@@ -6,23 +6,28 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: 'Unnamed'
   },
+  address: {
+    type: String,
+    required: true,
+    unique: true
+  },
   email: {
     type: String,
     required: true,
     unique: true
   },
-  password: String,
+  bio: String,
   role: {
     type: String,
     enum: ['admin', 'user'],
     default: 'user'
   },
-  provider: {
-    type: String,
-    default: 'credentials'
-  },
+  website: String,
+  facebook: String,
+  twitter: String,
+  telegram: String,
   avatar: String,
-  followedIds : [
+  followedUsers : [
     {
       type: String
     }
