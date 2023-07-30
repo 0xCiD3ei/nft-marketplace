@@ -18,7 +18,7 @@ export default function AvatarDropdown() {
         setAccount(response.data);
       }
     })();
-  }, [])
+  }, [address])
   function shortenMiddleString(inputStr, leftLength, rightLength) {
     if (inputStr?.length <= leftLength + rightLength) {
       return inputStr;
