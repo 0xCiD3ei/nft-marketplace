@@ -4,7 +4,6 @@ import {PersistGate} from "redux-persist/integration/react";
 import {ToastContainer} from "react-toastify";
 import {ChainId, ThirdwebProvider} from "@thirdweb-dev/react";
 import {NFTMarketplaceProvider} from "src/context/NFTMarketplaceContext";
-import AuthProvider from "src/components/providers/AuthProvider";
 
 import "src/styles/index.scss";
 import 'src/styles/globals.css';
@@ -19,11 +18,9 @@ export default function App({ Component, pageProps }) {
     <ThirdwebProvider activeChain={ChainId.Mumbai}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <AuthProvider>
-            <NFTMarketplaceProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </NFTMarketplaceProvider>
-          </AuthProvider>
+          <NFTMarketplaceProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </NFTMarketplaceProvider>
         </PersistGate>
         <ToastContainer
           position="bottom-right"

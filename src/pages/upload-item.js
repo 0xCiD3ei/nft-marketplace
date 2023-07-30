@@ -24,6 +24,7 @@ export default function UploadItemPage({className = "", categories}) {
     price: "",
     file: ""
   });
+  const [loading, setLoading] = useState(false)
   
   const handleOnchangeFile = async (e) => {
     setFormValues({ ...formValues, file: e.target.files[0] });
@@ -245,8 +246,11 @@ export default function UploadItemPage({className = "", categories}) {
             {/* ---- */}
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
               <ButtonPrimary
+                loading={loading}
                 className="flex-1"
                 onClick={async () => {
+                  console.log("Click", formValues);
+                  setLoading(true)
                   await createNFT({
                     name: formValues.name,
                     description: formValues.description,
@@ -254,6 +258,7 @@ export default function UploadItemPage({className = "", categories}) {
                     image: formValues.file,
                     category: selected,
                   })
+                  setLoading(false);
                 }}
               >
                 Upload item

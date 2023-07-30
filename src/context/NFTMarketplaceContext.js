@@ -10,7 +10,7 @@ import {
   useContractRead,
   useContractWrite,
   useMintNFT,
-  useNFTCollection, useNFTs
+  useNFTs
 } from "@thirdweb-dev/react";
 import webClientService from "src/lib/services/webClientService";
 
@@ -36,7 +36,8 @@ export const NFTMarketplaceContext = React.createContext();
 export const NFTMarketplaceProvider = ({ children }) => {
   const address = useAddress();
   const { contract } = useContract("0x40b3851f39B336aB5Dd4FbAEc4915139455bD8aa");
-  const nftCollection = useContract("0xd00Ec18b6886834EB86480234Cb3922eC969F313", "nft-collection").contract;
+  const nftCollection = useContract("0x739951B8Abb63A632785c59d88859F4A7e887836", "nft-collection").contract;
+  const marketplace = useContract("0x7070bf67323D918b44D3Acd2AD764228cb05435a", "marketplace-v3").contract;
   const { data: listingPrice } = useContractRead(contract, "getListingPrice");
   const {data: NFTs} = useContractRead(contract, "getAllNFTs");
 
