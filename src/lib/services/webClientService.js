@@ -25,6 +25,13 @@ class WebClientService {
     return data;
   }
   
+  async disconnectWallet() {
+    const {data} = await this.api('address/disconnect', {}, {
+      method: 'POST'
+    })
+    return data;
+  }
+  
   async getAccount() {
     const {data} = await this.api('account', {}, {
       method: 'GET'

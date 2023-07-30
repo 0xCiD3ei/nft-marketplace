@@ -23,7 +23,12 @@ const Header = () => {
       }
     }
     if (connectionStatus === "disconnected") {
-      console.log("You are not connected to a wallet")
+      (async () => {
+        const res = await webClientService.disconnectWallet();
+        if(res?.code === 200) {
+          console.log(res?.message);
+        }
+      })()
     }
   }, [connectionStatus, address])
   
