@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Logo from "../Logo/Logo";
 import MenuBar from "../MenuBar/MenuBar";
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
@@ -6,10 +6,30 @@ import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import Input from "../Input/Input";
 import Navigation from "../Navigation/Navigation";
-import {ConnectWallet} from "@thirdweb-dev/react";
+import {ConnectWallet, useAddress, useConnectionStatus} from "@thirdweb-dev/react";
+import webClientService from "src/lib/services/webClientService";
 const Header = () => {
+  const address = useAddress();
+  const connectionStatus = useConnectionStatus();
+  useEffect(() => {
+    if (connectionStatus === "connected") {
+      if(address) {
+        (async () => {
+          const res = await webClientService.checkWalletAddress({address});
+          if(res?.code === 200) {
+            console.log(res?.message);
+          }
+        })();
+      }
+    }
+    if (connectionStatus === "disconnected") {
+      console.log("You are not connected to a wallet")
+    }
+  }, [connectionStatus, address])
+  
+  
   return (
-    <div className="nc-HeaderLogged relative w-full z-40 ">
+    <div className="nc-HeaderLogged relative w-full z-40">
       <div className={`nc-MainNav2Logged relative z-10 onTop`}>
         <div className="container py-5 relative flex justify-between items-center space-x-4 xl:space-x-8">
           <div className="flex justify-start flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10">
@@ -59,14 +79,18 @@ const Header = () => {
               </div>
               <div></div>
               <ConnectWallet
-                theme={typeof localStorage !== "undefined" && localStorage.theme === "light" ? "light" : "dark"}
+                theme={typeof localStorage !== "undefined" && localStorage.theme}
               />
               <div></div>
-              <AvatarDropdown />
+              {
+                address && <AvatarDropdown />
+              }
             </div>
             <div className="flex items-center space-x-3 xl:hidden">
               <NotifyDropdown />
-              <AvatarDropdown />
+              {
+                address && <AvatarDropdown />
+              }
               <MenuBar />
             </div>
           </div>

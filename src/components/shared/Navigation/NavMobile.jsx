@@ -131,6 +131,12 @@ const NavMobile = ({ data = NAVIGATION_DEMO_2, onClickClose }) => {
       <div className="flex items-center justify-center py-6 px-5 space-x-2">
         <ConnectWallet
           theme={typeof localStorage !== "undefined" && localStorage.theme === "light" ? "light" : "dark"}
+          auth={{
+            loginOptional: true,
+            onLogin: (token) => {
+              console.log(token);
+            }
+          }}
         />
       </div>
     </div>

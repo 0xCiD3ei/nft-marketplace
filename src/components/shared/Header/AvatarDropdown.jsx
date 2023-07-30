@@ -5,15 +5,20 @@ import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import webClientService from "src/lib/services/webClientService";
-import {toast} from "react-toastify";
 import {useAddress} from "@thirdweb-dev/react";
-import {signOut, useSession} from "next-auth/react";
 
 export default function AvatarDropdown() {
-  const session = useSession();
-  const router = useRouter();
+  const [account, setAccount] = useState();
   const address = useAddress();
   
+  useEffect(() => {
+    (async () => {
+      const response = await webClientService.getAccount();
+      if(response.code === 200) {
+        setAccount(response.data);
+      }
+    })();
+  }, [])
   function shortenMiddleString(inputStr, leftLength, rightLength) {
     if (inputStr?.length <= leftLength + rightLength) {
       return inputStr;
@@ -22,13 +27,6 @@ export default function AvatarDropdown() {
     const rightPart = inputStr?.slice(-rightLength);
     
     return leftPart + "..." + rightPart;
-  }
-  const onLogout = async () => {
-   await signOut({
-     redirect: false
-   });
-   await router.push("/auth/login");
-   toast.success("Logout successfully");
   }
 
   return (
@@ -40,7 +38,7 @@ export default function AvatarDropdown() {
               className={`inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <Avatar
-                imgUrl={session?.data?.user?.avatar ? session?.data?.user?.avatar : avatarImgs[9]}
+                imgUrl={account ? account?.avatar : avatarImgs[9]}
                 sizeClass="w-8 h-8 sm:w-9 sm:h-9"
               />
             </Popover.Button>
@@ -57,9 +55,9 @@ export default function AvatarDropdown() {
                 <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
                     <div className="flex items-center space-x-3">
-                      <Avatar imgUrl={session?.data?.user?.avatar ? session?.data?.user?.avatar : avatarImgs[9]} sizeClass="w-12 h-12" />
+                      <Avatar imgUrl={account ? account?.avatar : avatarImgs[9]} sizeClass="w-12 h-12" />
                       <div className="flex-grow">
-                        <h4 className="font-semibold">{session ? session?.data?.user?.fullName : "Unnamed"}</h4>
+                        <h4 className="font-semibold">{account ? account?.fullName :"Unnamed"}</h4>
                         <p className="text-xs text-ellipsis mt-0.5">{address ? shortenMiddleString(address, 14, 4): "--"}</p>
                       </div>
                     </div>
@@ -333,7 +331,7 @@ export default function AvatarDropdown() {
                           />
                         </svg>
                       </div>
-                      <div className="ml-4" onClick={onLogout}>
+                      <div className="ml-4">
                         <p className="text-sm font-medium">{"Logout"}</p>
                       </div>
                     </Link>

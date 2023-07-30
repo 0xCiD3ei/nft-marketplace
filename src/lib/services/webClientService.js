@@ -1,37 +1,8 @@
 import axios from "axios";
 
 class WebClientService {
-  apiBase = process.env.NEXT_PUBLIC_API_BASE || '/api';
-  
-  async login(payload) {
-    const {data} = await this.api('auth/login', {
-      email: payload.email,
-      password: payload.password
-    }, {
-      method: 'POST'
-    })
-    
-    return data;
-  }
-  
-  async register(payload) {
-    const {data} = await this.api('auth/register', {
-      email: payload.email,
-      password: payload.password
-    }, {
-      method: 'POST'
-    })
-    
-    return data;
-  }
-  
-  async logout() {
-    const {data} = await this.api('auth/logout', {}, {
-      method: 'POST'
-    })
-    
-    return data;
-  }
+  apiBase = process.env.NEXT_PUBLIC_API_BASE || '/api/v1';
+
   
   async getCategories() {
     const {data} = await this.api('categories', {}, {
@@ -44,6 +15,21 @@ class WebClientService {
     const {data} = await this.api('nfts/create', payload, {
       method: 'POST'
     })
+    return data;
+  }
+  
+  async checkWalletAddress(payload) {
+    const {data} = await this.api(`address/${payload.address}`, {}, {
+      method: 'POST'
+    })
+    return data;
+  }
+  
+  async getAccount() {
+    const {data} = await this.api('account', {}, {
+      method: 'GET'
+    })
+    
     return data;
   }
   
