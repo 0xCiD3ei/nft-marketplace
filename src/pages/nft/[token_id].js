@@ -11,14 +11,23 @@ import TabDetail from "src/components/containers/NftDetailPage/TabDetail";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import NcImage from "src/components/shared/NcImage/NcImage";
-import ItemTypeVideoIcon from "src/components/app/ItemTypeVideoIcon";
 import LikeButton from "src/components/app/LikeButton";
 import AccordionInfo from "src/components/containers/NftDetailPage/AccordionInfo";
 import BackgroundSection from "src/components/app/BackgroundSection/BackgroundSection";
 import SectionSliderCategories from "src/components/app/SectionSliderCategories/SectionSliderCategories";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
+import {useRouter} from "next/router";
+import {useNFT} from "@thirdweb-dev/react";
+import {useContext} from "react";
+import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import ItemTypeImageIcon from "src/components/app/ItemTypeImageIcon";
 
 export default function NFTDetailPage({className = "",isPreviewMode }) {
+  const router = useRouter();
+  const { token_id} = router.query;
+  const {nftCollection} = useContext(NFTMarketplaceContext);
+  const { data: nft, isLoading: loadingData } = useNFT(nftCollection, token_id);
+  console.log({nft});
   
   const renderSection1 = () => {
     return (
@@ -233,17 +242,17 @@ export default function NFTDetailPage({className = "",isPreviewMode }) {
             {/* HEADING */}
             <div className="relative">
               <NcImage
-                src={""}
+                src={nft ? nft?.metadata?.image : ""}
                 containerClassName="aspect-w-11 aspect-h-12 rounded-3xl overflow-hidden"
               />
               {/* META TYPE */}
-              <ItemTypeVideoIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10" />
+              <ItemTypeImageIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10" />
               
               {/* META FAVORITES */}
               <LikeButton className="absolute right-3 top-3 " />
             </div>
             
-            <AccordionInfo data={[]} />
+            <AccordionInfo data={nft?.metadata || []} />
           </div>
           
           {/* SIDEBAR */}

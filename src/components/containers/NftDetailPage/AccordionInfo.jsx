@@ -45,15 +45,9 @@ export default function AccordionInfo({ data }) {
                 {data.image}
               </a>
               <br />
-              <span>Contract Address</span>
-              <span className="text-base text-neutral-900 dark:text-neutral-100 line-clamp-1">
-                {data.seller}
-              </span>
-
-              <br />
               <span>Token ID</span>
               <span className="text-base text-neutral-900 dark:text-neutral-100">
-                {data.tokenId}
+                {data.id}
               </span>
             </Disclosure.Panel>
           </>
