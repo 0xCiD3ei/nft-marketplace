@@ -8,13 +8,12 @@ async function handler(req, res) {
     const {address} = req.query;
     await dbConnect();
     
-    req.session.account = await accountService.checkAddressWallet(address);
-
-    await req.session.save();
-
+    const account = await accountService.getAccountByAddress(address);
+    
     res.json({
       code: 200,
-      message: 'Connect wallet success'
+      data: account,
+      message: 'Get account success'
     })
   }catch (e) {
     console.log(e);

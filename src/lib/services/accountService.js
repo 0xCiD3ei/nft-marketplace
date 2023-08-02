@@ -10,6 +10,12 @@ class AccountService {
     
     return account;
   }
+  
+  async getAccountByAddress(address) {
+    const account = await AccountModel.findOne({address});
+    
+    return account;
+  }
 }
 
 

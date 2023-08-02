@@ -36,7 +36,13 @@ class WebClientService {
     const {data} = await this.api('account', {}, {
       method: 'GET'
     })
-    
+    return data;
+  }
+  
+  async getAccountByAddress(address) {
+    const {data} = await this.api(`account/${address}`, {}, {
+      method: 'GET'
+    })
     return data;
   }
   
