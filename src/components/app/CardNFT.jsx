@@ -5,12 +5,37 @@ import ItemTypeImageIcon from "./ItemTypeImageIcon";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
 import { ClockIcon } from "@heroicons/react/outline";
+import moment from "moment";
+import {useContext} from "react";
+import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import {useValidDirectListings, useValidEnglishAuctions} from "@thirdweb-dev/react";
 
 const CardNFT = ({
   className = "",
   isLiked,
   nft,
+  quantity,
 }) => {
+  
+  const {marketplace} = useContext(NFTMarketplaceContext);
+  
+  const {
+    data: directListing,
+    isLoading: loadingDirectListing,
+  } = useValidDirectListings(marketplace, {
+        tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+        tokenId: nft?.id,
+      });
+  
+  //Add for auciton section
+  const { data: auctionListing, isLoading: loadingAuction} =
+    useValidEnglishAuctions(marketplace, {
+      tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+      tokenId: nft?.id,
+    });
+  
+  console.log({directListing});
+  
   const renderAvatars = () => {
     return (
       <div className="flex -space-x-1 ">
@@ -43,15 +68,11 @@ const CardNFT = ({
         <div>
           <NcImage
             containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
-            src={nft.metadata.image || ""}
+            src={nft?.image || ""}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
         </div>
-        {/*{Math.random() > 0.5 ? (*/}
-        {/*  <ItemTypeVideoIcon className="absolute top-3 left-3 !w-9 !h-9" />*/}
-        {/*) : (*/}
-          <ItemTypeImageIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        {/*)}*/}
+        <ItemTypeImageIcon className="absolute top-3 left-3 !w-9 !h-9" />
         <LikeButton
           liked={isLiked}
           className="absolute top-3 right-3 z-10 !h-9"
@@ -63,31 +84,37 @@ const CardNFT = ({
         <div className="flex justify-between">
           {renderAvatars()}
           <span className="text-neutral-700 dark:text-neutral-400 text-xs">
-            {Math.floor(Math.random() * 90) + 10} in stock
+            {quantity || "1"} in stock
           </span>
         </div>
         <h2 className={`text-lg font-medium`}>
-          {nft.metadata.name} #{Math.floor(Math.random() * 1000) + 1000}
+          {nft?.name} #{nft?.id}
         </h2>
 
         <div className="w-2d4 w-full border-b border-neutral-100 dark:border-neutral-700"></div>
 
         <div className="flex justify-between items-end ">
-          <Prices
-            price={nft.metadata.price}
-            labelTextClassName="bg-white dark:bg-neutral-900 dark:group-hover:bg-neutral-800 group-hover:bg-neutral-50"
-          />
+          {loadingDirectListing || loadingAuction ? (
+            <div></div>
+          ) : directListing && directListing[0] ? (
+            <Prices
+              price={directListing[0]?.currencyValuePerToken.displayValue}
+              labelTextClassName="bg-white dark:bg-neutral-900 dark:group-hover:bg-neutral-800 group-hover:bg-neutral-50"
+            />
+          ) : (
+            <p className={"mt-4"}>Not listed</p>
+          )}
           <div className="flex items-center text-sm text-neutral-500 dark:text-neutral-400">
             <ClockIcon className="w-4 h-4" />
             <span className="ml-1 mt-0.5">
-              {Math.floor(Math.random() * 20) + 1} hours left
+              {nft?.date ? moment(nft?.date).startOf('minutes').fromNow() : "--"}
             </span>
           </div>
         </div>
       </div>
 
       <Link
-        href={`nft/${nft.metadata.id}`}
+        href={`nft/${nft?.id}`}
         className="absolute inset-0"
       ></Link>
     </div>

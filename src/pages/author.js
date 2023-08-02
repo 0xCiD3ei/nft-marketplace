@@ -1,5 +1,5 @@
 import MainLayout from "src/components/layouts/MainLayout";
-import {Fragment, useState} from "react";
+import {Fragment, useContext, useState} from "react";
 import {Helmet} from "react-helmet";
 import NcImage from "src/components/shared/NcImage/NcImage";
 import authorBanner from "src/assets/images/nfts/authorBanner.png";
@@ -9,7 +9,7 @@ import NftMoreDropdown from "src/components/app/NftMoreDropdown";
 import ButtonDropDownShare from "src/components/app/ButtonDropDownShare";
 import FollowButton from "src/components/app/FollowButton";
 import { nftsImgs } from "src/assets/contains/fakeData";
-import {useAddress} from "@thirdweb-dev/react";
+import {useAddress, useOwnedNFTs, useValidDirectListings} from "@thirdweb-dev/react";
 import {Tab} from "@headlessui/react";
 import ArchiveFilterListBox from "src/components/app/ArchiveFilterListBox";
 import CardNFT from "src/components/app/CardNFT";
@@ -22,6 +22,7 @@ import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/Sect
 import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import {toast} from "react-toastify";
+import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 export default function AuthorPage({className = "", account}) {
   const address = useAddress();
   const [categories] = useState([
@@ -31,9 +32,9 @@ export default function AuthorPage({className = "", account}) {
     "Following",
     "Followers",
   ]);
-  
-  console.log({account})
-  
+  const {nftCollection, marketplace} = useContext(NFTMarketplaceContext);
+  const {data: ownedNFTs} = useOwnedNFTs(nftCollection, address);
+
   
   return (
     <div className={`nc-AuthorPage  ${className}`} data-nc-id="AuthorPage">
@@ -177,9 +178,9 @@ export default function AuthorPage({className = "", account}) {
               <Tab.Panel className="">
                 {/* LOOP ITEMS */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-                  {[]?.length &&
-                    [].map((item, index) => (
-                      <CardNFT NFT={item} key={index} />
+                  {ownedNFTs?.length &&
+                    ownedNFTs.map((item, index) => (
+                      <CardNFT nft={item?.metadata} quantity={item?.supply || 1} key={index} />
                     ))}
                 </div>
                 
