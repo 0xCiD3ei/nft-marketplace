@@ -2,10 +2,11 @@ import React from "react";
 
 const Prices = ({
   className = "pt-3",
-  price = "1.000",
+  price = "0",
+  symbol = "MATIC",
   contentClass = "py-1.5 md:py-2 px-2.5 md:px-3.5 text-sm sm:text-base font-semibold",
   labelTextClassName = "bg-white",
-  labelText = Math.random() > 0.4 ? "Price" : "Current Bid",
+  labelText = "Price",
 }) => {
   return (
     <div className={`${className}`}>
@@ -17,7 +18,7 @@ const Prices = ({
         >
           {labelText}
         </span>
-        <span className=" text-green-500 !leading-none">{price} ETH</span>
+        <span className=" text-green-500 !leading-none">{price} {symbol}</span>
       </div>
     </div>
   );

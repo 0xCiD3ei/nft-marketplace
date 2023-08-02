@@ -66,6 +66,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
         name: name,
         description: description,
         image: image,
+        date: new Date().valueOf(),
+        category: category
       },
       to: address
     })
@@ -216,6 +218,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
     <NFTMarketplaceContext.Provider
       value={{
         nftCollection,
+        marketplace,
         uploadToIPFS,
         createNFT,
         fetchNFTs,
