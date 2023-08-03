@@ -37,17 +37,17 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const {nftCollection,marketplace} = useContext(NFTMarketplaceContext);
   // const { data: nft, isLoading: loadingData } = useDirectListing(marketplace, token_id);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
-  const {mutateAsync: buyNow} = useBuyNow(marketplace);
+  // const {mutateAsync: buyNow} = useBuyNow(marketplace);
   
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
     tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
     tokenId: nft.metadata.id
   })
   
-  const {data: auctionListing, isLoading: loadingAuction} = useValidEnglishAuctions(marketplace, {
-    tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
-    tokenId: nft.metadata.id
-  })
+  // const {data: auctionListing, isLoading: loadingAuction} = useValidEnglishAuctions(marketplace, {
+  //   tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+  //   tokenId: nft.metadata.id
+  // })
   
   useEffect(() => {
       (async () => {
@@ -61,11 +61,12 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const buyListing = async () =>  {
     let txResult;
     
-    if (auctionListing?.[0]) {
-      txResult = await marketplace?.englishAuctions.buyoutAuction(
-        auctionListing[0].id
-      );
-    } else if (directListing?.[0]) {
+    // if (auctionListing?.[0]) {
+    //   txResult = await marketplace?.englishAuctions.buyoutAuction(
+    //     auctionListing[0].id
+    //   );
+    // } else
+      if (directListing?.[0]) {
       txResult = await marketplace?.directListings.buyFromListing(
         directListing[0].id,
         1
@@ -138,7 +139,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         {/* PRICE */}
         <div className="pb-9 pt-14">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
-            {loadingDirectListing || loadingAuction ? (
+            {loadingDirectListing ? (
               <div></div>
             ) : directListing && directListing[0] ? (
               <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
