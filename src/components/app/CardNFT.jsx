@@ -9,6 +9,7 @@ import moment from "moment";
 import {useContext} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useValidDirectListings, useValidEnglishAuctions} from "@thirdweb-dev/react";
+import Skeleton from "react-loading-skeleton";
 
 const CardNFT = ({
   className = "",
@@ -95,7 +96,7 @@ const CardNFT = ({
 
         <div className="flex justify-between items-end ">
           {loadingDirectListing || loadingAuction ? (
-            <div></div>
+            <p className={"mt-4"}>Loading...</p>
           ) : directListing && directListing[0] ? (
             <Prices
               price={directListing[0]?.currencyValuePerToken.displayValue}
