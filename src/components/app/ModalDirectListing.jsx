@@ -5,6 +5,7 @@ import Input from "src/components/shared/Input/Input";
 import NcModal from "src/components/shared/NcModal/NcModal";
 import {useAddress, useCreateDirectListing} from "@thirdweb-dev/react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import Label from "src/components/app/Label/Label";
 
 const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
   const address = useAddress();
@@ -73,29 +74,31 @@ const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
           Direct Listing
         </h3>
         <span className="text-sm">Are you sure you want to direct listing?</span>
-        <div className="mt-8 relative rounded-md shadow-sm">
+        <div className="mt-4 rounded-md shadow-sm">
+          <Label>Start Date</Label>
+          <Input
+            id={'startDate'}
+            name={'startDate'}
+            type={"datetime-local"}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="mt-4 rounded-md shadow-sm">
+          <Label>End Date</Label>
+          <Input
+            name={'endDate'}
+            type={"datetime-local"}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="mt-4 rounded-md shadow-sm">
+          <Label>Price</Label>
           <Input
             name={'price'}
             value={price}
-            type={"text"}
+            type={"number"}
             onChange={handleInputChange}
           />
-          
-          <div className="absolute inset-y-0 right-0 flex items-center">
-            <label htmlFor="currency" className="sr-only">
-              Currency
-            </label>
-            <select
-              id="currency"
-              name="currency"
-              disabled
-              className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-neutral-500 dark:text-neutral-300 sm:text-sm rounded-md"
-            >
-              <option>MATIC</option>
-              <option>BC</option>
-              <option>BTH</option>
-            </select>
-          </div>
         </div>
         <div className="mt-4 space-x-3">
           <ButtonPrimary onClick={handleOnSubmit}>Submit</ButtonPrimary>
