@@ -33,7 +33,8 @@ import ModalDirectListing from "src/components/app/ModalDirectListing";
 export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
   const address = useAddress();
-  const [account , setAccount] = useState();
+  const [creator, setCreator] = useState();
+  const [owner , setOwner] = useState();
   const {nftCollection,marketplace} = useContext(NFTMarketplaceContext);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
   const [directListingModal, setDirectListingModal] = useState(false);
@@ -50,8 +51,8 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   
   useEffect(() => {
       (async () => {
-        const res = await webClientService.getAccountByAddress(nft?.owner);
-        setAccount(res.data);
+        const ownerResponse = await webClientService.getAccountByAddress(nft?.owner);
+        setOwner(ownerResponse.data);
       })();
   }, [])
   
@@ -98,14 +99,14 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
           {/* ---------- 4 ----------  */}
           <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 text-sm">
             <div className="flex items-center ">
-              <Avatar imgUrl={account ? account?.avatar : ""} sizeClass="h-9 w-9" radius="rounded-full" />
+              <Avatar imgUrl={""} sizeClass="h-9 w-9" radius="rounded-full" />
               <span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
               <span className="text-sm">Creator</span>
                 <Link
                   href={{ pathname: "author", query: `query` }}
                 >
                   <span className="text-neutral-900 dark:text-neutral-200 font-medium flex items-center">
-                    <span>{account ? account?.fullName : personNames[1]}</span>
+                    <span>{"Admin"}</span>
                     <VerifyIcon iconClass="w-4 h-4" />
                   </span>
                 </Link>
@@ -366,7 +367,9 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         
         {/* ---------- 9 ----------  */}
         <div className="pt-9">
-          <TabDetail />
+          <TabDetail
+            owner={owner}
+          />
         </div>
       </div>
     )

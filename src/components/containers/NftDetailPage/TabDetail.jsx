@@ -3,7 +3,7 @@ import { personNames } from "src/assets/contains/fakeData";
 import Avatar from "src/components/shared/Avatar/Avatar";
 import VerifyIcon from "src/components/app/VerifyIcon";
 
-const TabDetail = () => {
+const TabDetail = ({owner}) => {
   const TABS = ["Bid History", "Provenance", "Owner"];
 
   const renderTabBidHistory = () => {
@@ -78,11 +78,11 @@ const TabDetail = () => {
   const renderTabOwner = () => {
     return (
       <div className="flex items-center py-4">
-        <Avatar sizeClass="h-11 w-11" radius="rounded-full" />
+        <Avatar imgUrl={owner?.avatar} sizeClass="h-11 w-11" radius="rounded-full" />
         <span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
           <span className="text-sm">Owner</span>
           <span className="text-neutral-900 dark:text-neutral-200 font-medium flex items-center">
-            <span>{personNames[1]}</span>
+            <span>{owner ? owner?.fullName : personNames[1]}</span>
             <VerifyIcon iconClass="w-4 h-4" />
           </span>
         </span>
