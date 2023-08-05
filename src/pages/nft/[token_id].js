@@ -29,6 +29,7 @@ import ItemTypeImageIcon from "src/components/app/ItemTypeImageIcon";
 import webClientService from "src/lib/services/webClientService";
 import dbConnect from "src/lib/dbConnect";
 import ModalDirectListing from "src/components/app/ModalDirectListing";
+import ModalAuction from "src/components/app/ModalAuction";
 
 export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const {nftCollection,marketplace} = useContext(NFTMarketplaceContext);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
   const [directListingModal, setDirectListingModal] = useState(false);
+  const [auctionModal, setAuctionModal] = useState(false);
   
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
     tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
@@ -285,6 +287,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                   </ButtonPrimary>
                   <ButtonPrimary
                     className="flex-1"
+                    onClick={() => setAuctionModal(true)}
                   >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <path
@@ -317,7 +320,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                       />
                     </svg>
                     
-                    <span className="ml-2.5">Action</span>
+                    <span className="ml-2.5">Auction</span>
                   </ButtonPrimary>
                 </>
               )
@@ -425,6 +428,11 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         show={directListingModal}
         nft={nft}
         onCloseModalEdit={() => setDirectListingModal(false)}
+      />
+      <ModalAuction
+        show={auctionModal}
+        nft={nft}
+        onCloseModalEdit={() => setAuctionModal(false)}
       />
     </div>
   )
