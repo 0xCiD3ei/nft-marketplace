@@ -3,67 +3,44 @@ import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import Input from "src/components/shared/Input/Input";
 import NcModal from "src/components/shared/NcModal/NcModal";
-import {useAddress, useCreateDirectListing} from "@thirdweb-dev/react";
+import {useAddress, useCreateAuctionListing} from "@thirdweb-dev/react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
 
 const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
-  const address = useAddress();
-  const {nftCollection, marketplace} = useContext(NFTMarketplaceContext);
-  const [price, setPrice] = useState("");
-  // const textareaRef = useRef(null);
+  const {marketplace} = useContext(NFTMarketplaceContext);
+  const [state, setState] = useState({
+    price: "0",
+    floorPrice: "0",
+    startTimestamp: "",
+    endTimestamp: ""
+  })
+  const [loading, setLoading] = useState(false)
   
-  const {mutateAsync: createDirectListing} = useCreateDirectListing(marketplace);
-  
-  //
-  // useEffect(() => {
-  //   if (show) {
-  //     setTimeout(() => {
-  //       const element = textareaRef.current;
-  //       if (element) {
-  //         element.focus();
-  //         element.setSelectionRange(element.value.length, element.value.length);
-  //       }
-  //     }, 400);
-  //   }
-  // }, [show]);
-  
-  const checkAndProvideApproval = async () => {
-    const hasApproval = await nftCollection?.call(
-      "isApprovedForAll",
-      nft.owner,
-      "0x7070bf67323D918b44D3Acd2AD764228cb05435a"
-    );
-    
-    if (!hasApproval) {
-      const txResult = await nftCollection?.call(
-        "setApprovalForAll",
-        "0x7070bf67323D918b44D3Acd2AD764228cb05435a",
-        true
-      );
-      
-      if (txResult) {
-        console.log("Approval provided");
-      }
-    }
-    
-    return true;
-  }
-  
-  const handleInputChange = (e) => {
-    setPrice(e.target.value);
+  const {mutateAsync: createAuctionListing} = useCreateAuctionListing(marketplace);
+  const handleInputChange = (e, field) => {
+    setState(prevState => ({ ...prevState, [field]: e.target.value }));
   };
   
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    await checkAndProvideApproval();
-    const txResult = await createDirectListing({
+    setLoading(true);
+    const txResult = await createAuctionListing({
       assetContractAddress: "0x739951B8Abb63A632785c59d88859F4A7e887836",
-      tokenId: nft.id,
-      pricePerToken: price,
-      quantity: 1
+      tokenId: nft.metadata.id,
+      buyoutBidAmount: state.price,
+      minimumBidAmount: state.floorPrice,
+      startTimestamp: new Date(state.startTimestamp),
+      endTimestamp: new Date(state.endTimestamp),
     })
     onCloseModalEdit();
+    setState({
+      price: "0",
+      floorPrice: "0",
+      startTimestamp: "",
+      endTimestamp: ""
+    })
+    setLoading(false)
     return txResult;
   };
   
@@ -77,40 +54,41 @@ const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
         <div className="mt-4 rounded-md shadow-sm">
           <Label>Start Date</Label>
           <Input
-            id={'startDate'}
-            name={'startDate'}
+            name={'startTimestamp'}
+            value={state.startTimestamp}
             type={"datetime-local"}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, "startTimestamp")}
           />
         </div>
         <div className="mt-4 rounded-md shadow-sm">
           <Label>End Date</Label>
           <Input
-            name={'endDate'}
+            name={'endTimestamp'}
+            value={state.endTimestamp}
             type={"datetime-local"}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, "endTimestamp")}
           />
         </div>
         <div className="mt-4 rounded-md shadow-sm">
           <Label>Starting Bid From</Label>
           <Input
-            name={'price'}
-            value={price}
+            name={'floorPrice'}
+            value={state.floorPrice}
             type={"text"}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, "floorPrice")}
           />
         </div>
         <div className="mt-4 rounded-md shadow-sm">
           <Label>Buyout Price</Label>
           <Input
             name={'price'}
-            value={price}
+            value={state.price}
             type={"text"}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, "price")}
           />
         </div>
         <div className="mt-4 space-x-3">
-          <ButtonPrimary onClick={handleOnSubmit}>Submit</ButtonPrimary>
+          <ButtonPrimary onClick={handleOnSubmit} loading={loading}>Submit</ButtonPrimary>
           <ButtonSecondary type="button" onClick={onCloseModalEdit}>
             Cancel
           </ButtonSecondary>
