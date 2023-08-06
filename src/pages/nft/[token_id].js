@@ -36,7 +36,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const address = useAddress();
   const [creator, setCreator] = useState();
   const [owner , setOwner] = useState();
-  const {nftCollection,marketplace} = useContext(NFTMarketplaceContext);
+  const {marketplace} = useContext(NFTMarketplaceContext);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
   const [directListingModal, setDirectListingModal] = useState(false);
   const [auctionModal, setAuctionModal] = useState(false);
@@ -46,10 +46,10 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
     tokenId: nft.metadata.id
   })
   
-  // const {data: auctionListing, isLoading: loadingAuction} = useValidEnglishAuctions(marketplace, {
-  //   tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
-  //   tokenId: nft.metadata.id
-  // })
+  const {data: auctionListing, isLoading: loadingAuction} = useValidEnglishAuctions(marketplace, {
+    tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+    tokenId: nft.metadata.id
+  })
   
   useEffect(() => {
       (async () => {
@@ -58,16 +58,14 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
       })();
   }, [])
   
-  console.log(directListing);
-  
   const buyListing = async () =>  {
     let txResult;
     
-    // if (auctionListing?.[0]) {
-    //   txResult = await marketplace?.englishAuctions.buyoutAuction(
-    //     auctionListing[0].id
-    //   );
-    // } else
+    if (auctionListing?.[0]) {
+      txResult = await marketplace?.englishAuctions.buyoutAuction(
+        auctionListing[0].id
+      );
+    } else
       if (directListing?.[0]) {
       txResult = await marketplace?.directListings.buyFromListing(
         directListing[0].id,
@@ -81,6 +79,8 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
     
     return txResult;
   }
+  
+  console.log({auctionListing})
   
   const renderSection1 = () => {
     return (
@@ -141,7 +141,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         {/* PRICE */}
         <div className="pb-9 pt-14">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between">
-            {loadingDirectListing ? (
+            {loadingDirectListing || loadingAuction ? (
               <div></div>
             ) : directListing && directListing[0] ? (
               <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
@@ -155,6 +155,18 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                   ( ≈ ${directListing[0]?.currencyValuePerToken?.displayValue * 8 || 0})
                 </span>
               </div>
+            ) : auctionListing && auctionListing[0] ? (
+              <div className="flex-1 flex flex-col sm:flex-row items-baseline p-6 border-2 border-green-500 rounded-xl relative">
+                <span className="absolute bottom-full translate-y-1 py-1 px-1.5 bg-white dark:bg-neutral-900 text-sm text-neutral-500 dark:text-neutral-400">
+                  Price
+                </span>
+                <span className="text-3xl xl:text-4xl font-semibold text-green-500">
+                  {auctionListing[0]?.buyoutCurrencyValue?.displayValue || 0} {auctionListing[0]?.buyoutCurrencyValue?.symbol || "MATIC"}
+                </span>
+                <span className="text-lg text-neutral-400 sm:ml-5">
+                  ( ≈ ${auctionListing[0]?.buyoutCurrencyValue?.displayValue * 8 || 0})
+                </span>
+              </div>
             ) : (
               <div className={""}>Not listed</div>
             )}
@@ -165,7 +177,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
           
           <div className="mt-8 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             {
-              !directListing[0]?.currencyValuePerToken?.displayValue ? (
+              (directListing && !directListing[0]?.currencyValuePerToken?.displayValue)  ? (
                 <div></div>
               ) : nft?.owner === address ? (
                 <ButtonPrimary
@@ -246,7 +258,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
             }
             
             {
-              !directListing[0]?.currencyValuePerToken?.displayValue && nft?.owner === address ? (
+              directListing && !directListing[0]?.currencyValuePerToken?.displayValue && nft?.owner === address ? (
                 <>
                   <ButtonPrimary
                     className="flex-1"
@@ -328,7 +340,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
             }
             
             {
-              directListing[0]?.currencyValuePerToken?.displayValue && (
+              directListing && directListing[0]?.currencyValuePerToken?.displayValue && nft.owner !== address && (
                 <ButtonSecondary href={"/connect-wallet"} className="flex-1">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
