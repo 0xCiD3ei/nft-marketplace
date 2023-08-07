@@ -1,7 +1,7 @@
 import useCountDownTime from "src/hooks/useCountDownTime";
 
-const TimeCountDown = () => {
-  const timeLeft = useCountDownTime();
+const TimeCountDown = ({endTime}) => {
+  const timeLeft = useCountDownTime(endTime);
 
   return (
     <div className="space-y-5">
@@ -36,12 +36,12 @@ const TimeCountDown = () => {
             strokeLinejoin="round"
           />
         </svg>
-        <span className="leading-none mt-1">Auction ending in:</span>
+        <span className="leading-none mt-1">Time remaining:</span>
       </div>
       <div className="flex space-x-5 sm:space-x-10">
         <div className="flex flex-col ">
           <span className="text-2xl sm:text-2xl font-semibold">
-            {timeLeft.days}
+            {timeLeft.days || 0}
           </span>
           <span className="sm:text-lg text-neutral-500 dark:text-neutral-400">
             Days
@@ -49,7 +49,7 @@ const TimeCountDown = () => {
         </div>
         <div className="flex flex-col ">
           <span className="text-2xl sm:text-2xl font-semibold">
-            {timeLeft.hours}
+            {timeLeft.hours || 0}
           </span>
           <span className="sm:text-lg text-neutral-500 dark:text-neutral-400">
             hours
@@ -57,7 +57,7 @@ const TimeCountDown = () => {
         </div>
         <div className="flex flex-col ">
           <span className="text-2xl sm:text-2xl font-semibold">
-            {timeLeft.minutes}
+            {timeLeft.minutes || 0}
           </span>
           <span className="sm:text-lg text-neutral-500 dark:text-neutral-400">
             minutes
@@ -65,7 +65,7 @@ const TimeCountDown = () => {
         </div>
         <div className="flex flex-col ">
           <span className="text-2xl sm:text-2xl font-semibold">
-            {timeLeft.seconds}
+            {timeLeft.seconds || 0}
           </span>
           <span className="sm:text-lg text-neutral-500">seconds</span>
         </div>

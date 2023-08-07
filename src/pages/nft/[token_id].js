@@ -20,7 +20,7 @@ import {useRouter} from "next/router";
 import {
   ThirdwebSDK,
   useAddress,
-  useCancelDirectListing,
+  useCancelDirectListing, useContractWrite,
   useValidDirectListings, useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import {useContext, useEffect, useState} from "react";
@@ -30,6 +30,7 @@ import webClientService from "src/lib/services/webClientService";
 import dbConnect from "src/lib/dbConnect";
 import ModalDirectListing from "src/components/app/ModalDirectListing";
 import ModalAuction from "src/components/app/ModalAuction";
+import {Helmet} from "react-helmet";
 
 export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
@@ -56,7 +57,15 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         const ownerResponse = await webClientService.getAccountByAddress(nft?.owner);
         setOwner(ownerResponse.data);
       })();
-  }, [])
+  }, [nft])
+  
+  // useEffect(() => {
+  //   (async () => {
+  //     const txResult = await
+  //   })();
+  // }, [])
+  
+  console.log('directListing----', directListing);
   
   const buyListing = async () =>  {
     let txResult;
@@ -85,6 +94,9 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const renderSection1 = () => {
     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+        <Helmet>
+          <title>{nft.metadata.name} || Ciscryp NFT Template</title>
+        </Helmet>
         {/* ---------- 1 ----------  */}
         <div className="pb-9 space-y-5">
           <div className="flex justify-between items-center">
@@ -134,7 +146,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         
         {/* ---------- 6 ----------  */}
         <div className="py-9">
-          <TimeCountDown />
+          <TimeCountDown endTime={(directListing && directListing[0]?.endTimeInSeconds) || (auctionListing && auctionListing[0]?.endTimeInSeconds)} />
         </div>
         
         {/* ---------- 7 ----------  */}

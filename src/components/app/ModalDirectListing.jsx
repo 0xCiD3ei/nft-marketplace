@@ -14,6 +14,7 @@ const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
     startTimestamp: "",
     endTimeStamp: "",
   });
+  const [loading, setLoading] = useState(false);
   const {mutateAsync: createDirectListing} = useCreateDirectListing(marketplace);
   
   const handleInputChange = (e, field) => {
@@ -22,6 +23,7 @@ const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
   
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const txResult = await createDirectListing({
       assetContractAddress: "0x739951B8Abb63A632785c59d88859F4A7e887836",
       tokenId: nft.metadata.id,
@@ -31,7 +33,12 @@ const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
       endTimestamp: new Date(state.endTimeStamp),
     })
     onCloseModalEdit();
-    setState(null);
+    setState({
+      price: "0",
+      startTimestamp: "",
+      endTimeStamp: "",
+    });
+    setLoading(false);
     return txResult;
   };
   
@@ -70,7 +77,7 @@ const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
           />
         </div>
         <div className="mt-4 space-x-3">
-          <ButtonPrimary onClick={handleOnSubmit}>Submit</ButtonPrimary>
+          <ButtonPrimary onClick={handleOnSubmit} loading={loading}>Submit</ButtonPrimary>
           <ButtonSecondary type="button" onClick={onCloseModalEdit}>
             Cancel
           </ButtonSecondary>
