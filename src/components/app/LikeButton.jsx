@@ -18,7 +18,7 @@ const LikeButton = ({ className, liked = Math.random() > 0.6 }) => {
           strokeLinejoin="round"
         />
       </svg>
-      <span className="ml-2 text-sm">{isLiked ? 23 : 22}</span>
+      <span className="ml-2 text-sm">{isLiked ? 1 : 0}</span>
     </button>
   );
 };

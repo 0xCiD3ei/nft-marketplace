@@ -9,7 +9,6 @@ import moment from "moment";
 import {useContext} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useValidDirectListings, useValidEnglishAuctions} from "@thirdweb-dev/react";
-import Skeleton from "react-loading-skeleton";
 
 const CardNFT = ({
   className = "",
@@ -74,10 +73,10 @@ const CardNFT = ({
           />
         </div>
         <ItemTypeImageIcon className="absolute top-3 left-3 !w-9 !h-9" />
-        <LikeButton
-          liked={isLiked}
-          className="absolute top-3 right-3 z-10 !h-9"
-        />
+        {/*<LikeButton*/}
+        {/*  liked={isLiked}*/}
+        {/*  className="absolute top-3 right-3 z-10 !h-9"*/}
+        {/*/>*/}
         <div className="absolute top-3 inset-x-3 flex"></div>
       </div>
 

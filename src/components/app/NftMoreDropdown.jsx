@@ -17,8 +17,6 @@ const NftMoreDropdown = ({
   iconClass = "w-4 h-4 sm:h-5 sm:w-5",
   dropdownPositon = "down",
   actions = actionsDefault,
-  price,
-  onChangePrice,
 }) => {
   const [isEditting, setIsEditting] = useState(false);
   const [isReporting, setIsReporting] = useState(false);
@@ -83,8 +81,6 @@ const NftMoreDropdown = ({
       <ModalEdit
         show={isEditting}
         onCloseModalEdit={closeModalEdit}
-        price={price}
-        onChangePrice={onChangePrice}
       />
 
       <ModalDelete show={isDeleting} onCloseModalDelete={closeModalDelete} />

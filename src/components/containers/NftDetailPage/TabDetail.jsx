@@ -3,7 +3,7 @@ import { personNames } from "src/assets/contains/fakeData";
 import Avatar from "src/components/shared/Avatar/Avatar";
 import VerifyIcon from "src/components/app/VerifyIcon";
 
-const TabDetail = ({owner}) => {
+const TabDetail = ({owner,transferEvents}) => {
   const TABS = ["Bid History", "Provenance", "Owner"];
 
   const renderTabBidHistory = () => {
@@ -45,7 +45,7 @@ const TabDetail = ({owner}) => {
   const renderTabProvenance = () => {
     return (
       <ul className="divide-y divide-neutral-100 dark:divide-neutral-700">
-        {[1, 1, 1, 1, 1].map((_, index) => (
+        {transferEvents.map((event, index) => (
           <li
             key={index}
             className={`relative py-4 ${
@@ -57,11 +57,21 @@ const TabDetail = ({owner}) => {
               <span className="ml-4 text-neutral-500 dark:text-neutral-400 flex flex-col">
                 <span className="flex items-center text-sm">
                   <span className="">
-                    {Math.random() > 0.5 ? "Listed by" : "Minted by"}
+                    {
+                      index === transferEvents.length - 1
+                        ? "Mint"
+                        : "Transfer"
+                    }
                   </span>
 
                   <span className="font-medium text-neutral-900 dark:text-neutral-200 ml-1">
-                    Martoutaa
+                    {event?.data?.from}
+                  </span>
+                  <span className="ml-1">
+                    To
+                  </span>
+                  <span className="font-medium text-neutral-900 dark:text-neutral-200 ml-1">
+                    {event?.data?.to}
                   </span>
                 </span>
                 <span className="text-xs mt-1">Jun 14 - 4:12 PM</span>
