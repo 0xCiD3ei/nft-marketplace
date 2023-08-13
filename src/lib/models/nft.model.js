@@ -1,27 +1,27 @@
-const mongoose = require('mongoose')
+ const mongoose = require('mongoose')
 
 const NftSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
+  metadata: {
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true
+    },
+    date: { type: Number, required: true },
+    description: { type: String, required: true },
+    id: { type: String, required: true },
+    image: { type: String, required: true },
+    name: { type: String, required: true },
+    uri: { type: String, required: true },
   },
-  description: {
-    type: String,
-    required: true
-  },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-    required: true
-  },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  address: String,
-  image: String,
-  price: String,
+  owner: String,
+  supply: String,
+  type: String,
+  favorites: [
+    {
+      type: String
+    }
+  ]
 }, {
   timestamps: true
 })
