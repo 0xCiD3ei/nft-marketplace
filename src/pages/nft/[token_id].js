@@ -4,7 +4,6 @@ import LikeSaveBtns from "src/components/containers/NftDetailPage/LikeSaveBtns";
 import Avatar from "src/components/shared/Avatar/Avatar";
 import Link from "next/link";
 import VerifyIcon from "src/components/app/VerifyIcon";
-import {personNames} from "src/assets/contains/fakeData";
 import collectionPng from "src/assets/images/nfts/collection.png";
 import TimeCountDown from "src/components/containers/NftDetailPage/TimeCountDown";
 import TabDetail from "src/components/containers/NftDetailPage/TabDetail";
@@ -20,7 +19,7 @@ import {useRouter} from "next/router";
 import {
   ThirdwebSDK,
   useAddress,
-  useCancelDirectListing, useContractWrite,
+  useCancelDirectListing, useContractEvents,
   useValidDirectListings, useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import {useContext, useEffect, useState} from "react";
@@ -31,16 +30,19 @@ import dbConnect from "src/lib/dbConnect";
 import ModalDirectListing from "src/components/app/ModalDirectListing";
 import ModalAuction from "src/components/app/ModalAuction";
 import {Helmet} from "react-helmet";
+import ModalBidOrOffer from "src/components/app/ModalBidOrOffer";
 
 export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
   const address = useAddress();
-  const [creator, setCreator] = useState();
   const [owner , setOwner] = useState();
-  const {marketplace} = useContext(NFTMarketplaceContext);
+  const {marketplace,nftCollection} = useContext(NFTMarketplaceContext);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
   const [directListingModal, setDirectListingModal] = useState(false);
   const [auctionModal, setAuctionModal] = useState(false);
+  const [offerOrBidModal, setOfferOrBidModal] = useState(false);
+  const [bids, setBids] = useState();
+  const [offers, setOffers] = useState();
   
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
     tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
@@ -59,13 +61,33 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
       })();
   }, [nft])
   
-  // useEffect(() => {
-  //   (async () => {
-  //     const txResult = await
-  //   })();
-  // }, [])
+  useEffect(() => {
+    (async () => {
+      let winningBid;
+      let offerD;
+      try{
+        if (auctionListing?.[0]) {
+          winningBid = marketplace?.englishAuctions.getWinningBid(nft.metadata.id);
+          setBids(winningBid);
+        }
+        
+        if (directListing?.[0]) {
+          offerD = await marketplace?.offers.getAllValid({tokenId: nft.metadata.id});
+          setOffers(offerD);
+        }
+      } catch(e) {}
+    })();
+  },[nft, marketplace?.englishAuctions, marketplace?.offers, auctionListing, directListing]);
   
-  console.log('directListing----', directListing);
+  const { data: transferEvents, isLoading: loadingTransferEvents } =
+    useContractEvents(nftCollection, "Transfer", {
+      queryFilter: {
+        filters: {
+          tokenId: nft.metadata.id,
+        },
+        order: "desc",
+      },
+    });
   
   const buyListing = async () =>  {
     let txResult;
@@ -84,12 +106,8 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
       throw new Error("No listing found");
     }
     
-    console.log(txResult);
-    
     return txResult;
   }
-  
-  console.log({auctionListing})
   
   const renderSection1 = () => {
     return (
@@ -101,10 +119,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         <div className="pb-9 space-y-5">
           <div className="flex justify-between items-center">
             <Badge name="Virtual Worlds" color="green" />
-            <LikeSaveBtns
-              price={"0.025"}
-              // onChangePrice={handleOnchangePrice}
-            />
+            <LikeSaveBtns />
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
             {nft?.metadata?.name} #{nft?.metadata?.id}
@@ -352,8 +367,8 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
             }
             
             {
-              directListing && directListing[0]?.currencyValuePerToken?.displayValue && nft.owner !== address && (
-                <ButtonSecondary href={"/connect-wallet"} className="flex-1">
+              nft.owner !== address && (
+                <ButtonSecondary onClick={() => setOfferOrBidModal(true)} className="flex-1">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M8.57007 15.27L15.11 8.72998"
@@ -385,7 +400,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                     />
                   </svg>
                   
-                  <span className="ml-2.5"> Make offer</span>
+                  <span className="ml-2.5"> Make Offer Or Bid</span>
                 </ButtonSecondary>
               )
             }
@@ -396,6 +411,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         <div className="pt-9">
           <TabDetail
             owner={owner}
+            transferEvents={transferEvents || []}
           />
         </div>
       </div>
@@ -457,6 +473,13 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         show={auctionModal}
         nft={nft}
         onCloseModalEdit={() => setAuctionModal(false)}
+      />
+      <ModalBidOrOffer
+        show={offerOrBidModal}
+        nft={nft}
+        directListing={directListing || []}
+        auctionListing={auctionListing || []}
+        onCloseModalEdit={() => setOfferOrBidModal(false)}
       />
     </div>
   )
