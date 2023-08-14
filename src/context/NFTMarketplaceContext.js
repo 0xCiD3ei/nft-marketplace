@@ -147,73 +147,6 @@ export const NFTMarketplaceProvider = ({ children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchNFTs();
-  // }, []);
-
-  // const fetchMyNFTsOrListedNFTs = async (type) => {
-  //   try {
-  //     const contract = await connectingWithSmartContract();
-
-  //     const data =
-  //       type == "fetchItemsListed"
-  //         ? await contract.fetchItemsListed()
-  //         : await contract.fetchMyNFTs();
-
-  //     const items = await Promise.all(
-  //       data.map(
-  //         async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-  //           const tokenURI = await contract.tokenURI(tokenId);
-  //           const {
-  //             data: { image, name, description },
-  //           } = await axios.get(tokenURI);
-  //           const price = ethers.utils.formatUnits(
-  //             unformattedPrice.toString(),
-  //             "ether"
-  //           );
-
-  //           return {
-  //             price,
-  //             tokenId: tokenId.toNumber(),
-  //             seller,
-  //             owner,
-  //             image,
-  //             name,
-  //             description,
-  //             tokenURI,
-  //           };
-  //         }
-  //       )
-  //     );
-  //     return items;
-  //   } catch (error) {
-  //     toast.error("Error while fetching listed NFTs");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchMyNFTsOrListedNFTs();
-  // }, []);
-
-  // const buyNFT = async (nft) => {
-  //   try {
-  //     const contract = await connectingWithSmartContract();
-  //     const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
-
-  //     console.log(contract, price);
-
-  //     const transaction = await contract.createMarketSale(nft.tokenId, {
-  //       value: price,
-  //     });
-
-  //     await transaction.wait();
-  //     toast.success("Buy NFT successfully!");
-  //     router.push("/author");
-  //   } catch (error) {
-  //     toast.error("Error while buying NFT");
-  //   }
-  // };
-
   return (
     <NFTMarketplaceContext.Provider
       value={{
@@ -222,8 +155,6 @@ export const NFTMarketplaceProvider = ({ children }) => {
         uploadToIPFS,
         createNFT,
         fetchNFTs,
-        // fetchMyNFTsOrListedNFTs,
-        // buyNFT,
         createSale,
       }}
     >

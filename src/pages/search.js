@@ -7,24 +7,16 @@ import CardNFT from "src/components/app/CardNFT";
 import BackgroundSection from "src/components/app/BackgroundSection/BackgroundSection";
 import SectionSliderCollections from "src/components/app/SectionSliderCollections";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Pagination from "src/components/shared/Pagination/Pagination";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
-import {useDirectListings, useNFTs} from "@thirdweb-dev/react";
+import {useNFTs} from "@thirdweb-dev/react";
 
 export default function SearchPage({className= ""}) {
-  const {nftCollection, marketplace} =useContext(NFTMarketplaceContext);
-  // const {data: nfts, isLoading} = useDirectListings(marketplace);
+  const {nftCollection} =useContext(NFTMarketplaceContext);
   const { data: nfts, isLoading, error } = useNFTs(nftCollection);
-  
   console.log(nfts)
-  // useEffect(() => {
-  //   (async () => {
-  //     const data = await fetchNFTs();
-  //     setNFTs(data);
-  //   })();
-  // }, [])
   
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="searchPage">
