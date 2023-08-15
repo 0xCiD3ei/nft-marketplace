@@ -1,24 +1,10 @@
 import {Popover, Transition} from "@headlessui/react";
-import {avatarImgs, nftsImgs} from "src/assets/contains/fakeData";
-import React, {Fragment, useEffect, useState} from "react";
+import {avatarImgs} from "src/assets/contains/fakeData";
+import React, {Fragment} from "react";
 import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
-import {useRouter} from "next/router";
-import webClientService from "src/lib/services/webClientService";
-import {useAddress} from "@thirdweb-dev/react";
 
-export default function AvatarDropdown() {
-  const [account, setAccount] = useState();
-  const address = useAddress();
-  
-  useEffect(() => {
-    (async () => {
-      const response = await webClientService.getAccount();
-      if(response.code === 200) {
-        setAccount(response.data);
-      }
-    })();
-  }, [address])
+export default function AvatarDropdown({account, address}) {
   function shortenMiddleString(inputStr, leftLength, rightLength) {
     if (inputStr?.length <= leftLength + rightLength) {
       return inputStr;

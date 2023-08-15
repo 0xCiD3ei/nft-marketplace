@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Logo from "../Logo/Logo";
 import MenuBar from "../MenuBar/MenuBar";
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
@@ -9,6 +9,7 @@ import Navigation from "../Navigation/Navigation";
 import {ConnectWallet, useAddress, useConnectionStatus} from "@thirdweb-dev/react";
 import webClientService from "src/lib/services/webClientService";
 const Header = () => {
+  const [account, setAccount] = useState();
   const address = useAddress();
   const connectionStatus = useConnectionStatus();
   useEffect(() => {
@@ -17,6 +18,10 @@ const Header = () => {
         (async () => {
           const res = await webClientService.checkWalletAddress({address});
           if(res?.code === 200) {
+            const response = await webClientService.getAccount();
+            if(response.code === 200) {
+              setAccount(response.data);
+            }
             console.log(res?.message);
           }
         })();
@@ -88,13 +93,13 @@ const Header = () => {
               />
               <div></div>
               {
-                address && <AvatarDropdown />
+                address && <AvatarDropdown address={address} account={account} />
               }
             </div>
             <div className="flex items-center space-x-3 xl:hidden">
               <NotifyDropdown />
               {
-                address && <AvatarDropdown />
+                address && <AvatarDropdown address={address} account={account} />
               }
               <MenuBar />
             </div>
