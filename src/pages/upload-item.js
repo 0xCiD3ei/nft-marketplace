@@ -14,6 +14,7 @@ import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import categoryService from "src/lib/services/categoryService";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import {toast} from "react-toastify";
 
 export default function UploadItemPage({className = "", categories}) {
   const {createNFT} = useContext(NFTMarketplaceContext);
@@ -21,7 +22,6 @@ export default function UploadItemPage({className = "", categories}) {
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
-    price: "",
     file: ""
   });
   const [loading, setLoading] = useState(false)
@@ -224,44 +224,25 @@ export default function UploadItemPage({className = "", categories}) {
             </div>
             
             {/* ---- */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-2.5">
-              {/* ---- */}
-              <FormItem label="Price">
-                <Input
-                  placeholder="Enter NFT price"
-                  name="price"
-                  value={formValues.price}
-                  onChange={handleOnchangeInput}
-                />
-              </FormItem>
-              <FormItem label="Royalties">
-                <Input placeholder="20%" />
-              </FormItem>
-              {/* ---- */}
-              <FormItem label="Size">
-                <Input placeholder="165Mb" />
-              </FormItem>
-              {/* ---- */}
-            </div>
-            {/* ---- */}
             <div className="pt-2 flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3 ">
               <ButtonPrimary
                 loading={loading}
                 className="flex-1"
                 onClick={async () => {
-                  console.log("Click", formValues);
                   setLoading(true)
-                  await createNFT({
+                  const response = await createNFT({
                     name: formValues.name,
                     description: formValues.description,
-                    price: formValues.price,
                     image: formValues.file,
                     category: selected,
                   })
+                  if(response.code === 200) {
+                    toast.success('Mint nft successfully');
+                  }
                   setLoading(false);
                 }}
               >
-                Upload item
+                Mint NFT
               </ButtonPrimary>
               <ButtonSecondary className="flex-1">Preview item</ButtonSecondary>
             </div>

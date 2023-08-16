@@ -1,5 +1,4 @@
 import {NftModel} from "src/lib/models/nft.model";
-import {ApiError} from "src/lib/errors/ApiError";
 
 class nftService {
   createNFT(payload) {
@@ -14,8 +13,8 @@ class nftService {
   searchNFTs(query) {
     const nfts = NftModel.find({
       $or: [
-        { 'metadata.name': { $regex: query, $options: 'i' } }, // Tìm theo tên (không phân biệt hoa thường)
-        { 'metadata.description': { $regex: query, $options: 'i' } }, // Tìm theo mô tả (không phân biệt hoa thường)
+        { 'metadata.name': { $regex: query, $options: 'i' } },
+        { 'metadata.description': { $regex: query, $options: 'i' } },
       ],
     });
     
@@ -24,10 +23,6 @@ class nftService {
   
   getAllNfts () {
     return NftModel.find({});
-  }
-  
-  getNft(id) {
-    return NftModel.findById(id)
   }
 }
 

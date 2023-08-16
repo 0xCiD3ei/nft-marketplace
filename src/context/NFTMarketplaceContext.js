@@ -1,17 +1,12 @@
 import React from "react";
-import {ethers} from "ethers";
-import {useRouter} from "next/router";
-import axios from "axios";
 import {create as ipfsHttpClient} from "ipfs-http-client";
 import {toast} from 'react-toastify';
 import {
   useAddress,
   useContract,
-  useContractRead,
-  useContractWrite,
   useMintNFT,
-  useNFTs
 } from "@thirdweb-dev/react";
+import {NFT_COLLECTION_ADDRESS, MARKETPLACE_ADDRESS} from "src/constant/addresses";
 import webClientService from "src/lib/services/webClientService";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -49,7 +44,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
   };
 
   const createNFT = async ({ name, description, price, image, category }) => {
-    if (!name || !description || !price || !image || !category) {
+    if (!name || !description || !image || !category) {
       return toast.error("Data is missing");
     }
     
@@ -64,8 +59,20 @@ export const NFTMarketplaceProvider = ({ children }) => {
       to: address
     })
     
-    console.log('mint nft', response);
-    
+    const result = await webClientService.createNFT({
+      metadata: {
+        id: `${response.id.toNumber()}`,
+        name: name,
+        description: description,
+        image: image,
+        date: new Date().valueOf(),
+        category: category
+      },
+      owner: address,
+      supply: "1",
+      type: "ERC721"
+    })
+   return result;
   };
 
   return (
@@ -81,3 +88,6 @@ export const NFTMarketplaceProvider = ({ children }) => {
     </NFTMarketplaceContext.Provider>
   );
 };
+
+
+

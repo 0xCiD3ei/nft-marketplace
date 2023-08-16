@@ -18,7 +18,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.9",
     "@thirdweb-dev/auth": "^3.2.20",
-    "@thirdweb-dev/react": "^3.14.15",
+    "@thirdweb-dev/react": "^3.14.32",
     "@thirdweb-dev/sdk": "^3.10.35",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
