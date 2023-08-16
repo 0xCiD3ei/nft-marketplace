@@ -7,18 +7,43 @@ import Textarea from "src/components/shared/Textarea/Textarea";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import {useAddress} from "@thirdweb-dev/react";
 import {toast} from "react-toastify";
-import {useSession} from "next-auth/react";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {withSessionSsr} from "src/lib/middlewares/withSession";
+import dbConnect from "src/lib/dbConnect";
+import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import webClientService from "src/lib/services/webClientService";
 
-export default function AccountPage({className = ""}) {
-  const session = useSession();
+export default function AccountPage({className = "", account}) {
   const address = useAddress();
+  const {uploadToIPFS} = useContext(NFTMarketplaceContext);
   const [formValues, setFormValues] = useState({
-    fullName: session?.data?.user?.fullName,
-    email: session?.data?.user?.email,
-    bio: "",
-    avatar: session?.data?.user?.avatar,
+    fullName: account?.fullName || "",
+    email: account?.email || "",
+    bio: account?.bio || "",
+    avatar: account?.avatar || "",
+    website: account?.website || "",
+    facebook: account?.facebook || "",
+    twitter: account?.twitter || "",
+    telegram: account?.telegram || "",
   })
+  
+  const handleOnchangeFile = async (e) => {
+    const url = await uploadToIPFS(e.target.files[0]);
+    setFormValues({ ...formValues, avatar: url });
+  };
+  
+  const handleOnChangeInput = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+  }
+  
+  const handleUpdateProfile = async () => {
+    const response = await webClientService.updateProfile({
+      id: account?._id,
+      data: formValues
+    })
+    console.log(response);
+  }
   
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
@@ -42,7 +67,11 @@ export default function AccountPage({className = ""}) {
           <div className="flex flex-col md:flex-row">
             <div className="flex-shrink-0 flex items-start">
               <div className="relative rounded-full overflow-hidden flex">
-                <Avatar sizeClass="w-32 h-32" imgUrl={formValues.avatar} />
+                <Avatar
+                  sizeClass="w-32 h-32"
+                  imgUrl={formValues.avatar}
+                  onChange={handleOnchangeFile}
+                />
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                   <svg
                     width="30"
@@ -76,6 +105,8 @@ export default function AccountPage({className = ""}) {
                   className="mt-1.5"
                   placeholder="Enter your full name"
                   value={formValues.fullName}
+                  name={"fullName"}
+                  onChange={handleOnChangeInput}
                 />
               </div>
               
@@ -92,6 +123,7 @@ export default function AccountPage({className = ""}) {
                     name="email"
                     placeholder="example@email.com"
                     value={formValues.email}
+                    onChange={handleOnChangeInput}
                   />
                 </div>
               </div>
@@ -105,6 +137,7 @@ export default function AccountPage({className = ""}) {
                   name="bio"
                   placeholder="Something about yourself in a few word."
                   value={formValues.bio}
+                  onChange={handleOnChangeInput}
                 />
               </div>
               
@@ -118,6 +151,8 @@ export default function AccountPage({className = ""}) {
                   <Input
                     className="!rounded-l-none"
                     placeholder="yourwebsite.com"
+                    name={"website"}
+                    onChange={handleOnChangeInput}
                   />
                 </div>
               </div>
@@ -132,8 +167,10 @@ export default function AccountPage({className = ""}) {
                     </span>
                     <Input
                       className="!rounded-l-none"
-                      placeholder="yourfacebook"
+                      placeholder="Your Facebook"
                       sizeClass="h-11 px-4 pl-2 pr-3"
+                      name={"facebook"}
+                      onChange={handleOnChangeInput}
                     />
                   </div>
                 </div>
@@ -145,8 +182,10 @@ export default function AccountPage({className = ""}) {
                     </span>
                     <Input
                       className="!rounded-l-none"
-                      placeholder="yourtwitter"
+                      placeholder="Your Twitter"
                       sizeClass="h-11 px-4 pl-2 pr-3"
+                      name={"twitter"}
+                      onChange={handleOnChangeInput}
                     />
                   </div>
                 </div>
@@ -158,8 +197,10 @@ export default function AccountPage({className = ""}) {
                     </span>
                     <Input
                       className="!rounded-l-none"
-                      placeholder="yourtelegram"
+                      placeholder="Your Telegram"
                       sizeClass="h-11 px-4 pl-2 pr-3"
+                      name={"telegram"}
+                      onChange={handleOnChangeInput}
                     />
                   </div>
                 </div>
@@ -204,7 +245,12 @@ export default function AccountPage({className = ""}) {
               
               {/* ---- */}
               <div className="pt-2">
-                <ButtonPrimary className="w-full">Update profile</ButtonPrimary>
+                <ButtonPrimary
+                  className="w-full"
+                  onClick={handleUpdateProfile}
+                >
+                  Update profile
+                </ButtonPrimary>
               </div>
             </div>
           </div>
@@ -219,4 +265,20 @@ AccountPage.getLayout = (page) => (
     {page}
   </MainLayout>
 )
+
+export const getServerSideProps = withSessionSsr(async (ctx) => {
+  await dbConnect();
+  try {
+    return {
+      props: {
+        account: ctx.req.session.account,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      notFound: true
+    }
+  }
+})
 

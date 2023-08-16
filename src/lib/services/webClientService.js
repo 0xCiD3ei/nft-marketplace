@@ -46,6 +46,13 @@ class WebClientService {
     return data;
   }
   
+  async updateProfile(payload) {
+    const {data} = await this.api(`account/update`, payload, {
+      method: 'PATCH'
+    })
+    return data;
+  }
+  
   
   
   api(endPoint, data, options) {
