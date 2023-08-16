@@ -1,4 +1,5 @@
 import {AccountModel} from "src/lib/models/account.model";
+import {ApiError} from "src/lib/errors/ApiError";
 
 class AccountService {
   async checkAddressWallet(address) {
@@ -15,6 +16,23 @@ class AccountService {
     const account = await AccountModel.findOne({address});
     
     return account;
+  }
+  
+  async updateProfile(payload){
+    const updatedAccount = await AccountModel.findByIdAndUpdate(
+      payload.id,
+      { $set: payload.data },
+      { new: true }
+    );
+    
+    if (!updatedAccount) {
+      throw ApiError({
+        code: 400,
+        message: "Account not found"
+      });
+    }
+    
+    return updatedAccount;
   }
 }
 
