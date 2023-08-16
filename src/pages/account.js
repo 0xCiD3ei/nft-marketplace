@@ -26,7 +26,6 @@ export default function AccountPage({className = "", account}) {
     twitter: account?.twitter || "",
     telegram: account?.telegram || "",
   })
-  const [loading, setLoading] = useState(false);
   
   const handleOnchangeFile = async (e) => {
     const url = await uploadToIPFS(e.target.files[0]);
@@ -39,19 +38,11 @@ export default function AccountPage({className = "", account}) {
   }
   
   const handleUpdateProfile = async () => {
-    try {
-      setLoading(true);
-      const response = await webClientService.updateProfile({
-        id: account?._id,
-        data: formValues
-      })
-      if(response.code === 200) {
-        toast.success(response.message);
-      }
-      setLoading(false);
-    }catch (e) {
-      console.log(e)
-    }
+    const response = await webClientService.updateProfile({
+      id: account?._id,
+      data: formValues
+    })
+    console.log(response);
   }
   
   return (
@@ -255,7 +246,6 @@ export default function AccountPage({className = "", account}) {
               {/* ---- */}
               <div className="pt-2">
                 <ButtonPrimary
-                  loading={loading}
                   className="w-full"
                   onClick={handleUpdateProfile}
                 >
