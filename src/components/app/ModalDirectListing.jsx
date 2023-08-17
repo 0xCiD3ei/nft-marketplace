@@ -6,6 +6,7 @@ import NcModal from "src/components/shared/NcModal/NcModal";
 import {useCreateDirectListing} from "@thirdweb-dev/react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
+import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
 
 const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
   const {marketplace} = useContext(NFTMarketplaceContext);
@@ -25,7 +26,7 @@ const ModalDirectListing = ({ show, nft, onCloseModalEdit }) => {
     e.preventDefault();
     setLoading(true);
     const txResult = await createDirectListing({
-      assetContractAddress: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+      assetContractAddress: NFT_COLLECTION_ADDRESS,
       tokenId: nft.metadata.id,
       pricePerToken: state.price,
       quantity: 1,

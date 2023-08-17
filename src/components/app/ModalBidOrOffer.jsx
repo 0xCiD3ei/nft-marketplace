@@ -6,6 +6,7 @@ import NcModal from "src/components/shared/NcModal/NcModal";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
 import {useMakeBid, useMakeOffer} from "@thirdweb-dev/react";
+import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
 
 const ModalBidOrOffer = ({show, nft, auctionListing, directListing, onCloseModalEdit}) => {
 	const {marketplace} = useContext(NFTMarketplaceContext);
@@ -32,7 +33,7 @@ const ModalBidOrOffer = ({show, nft, auctionListing, directListing, onCloseModal
 			);
 		} else if (directListing?.[0]) {
 			txResult = await marketplace?.offers.makeOffer({
-				assetContractAddress: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+				assetContractAddress: NFT_COLLECTION_ADDRESS,
 				tokenId: nft.metadata.id,
 				totalPrice: bidValue,
 			});

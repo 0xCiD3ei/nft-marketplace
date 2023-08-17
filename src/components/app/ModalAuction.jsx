@@ -6,6 +6,7 @@ import NcModal from "src/components/shared/NcModal/NcModal";
 import {useAddress, useCreateAuctionListing} from "@thirdweb-dev/react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
+import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
 
 const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
   const {marketplace} = useContext(NFTMarketplaceContext);
@@ -26,7 +27,7 @@ const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
     e.preventDefault();
     setLoading(true);
     const txResult = await createAuctionListing({
-      assetContractAddress: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+      assetContractAddress: NFT_COLLECTION_ADDRESS,
       tokenId: nft.metadata.id,
       buyoutBidAmount: state.price,
       minimumBidAmount: state.floorPrice,

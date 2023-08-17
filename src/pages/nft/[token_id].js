@@ -31,6 +31,7 @@ import ModalDirectListing from "src/components/app/ModalDirectListing";
 import ModalAuction from "src/components/app/ModalAuction";
 import {Helmet} from "react-helmet";
 import ModalBidOrOffer from "src/components/app/ModalBidOrOffer";
+import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
 
 export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
@@ -45,12 +46,12 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const [offers, setOffers] = useState();
   
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
-    tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+    tokenContract: NFT_COLLECTION_ADDRESS,
     tokenId: nft.metadata.id
   })
   
   const {data: auctionListing, isLoading: loadingAuction} = useValidEnglishAuctions(marketplace, {
-    tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+    tokenContract: NFT_COLLECTION_ADDRESS,
     tokenId: nft.metadata.id
   })
   
@@ -495,7 +496,7 @@ export const getStaticProps = async (context) => {
   const token_id = context?.params.token_id;
   
   const sdk = new ThirdwebSDK("mumbai");
-  const contract = await sdk.getContract("0x739951B8Abb63A632785c59d88859F4A7e887836");
+  const contract = await sdk.getContract(F);
   
   const nft = await contract.erc721.get(token_id);
   return {
@@ -509,7 +510,7 @@ export const getStaticProps = async (context) => {
 export const getStaticPaths = async () => {
   await dbConnect();
   const sdk = new ThirdwebSDK("mumbai");
-  const contract = await sdk.getContract("0x739951B8Abb63A632785c59d88859F4A7e887836");
+  const contract = await sdk.getContract(NFT_COLLECTION_ADDRESS);
   
   const nfts = await contract.erc721.getAll();
   

@@ -9,6 +9,7 @@ import moment from "moment";
 import {useContext} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useValidDirectListings, useValidEnglishAuctions} from "@thirdweb-dev/react";
+import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
 
 const CardNFT = ({
   className = "",
@@ -23,14 +24,14 @@ const CardNFT = ({
     data: directListing,
     isLoading: loadingDirectListing,
   } = useValidDirectListings(marketplace, {
-        tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+        tokenContract: NFT_COLLECTION_ADDRESS,
         tokenId: nft?.id,
       });
   
   //Add for auciton section
   const { data: auctionListing, isLoading: loadingAuction} =
     useValidEnglishAuctions(marketplace, {
-      tokenContract: "0x739951B8Abb63A632785c59d88859F4A7e887836",
+      tokenContract: NFT_COLLECTION_ADDRESS,
       tokenId: nft?.id,
     });
   

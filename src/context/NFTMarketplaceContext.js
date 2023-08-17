@@ -30,8 +30,8 @@ export const NFTMarketplaceContext = React.createContext();
 
 export const NFTMarketplaceProvider = ({ children }) => {
   const address = useAddress();
-  const nftCollection = useContract("0x739951B8Abb63A632785c59d88859F4A7e887836", "nft-collection").contract;
-  const marketplace = useContract("0x7070bf67323D918b44D3Acd2AD764228cb05435a", "marketplace-v3").contract;
+  const nftCollection = useContract(NFT_COLLECTION_ADDRESS, "nft-collection").contract;
+  const marketplace = useContract(MARKETPLACE_ADDRESS, "marketplace").contract;
   const { mutateAsync: mintNft } = useMintNFT(nftCollection);
 
   const uploadToIPFS = async (file) => {
