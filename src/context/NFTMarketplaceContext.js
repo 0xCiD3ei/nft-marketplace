@@ -43,7 +43,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
     }
   };
 
-  const createNFT = async ({ name, description, price, image, category }) => {
+  const createNFT = async ({ name, description, image, category }) => {
     if (!name || !description || !image || !category) {
       return toast.error("Data is missing");
     }

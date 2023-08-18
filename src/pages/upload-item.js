@@ -17,17 +17,18 @@ import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {toast} from "react-toastify";
 
 export default function UploadItemPage({className = "", categories}) {
-  const {createNFT} = useContext(NFTMarketplaceContext);
+  const {createNFT, uploadToIPFS} = useContext(NFTMarketplaceContext);
   const [selected, setSelected] = useState(categories[0]._id);
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
-    file: ""
+    image: ""
   });
   const [loading, setLoading] = useState(false)
   
   const handleOnchangeFile = async (e) => {
-    setFormValues({ ...formValues, file: e.target.files[0] });
+    const url = await uploadToIPFS(e.target.files[0]);
+    setFormValues({ ...formValues, image: url });
   };
   
   const handleOnchangeInput = (event) => {
@@ -233,7 +234,7 @@ export default function UploadItemPage({className = "", categories}) {
                   const response = await createNFT({
                     name: formValues.name,
                     description: formValues.description,
-                    image: formValues.file,
+                    image: formValues.image,
                     category: selected,
                   })
                   if(response.code === 200) {

@@ -496,7 +496,7 @@ export const getStaticProps = async (context) => {
   const token_id = context?.params.token_id;
   
   const sdk = new ThirdwebSDK("mumbai");
-  const contract = await sdk.getContract(F);
+  const contract = await sdk.getContract(NFT_COLLECTION_ADDRESS);
   
   const nft = await contract.erc721.get(token_id);
   return {
