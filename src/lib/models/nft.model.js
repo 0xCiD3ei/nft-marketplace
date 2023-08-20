@@ -1,4 +1,5 @@
  const mongoose = require('mongoose')
+ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const NftSchema = new mongoose.Schema({
   metadata: {
@@ -25,5 +26,7 @@ const NftSchema = new mongoose.Schema({
 }, {
   timestamps: true
 })
+
+NftSchema.plugin(mongoosePaginate);
 
 export const NftModel = (mongoose.models.Nft || mongoose.model('Nft', NftSchema));

@@ -18,6 +18,13 @@ class WebClientService {
     return data;
   }
   
+  async getAllNFTs() {
+    const {data} = await this.api('nfts', {}, {
+      method: 'GET'
+    })
+    return data;
+  }
+  
   async checkWalletAddress(payload) {
     const {data} = await this.api(`address/${payload.address}`, {}, {
       method: 'POST'

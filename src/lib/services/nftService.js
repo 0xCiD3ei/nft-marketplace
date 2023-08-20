@@ -21,8 +21,28 @@ class nftService {
     return nfts;
   }
   
-  getAllNfts () {
-    return NftModel.find({});
+  async getAllNfts (page, limit) {
+    const options = {
+      page: page,
+      limit: limit
+    };
+    const result = await NftModel.paginate({}, options);
+    const paginationOptions = {
+      hasNextPage: result.hasNextPage,
+      hasPrevPage: result.hasPrevPage,
+      limit: result.limit,
+      nextPage: result.nextPage,
+      page: result.page,
+      pagingCounter: result.pagingCounter,
+      prevPage: result.prevPage,
+      totalDocs: result.totalDocs,
+      totalPages: result.totalPages,
+    };
+    
+    return {
+      data: result.docs,
+      paginationOptions: paginationOptions,
+    };
   }
 }
 
