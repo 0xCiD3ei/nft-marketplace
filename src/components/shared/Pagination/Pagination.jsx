@@ -28,7 +28,7 @@ const  Pagination = ({ className = "", paginationOptions}) => {
     <nav
       className={`nc-Pagination inline-flex space-x-1 text-base font-medium ${className}`}
     >
-      {Array.from({ length: paginationOptions.totalPages }, (_, index) =>
+      {Array.from({ length: paginationOptions?.totalPages || 0 }, (_, index) =>
         renderPaginationItem(index + 1, index)
       )}
     </nav>
