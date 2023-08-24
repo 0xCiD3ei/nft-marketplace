@@ -52,13 +52,10 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
                 placeholder="Type your keywords"
                 sizeClass="pl-14 py-5 pr-5 md:pl-16"
                 rounded="rounded-full"
-                // value={searchInput}
-                // onChange={(e) => setSearchInput(e.target.value)}
               />
               <ButtonCircle
                 className="absolute right-2.5 top-1/2 transform -translate-y-1/2"
                 size=" w-11 h-11"
-                // onClick={onHandleSearch}
               >
                 <i className="las la-arrow-right text-xl"></i>
               </ButtonCircle>
