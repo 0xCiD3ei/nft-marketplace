@@ -7,24 +7,13 @@ import CardNFT from "src/components/app/CardNFT";
 import BackgroundSection from "src/components/app/BackgroundSection/BackgroundSection";
 import SectionSliderCollections from "src/components/app/SectionSliderCollections";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import {useEffect} from "react";
 import Pagination from "src/components/shared/Pagination/Pagination";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
-import webClientService from "src/lib/services/webClientService";
 import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import nftService from "src/lib/services/nftService";
 
 export default function SearchPage({className= "", nfts, paginationOptions}) {
-  console.log(nfts)
-  
-  useEffect(() => {
-    (async () => {
-      const response = await webClientService.getAllNFTs();
-      
-      console.log({response})
-    })()
-  }, []);
   
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="searchPage">
