@@ -92,7 +92,7 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
               />
               )
             ) : (
-              <p>Loading...</p>
+              <p>0</p>
             )}
           </div>
           

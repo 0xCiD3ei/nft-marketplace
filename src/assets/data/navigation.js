@@ -28,7 +28,7 @@ const otherPageChildMenus = [
   },
   {
     id: ncNanoId(),
-    href: "/page-upload-item",
+    href: "/upload-item",
     name: "Upload Item",
   },
   {

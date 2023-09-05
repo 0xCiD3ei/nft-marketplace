@@ -20,7 +20,7 @@ const SectionBecomeAnAuthor = ({ className = "" }) => {
           A creative agency that lead and inspire.
         </span>
         <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
-          <ButtonPrimary to="/page-upload-item" className="">
+          <ButtonPrimary to="/upload-item" className="">
             Create item
           </ButtonPrimary>
           <ButtonSecondary to="/search" className="">
