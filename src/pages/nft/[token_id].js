@@ -60,7 +60,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         const ownerResponse = await webClientService.getAccountByAddress(nft?.owner);
         setOwner(ownerResponse.data);
       })();
-  }, [nft])
+  }, [])
   
   useEffect(() => {
     (async () => {
@@ -71,7 +71,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
           winningBid = marketplace?.englishAuctions.getWinningBid(nft.metadata.id);
           setBids(winningBid);
         }
-        
+
         if (directListing?.[0]) {
           offerD = await marketplace?.offers.getAllValid({tokenId: nft.metadata.id});
           setOffers(offerD);
@@ -205,9 +205,8 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
           
           <div className="mt-8 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             {
-              (directListing && !directListing[0]?.currencyValuePerToken?.displayValue)  ? (
-                <div></div>
-              ) : nft?.owner === address ? (
+              directListing?.length > 0 || auctionListing?.length > 0 ?
+                nft?.owner === address ? (
                 <ButtonPrimary
                   onClick={() => cancelDirectListing(nft?.id)}
                   className="flex-1"
@@ -279,16 +278,21 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  
                   <span className="ml-2.5">Buy NFT</span>
                 </ButtonPrimary>
+              ) : (
+              <div></div>
               )
             }
             
             {
-              directListing && !directListing[0]?.currencyValuePerToken?.displayValue && nft?.owner === address ? (
+              directListing?.length === 0 && auctionListing?.length === 0 && nft.owner === address ?
+                (
                 <>
                   <ButtonPrimary
+                    styl={{
+                      marginLeft: 0
+                    }}
                     className="flex-1"
                     onClick={() => setDirectListingModal(true)}
                   >
@@ -359,16 +363,17 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    
                     <span className="ml-2.5">Auction</span>
                   </ButtonPrimary>
                 </>
               )
-                : <div></div>
+                : (
+                  <div></div>
+                )
             }
             
             {
-              nft.owner !== address && (
+              nft.owner !== address && (directListing?.length > 0 || auctionListing?.length > 0) && (
                 <ButtonSecondary onClick={() => setOfferOrBidModal(true)} className="flex-1">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
