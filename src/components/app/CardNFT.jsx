@@ -58,6 +58,8 @@ const CardNFT = ({
     );
   };
   
+  console.log('nft', nft);
+  
   return (
     <div
       className={`nc-CardNFT relative flex flex-col group !border-0 [ nc-box-has-hover nc-dark-box-bg-has-hover ] ${className}`}
@@ -67,7 +69,7 @@ const CardNFT = ({
         <div>
           <NcImage
             containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0 rounded-3xl overflow-hidden z-0"
-            src={nft?.image || ""}
+            src={nft?.metadata?.image || ""}
             className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-300 ease-in-out will-change-transform"
           />
         </div>
@@ -79,11 +81,11 @@ const CardNFT = ({
         <div className="flex justify-between">
           {renderAvatars()}
           <span className="text-neutral-700 dark:text-neutral-400 text-xs">
-            {quantity || "1"} in stock
+            {nft?.quantity || "1"} in stock
           </span>
         </div>
         <h2 className={`text-lg font-medium`}>
-          {nft?.name} #{nft?.id}
+          {nft?.metadata?.name} #{nft?.metadata?.id}
         </h2>
         
         <div className="w-2d4 w-full border-b border-neutral-100 dark:border-neutral-700"></div>
@@ -108,14 +110,14 @@ const CardNFT = ({
           <div className="flex items-center text-sm text-neutral-500 dark:text-neutral-400">
             <ClockIcon className="w-4 h-4" />
             <span className="ml-1 mt-0.5">
-              {nft?.date ? moment(nft?.date).startOf('minutes').fromNow() : "--"}
+              {nft?.metadata?.date ? moment(nft?.metadata?.date).startOf('minutes').fromNow() : "--"}
             </span>
           </div>
         </div>
       </div>
       
       <Link
-        href={`nft/${nft?.id}`}
+        href={`nft/${nft?.metadata?.id}`}
         className="absolute inset-0"
       ></Link>
     </div>
