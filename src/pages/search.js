@@ -92,7 +92,7 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
               />
               )
             ) : (
-              <p>0</p>
+              <p>Not listed</p>
             )}
           </div>
           

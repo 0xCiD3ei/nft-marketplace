@@ -7,7 +7,6 @@ import {responseWithFormatter} from "src/lib/utils/response";
 async function getCategoryById (req, res) {
   await dbConnect();
   const id = req.query.categoryId;
-  
   const data = await CategoryService.getCategory(id);
   
   responseWithFormatter(res, {

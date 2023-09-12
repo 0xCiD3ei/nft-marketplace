@@ -26,7 +26,7 @@ class CategoryService {
   }
   
   async getCategory(id) {
-    return await CategoryModel.find({
+    return await CategoryModel.findOne({
       _id: id
     });
   }

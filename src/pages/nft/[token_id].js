@@ -37,13 +37,12 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
   const address = useAddress();
   const [owner , setOwner] = useState();
+  const [category, setCategory] = useState();
   const {marketplace,nftCollection} = useContext(NFTMarketplaceContext);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
   const [directListingModal, setDirectListingModal] = useState(false);
   const [auctionModal, setAuctionModal] = useState(false);
   const [offerOrBidModal, setOfferOrBidModal] = useState(false);
-  const [bids, setBids] = useState();
-  const [offers, setOffers] = useState();
   
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
     tokenContract: NFT_COLLECTION_ADDRESS,
@@ -56,11 +55,22 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   })
   
   useEffect(() => {
-      (async () => {
-        const ownerResponse = await webClientService.getAccountByAddress(nft?.owner);
-        setOwner(ownerResponse.data);
-      })();
-  }, [])
+    (async () => {
+      const ownerResponse = await webClientService.getAccountByAddress(nft?.owner);
+      setOwner(ownerResponse.data);
+    })();
+  }, [nft?.owner])
+  
+  useEffect(() => {
+    (
+      async () => {
+        const response = await webClientService.getCategoryById({
+          categoryId: nft.metadata.category
+        })
+        setCategory(response.data);
+      }
+    )();
+  }, [nft?.metadata])
   
   // useEffect(() => {
   //   (async () => {
@@ -109,9 +119,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
     
     return txResult;
   }
-  
-  console.log('direct', directListing);
-  console.log('auction', auctionListing);
+  console.log('category', category);
   
   const renderSection1 = () => {
     return (
@@ -148,14 +156,14 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
             <div className="hidden sm:block h-6 border-l border-neutral-200 dark:border-neutral-700"></div>
             <div className="flex items-center">
               <Avatar
-                imgUrl={collectionPng}
+                imgUrl={category ? category.image : collectionPng}
                 sizeClass="h-9 w-9"
                 radius="rounded-full"
               />
               <span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
                 <span className="text-sm">Collection</span>
                 <span className="text-neutral-900 dark:text-neutral-200 font-medium flex items-center">
-                  <span>{"The Moon Ape"}</span>
+                  <span>{category ? category.name : "The Moon Ape"}</span>
                   <VerifyIcon iconClass="w-4 h-4" />
                 </span>
               </span>

@@ -11,6 +11,13 @@ class WebClientService {
     return data;
   }
   
+  async getCategoryById(payload) {
+    const {data} = await this.api(`categories/${payload.categoryId}`, {}, {
+      method: "GET"
+    })
+    return data;
+  }
+  
   async createNFT(payload) {
     const {data} = await this.api('nfts/create', payload, {
       method: 'POST'
