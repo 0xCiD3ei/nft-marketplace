@@ -2,7 +2,6 @@ import Link from "next/link";
 import Avatar from "src/components/shared/Avatar/Avatar";
 import NcImage from "src/components/shared/NcImage/NcImage";
 import ItemTypeImageIcon from "./ItemTypeImageIcon";
-import LikeButton from "./LikeButton";
 import Prices from "./Prices";
 import { ClockIcon } from "@heroicons/react/outline";
 import moment from "moment";
@@ -25,14 +24,14 @@ const CardNFT = ({
     isLoading: loadingDirectListing,
   } = useValidDirectListings(marketplace, {
     tokenContract: NFT_COLLECTION_ADDRESS,
-    tokenId: nft?.id,
+    tokenId: nft?.metadata?.id,
   });
   
   //Add for auciton section
   const { data: auctionListing, isLoading: loadingAuction} =
     useValidEnglishAuctions(marketplace, {
       tokenContract: NFT_COLLECTION_ADDRESS,
-      tokenId: nft?.id,
+      tokenId: nft?.metadata?.id,
     });
   
   const renderAvatars = () => {
@@ -57,8 +56,6 @@ const CardNFT = ({
       </div>
     );
   };
-  
-  console.log('nft', nft);
   
   return (
     <div
@@ -93,12 +90,12 @@ const CardNFT = ({
         <div className="flex justify-between items-end ">
           {loadingDirectListing || loadingAuction ? (
             <p className={"mt-4"}>Loading...</p>
-          ) : directListing && directListing[0] ? (
+          ) : directListing.length > 0 ? (
             <Prices
               price={directListing[0]?.currencyValuePerToken.displayValue}
               labelTextClassName="bg-white dark:bg-neutral-900 dark:group-hover:bg-neutral-800 group-hover:bg-neutral-50"
             />
-          ) : auctionListing && auctionListing[0] ? (
+          ) : auctionListing.length > 0 ? (
             <Prices
               labelText={'Current Bid'}
               price={auctionListing[0]?.minimumBidCurrencyValue.displayValue}

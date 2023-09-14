@@ -86,8 +86,7 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
             {nfts?.length > 0 ? (
               nfts.map((item) => <CardNFT
                 key={item?.metadata?.id}
-                nft={item?.metadata}
-                price={item?.currencyValuePerToken}
+                nft={item}
                 quantity={item?.supply}
               />
               )

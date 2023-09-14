@@ -26,12 +26,12 @@ const ModalBidOrOffer = ({show, nft, auctionListing, directListing, onCloseModal
 			return;
 		}
 		
-		if (auctionListing?.[0]) {
+		if (auctionListing.length > 0) {
 			txResult = await marketplace?.englishAuctions.makeBid(
 				auctionListing[0].id,
 				bidValue
 			);
-		} else if (directListing?.[0]) {
+		} else if (directListing.length > 0) {
 			txResult = await marketplace?.offers.makeOffer({
 				assetContractAddress: NFT_COLLECTION_ADDRESS,
 				tokenId: nft.metadata.id,
@@ -50,7 +50,7 @@ const ModalBidOrOffer = ({show, nft, auctionListing, directListing, onCloseModal
 		return (
 			<form action="#">
 				<h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
-					Make Offer Or Bid
+					Make A Bid
 				</h3>
 				<span className="text-sm">Are you sure you want to offer or bid?</span>
 				<div className="mt-4 rounded-md shadow-sm">

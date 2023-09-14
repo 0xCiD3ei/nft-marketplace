@@ -9,7 +9,7 @@ import NftMoreDropdown from "src/components/app/NftMoreDropdown";
 import ButtonDropDownShare from "src/components/app/ButtonDropDownShare";
 import FollowButton from "src/components/app/FollowButton";
 import { nftsImgs } from "src/assets/contains/fakeData";
-import {useAddress, useOwnedNFTs, useValidDirectListings} from "@thirdweb-dev/react";
+import {useAddress, useOwnedNFTs} from "@thirdweb-dev/react";
 import {Tab} from "@headlessui/react";
 import ArchiveFilterListBox from "src/components/app/ArchiveFilterListBox";
 import CardNFT from "src/components/app/CardNFT";
@@ -34,7 +34,6 @@ export default function AuthorPage({className = "", account}) {
   ]);
   const {nftCollection, marketplace} = useContext(NFTMarketplaceContext);
   const {data: ownedNFTs} = useOwnedNFTs(nftCollection, address);
-
   
   return (
     <div className={`nc-AuthorPage  ${className}`} data-nc-id="AuthorPage">
@@ -180,7 +179,7 @@ export default function AuthorPage({className = "", account}) {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
                   {ownedNFTs?.length &&
                     ownedNFTs.map((item, index) => (
-                      <CardNFT nft={item?.metadata} quantity={item?.supply || 1} key={index} />
+                      <CardNFT nft={item} quantity={item?.supply || 1} key={index} />
                     ))}
                 </div>
                 

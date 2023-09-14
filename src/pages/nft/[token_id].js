@@ -119,8 +119,6 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
     
     return txResult;
   }
-  console.log('category', category);
-  
   const renderSection1 = () => {
     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
@@ -401,7 +399,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
             }
             
             {
-              nft.owner !== address && (directListing?.length > 0 || auctionListing?.length > 0) && auctionListing[0]?.creatorAddress !== address && (
+              auctionListing?.length > 0 && auctionListing[0]?.creatorAddress !== address && (
                 <ButtonSecondary onClick={() => setOfferOrBidModal(true)} className="flex-1">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
@@ -433,8 +431,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  
-                  <span className="ml-2.5"> Make Offer Or Bid</span>
+                  <span className="ml-2.5"> Make Bid</span>
                 </ButtonSecondary>
               )
             }
