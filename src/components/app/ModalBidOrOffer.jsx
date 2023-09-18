@@ -1,19 +1,17 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import Input from "src/components/shared/Input/Input";
 import NcModal from "src/components/shared/NcModal/NcModal";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
-import {useMakeBid, useMakeOffer} from "@thirdweb-dev/react";
-import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
+import {ThirdwebSDK, useContractEvents} from "@thirdweb-dev/react";
+import {NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
 
-const ModalBidOrOffer = ({show, nft, auctionListing, directListing, onCloseModalEdit}) => {
+const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit}) => {
 	const {marketplace} = useContext(NFTMarketplaceContext);
 	const [bidValue, setBidValue] = useState('0')
 	const [loading, setLoading] = useState(false);
-	const { mutateAsync: makeOffer} = useMakeOffer(marketplace);
-	const { mutateAsync: makeBid } = useMakeBid(marketplace);
 	const handleInputChange = (e) => {
 		setBidValue(e.target.value);
 	};
@@ -26,17 +24,13 @@ const ModalBidOrOffer = ({show, nft, auctionListing, directListing, onCloseModal
 			return;
 		}
 		
+		const auctionId = +auctionListing[0].id;
+		
 		if (auctionListing.length > 0) {
 			txResult = await marketplace?.englishAuctions.makeBid(
-				auctionListing[0].id,
-				bidValue
+				auctionId,
+				+bidValue
 			);
-		} else if (directListing.length > 0) {
-			txResult = await marketplace?.offers.makeOffer({
-				assetContractAddress: NFT_COLLECTION_ADDRESS,
-				tokenId: nft.metadata.id,
-				totalPrice: bidValue,
-			});
 		} else {
 			throw new Error("No valid listing found for this NFT");
 		}

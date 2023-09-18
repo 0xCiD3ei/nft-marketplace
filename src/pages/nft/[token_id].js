@@ -31,7 +31,7 @@ import ModalDirectListing from "src/components/app/ModalDirectListing";
 import ModalAuction from "src/components/app/ModalAuction";
 import {Helmet} from "react-helmet";
 import ModalBidOrOffer from "src/components/app/ModalBidOrOffer";
-import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
+import {MARKETPLACE_ADDRESS, NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
 
 export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
@@ -72,24 +72,6 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
     )();
   }, [nft?.metadata])
   
-  // useEffect(() => {
-  //   (async () => {
-  //     let winningBid;
-  //     let offerD;
-  //     try{
-  //       if (auctionListing?.[0]) {
-  //         winningBid = marketplace?.englishAuctions.getWinningBid(nft.metadata.id);
-  //         setBids(winningBid);
-  //       }
-  //
-  //       if (directListing?.[0]) {
-  //         offerD = await marketplace?.offers.getAllValid({tokenId: nft.metadata.id});
-  //         setOffers(offerD);
-  //       }
-  //     } catch(e) {}
-  //   })();
-  // },[nft, marketplace?.englishAuctions, marketplace?.offers, auctionListing, directListing]);
-  
   const { data: transferEvents, isLoading: loadingTransferEvents } =
     useContractEvents(nftCollection, "Transfer", {
       queryFilter: {
@@ -119,6 +101,8 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
     
     return txResult;
   }
+  
+  
   const renderSection1 = () => {
     return (
       <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
@@ -431,7 +415,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="ml-2.5"> Make Bid</span>
+                  <span className="ml-2.5"> Place a Bid</span>
                 </ButtonSecondary>
               )
             }
@@ -508,7 +492,6 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
       <ModalBidOrOffer
         show={offerOrBidModal}
         nft={nft}
-        directListing={directListing || []}
         auctionListing={auctionListing || []}
         onCloseModalEdit={() => setOfferOrBidModal(false)}
       />
