@@ -16,8 +16,21 @@ import SectionGridFeatureNFT from "src/components/containers/PageHome/SectionGri
 import SectionSliderCategories from "src/components/app/SectionSliderCategories/SectionSliderCategories";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import SectionVideos from "src/components/containers/PageHome/SectionVideos";
+import {useContext, useEffect, useState} from "react";
+import {useValidEnglishAuctions} from "@thirdweb-dev/react";
+import {MARKETPLACE_ADDRESS, NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
+import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 
 export default function HomePage() {
+  const [auctions, setAuctions] = useState([]);
+  const {marketplace} = useContext(NFTMarketplaceContext);
+  useEffect(() => {
+    (async () => {
+      const txResult = await marketplace?.englishAuctions.getAllValid(MARKETPLACE_ADDRESS)
+      setAuctions(txResult)
+    })()
+  }, [marketplace?.englishAuctions]);
+  
   return (
     <>
       <Head>
@@ -52,11 +65,16 @@ export default function HomePage() {
         </div>
         
         {/* SECTION LAERGE SLIDER */}
-        <div className="bg-neutral-100/80 dark:bg-black/20 py-20 lg:py-32">
-          <div className="container">
-            <SectionLargeSlider />
-          </div>
-        </div>
+        {
+          auctions?.length > 0 && (
+            <div className="bg-neutral-100/80 dark:bg-black/20 py-20 lg:py-32">
+              <div className="container">
+                <SectionLargeSlider auctions={auctions} />
+              </div>
+            </div>
+          )
+        }
+        
         
         <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
           <SectionMagazine />

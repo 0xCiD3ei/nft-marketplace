@@ -1,7 +1,7 @@
 import useCountDownTime from "src/hooks/useCountDownTime";
 
-const TimeCountDown = () => {
-  const timeLeft = useCountDownTime();
+const TimeCountDown = ({endTime}) => {
+  const timeLeft = useCountDownTime(endTime);
 
   return (
     <div className="space-y-5">

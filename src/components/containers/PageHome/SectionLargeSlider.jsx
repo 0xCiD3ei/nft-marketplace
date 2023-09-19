@@ -2,7 +2,7 @@ import { useState } from "react";
 import { nftsLargeImgs } from "src/assets/contains/fakeData";
 import CardLarge from "src/components/app/CardLarge/CardLarge";
 
-const SectionLargeSlider = ({ className = "" }) => {
+const SectionLargeSlider = ({ className = "", auctions }) => {
   const [indexActive, setIndexActive] = useState(0);
 
   const handleClickNext = () => {
@@ -25,12 +25,12 @@ const SectionLargeSlider = ({ className = "" }) => {
 
   return (
     <div className={`nc-SectionLargeSlider relative ${className}`}>
-      {[1, 1, 1].map((_, index) =>
+      {auctions.map((auction, index) =>
         indexActive === index ? (
           <CardLarge
             key={index}
             isShowing
-            featuredImgUrl={nftsLargeImgs[index]}
+            auction={auction}
             onClickNext={handleClickNext}
             onClickPrev={handleClickPrev}
           />
