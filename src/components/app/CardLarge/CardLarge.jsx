@@ -39,8 +39,6 @@ const CardLarge = ({
       })();
     }
   }, [auction]);
-  
-  console.log('auction', auction, creator, collection);
 
   return (
     <div

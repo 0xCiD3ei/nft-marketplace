@@ -26,10 +26,12 @@ export default function HomePage() {
   const {marketplace} = useContext(NFTMarketplaceContext);
   useEffect(() => {
     (async () => {
+      console.log(1);
       const txResult = await marketplace?.englishAuctions.getAllValid(MARKETPLACE_ADDRESS)
       setAuctions(txResult)
     })()
-  }, [marketplace?.englishAuctions]);
+  }, [marketplace]);
+  console.log(2);
   
   return (
     <>
@@ -77,7 +79,7 @@ export default function HomePage() {
         
         
         <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
-          <SectionMagazine />
+          {/*<SectionMagazine />*/}
           
           {/* SECTION */}
           <div className="relative py-20 lg:py-28">
@@ -90,7 +92,7 @@ export default function HomePage() {
           </div>
           
           {/* SECTION 4 */}
-          <SectionSliderCardNftVideo />
+          {/*<SectionSliderCardNftVideo />*/}
           
           {/* SECTION */}
           <div className="relative py-20 lg:py-28">
