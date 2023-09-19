@@ -34,6 +34,51 @@ class AccountService {
     
     return updatedAccount;
   }
+  
+  async toggleFollowing(payload) {
+    const { accountId, followerId } = payload;
+    const accountToFollow = await AccountModel.findById(followerId);
+    if (!accountToFollow) {
+      throw ApiError({
+        code: 404,
+        message: "No account found to follow"
+      })
+    }
+    
+    const followerAccount = await AccountModel.findById(accountId);
+    if (!followerAccount) {
+      throw ApiError({
+        code: 404,
+        message: "No follower accounts found"
+      })
+    }
+    
+    const isFollowing = followerAccount.followedUsers.includes(followerId);
+    
+    if (isFollowing) {
+      followerAccount.followedUsers = followerAccount.followedUsers.filter(userId => userId !== followerId);
+    } else {
+      followerAccount.followedUsers.push(followerId);
+    }
+    
+    await followerAccount.save();
+    
+    return followerAccount;
+  }
+  
+  async getFollowers(payload) {
+    const { accountId } = payload;
+    const account = await AccountModel.findById(accountId);
+    if (!account) {
+      throw ApiError({
+        code: 404,
+        message: "Account not found"
+      })
+    }
+    const followingAccounts = await AccountModel.find({ _id: { $in: account.followedUsers } });
+    
+    return followingAccounts;
+  }
 }
 
 
