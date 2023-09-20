@@ -6,14 +6,15 @@ import Input from "src/components/shared/Input/Input";
 import Textarea from "src/components/shared/Textarea/Textarea";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import {useAddress} from "@thirdweb-dev/react";
-import {toast} from "react-toastify";
 import {useContext, useState} from "react";
 import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import webClientService from "src/lib/services/webClientService";
+import {useSnackbar} from "notistack";
 
 export default function AccountPage({className = "", account}) {
+  const { enqueueSnackbar } = useSnackbar();
   const address = useAddress();
   const {uploadToIPFS} = useContext(NFTMarketplaceContext);
   const [formValues, setFormValues] = useState({
@@ -220,7 +221,9 @@ export default function AccountPage({className = "", account}) {
                     className="absolute right-2.5 cursor-pointer top-1/2 -translate-y-1/2 "
                     onClick={() => {
                       navigator.clipboard.writeText(address || "");
-                      toast.success("Copy address successfully");
+                      enqueueSnackbar('Copy address successfully', {
+                        variant: true
+                      })
                     }}
                   >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

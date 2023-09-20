@@ -21,9 +21,11 @@ import SectionGridAuthorBox from "src/components/app/SectionGridAuthorBox/Sectio
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
-import {toast} from "react-toastify";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import {useSnackbar} from "notistack";
+
 export default function AuthorPage({className = "", account}) {
+  const { enqueueSnackbar } = useSnackbar();
   const address = useAddress();
   const [categories] = useState([
     "Collectibles",
@@ -78,7 +80,9 @@ export default function AuthorPage({className = "", account}) {
                     fill="none"
                     onClick={() => {
                       navigator.clipboard.writeText(address || "");
-                      toast.success("Copy address successfully");
+                      enqueueSnackbar('Copy address successfully', {
+                        variant: 'success'
+                      })
                     }}
                   >
                     <path

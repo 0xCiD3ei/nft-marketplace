@@ -14,9 +14,10 @@ import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import categoryService from "src/lib/services/categoryService";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
-import {toast} from "react-toastify";
+import {useSnackbar} from "notistack";
 
 export default function UploadItemPage({className = "", categories}) {
+  const { enqueueSnackbar } = useSnackbar();
   const {createNFT, uploadToIPFS} = useContext(NFTMarketplaceContext);
   const [selected, setSelected] = useState(categories[0]._id);
   const [formValues, setFormValues] = useState({
@@ -238,7 +239,9 @@ export default function UploadItemPage({className = "", categories}) {
                     category: selected,
                   })
                   if(response.code === 200) {
-                    toast.success('Mint nft successfully');
+                    enqueueSnackbar('Mint NFT successfully', {
+                      variant: 'success'
+                    });
                   }
                   setLoading(false);
                 }}

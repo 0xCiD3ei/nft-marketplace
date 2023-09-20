@@ -1,6 +1,5 @@
 import React from "react";
 import {create as ipfsHttpClient} from "ipfs-http-client";
-import {toast} from 'react-toastify';
 import {
   useAddress,
   useContract,
