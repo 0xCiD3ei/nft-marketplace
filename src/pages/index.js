@@ -6,10 +6,8 @@ import BgGlassmorphism from "src/components/app/BgGlassmorphism/BgGlassmorphism"
 import SectionHero from "src/components/app/SectionHero/SectionHero";
 import SectionHowItWork from "src/components/app/SectionHowItWork/SectionHowItWork";
 import SectionLargeSlider from "src/components/containers/PageHome/SectionLargeSlider";
-import SectionMagazine from "src/components/app/SectionMagazine";
 import BackgroundSection from "src/components/app/BackgroundSection/BackgroundSection";
 import SectionGridAuthorBox from "src/components/app/SectionGridAuthorBox/SectionGridAuthorBox";
-import SectionSliderCardNftVideo from "src/components/app/SectionSliderCardNftVideo";
 import SectionSliderCollections from "src/components/app/SectionSliderCollections";
 import SectionSubscribe from "src/components/app/SectionSubscribe/SectionSubscribe";
 import SectionGridFeatureNFT from "src/components/containers/PageHome/SectionGridFeatureNFT";
@@ -17,21 +15,21 @@ import SectionSliderCategories from "src/components/app/SectionSliderCategories/
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import SectionVideos from "src/components/containers/PageHome/SectionVideos";
 import {useContext, useEffect, useState} from "react";
-import {useValidEnglishAuctions} from "@thirdweb-dev/react";
-import {MARKETPLACE_ADDRESS, NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
+import {MARKETPLACE_ADDRESS} from "src/constant/addresses";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
+import {withSessionSsr} from "src/lib/middlewares/withSession";
+import dbConnect from "src/lib/dbConnect";
+import accountService from "src/lib/services/accountService";
 
-export default function HomePage() {
+export default function HomePage({users}) {
   const [auctions, setAuctions] = useState([]);
   const {marketplace} = useContext(NFTMarketplaceContext);
   useEffect(() => {
     (async () => {
-      console.log(1);
       const txResult = await marketplace?.englishAuctions.getAllValid(MARKETPLACE_ADDRESS)
       setAuctions(txResult)
     })()
   }, [marketplace]);
-  console.log(2);
   
   return (
     <>
@@ -86,7 +84,7 @@ export default function HomePage() {
             <BackgroundSection />
             <SectionGridAuthorBox
               sectionStyle="style2"
-              data={Array.from("11111111")}
+              data={users}
               boxCard="box4"
             />
           </div>
@@ -131,3 +129,20 @@ HomePage.getLayout = (page) => (
     {page}
   </MainLayout>
 )
+
+export const getServerSideProps = withSessionSsr(async (ctx) => {
+  await dbConnect();
+  try {
+    const users = await accountService.getAccounts();
+    return {
+      props: {
+        users: JSON.parse(JSON.stringify(users)),
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      notFound: true
+    }
+  }
+})

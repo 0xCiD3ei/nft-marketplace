@@ -33,6 +33,7 @@
     "mongoose": "^7.3.2",
     "mongoose-paginate-v2": "^1.7.31",
     "next": "13.4.9",
+    "notistack": "^3.0.1",
     "nprogress": "^0.2.0",
     "postcss": "8.4.25",
     "rc-slider": "^10.0.0",

@@ -15,11 +15,11 @@ const SectionGridAuthorBox = ({
   boxCard = "box1",
   sectionStyle = "style1",
   gridClassName = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
-  data = Array.from("11111111"),
+  data = [],
 }) => {
   const [tabActive, setTabActive] = React.useState("Popular");
 
-  const renderCard = (index) => {
+  const renderCard = (user, index) => {
     switch (boxCard) {
       case "box1":
         return (
@@ -36,6 +36,7 @@ const SectionGridAuthorBox = ({
         return (
           <CardAuthorBox4
             authorIndex={index < 3 ? index + 1 : undefined}
+            user={user}
             key={index}
           />
         );
@@ -143,7 +144,7 @@ const SectionGridAuthorBox = ({
     >
       {sectionStyle === "style1" ? renderHeading1() : renderHeading2()}
       <div className={`grid gap-4 md:gap-7 ${gridClassName}`}>
-        {data.map((_, index) => renderCard(index))}
+        {data.map((user, index) => renderCard(user, index))}
       </div>
       <div className="mt-16 flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-5">
         <ButtonSecondary>Show me more </ButtonSecondary>

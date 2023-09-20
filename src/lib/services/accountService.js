@@ -79,6 +79,12 @@ class AccountService {
     
     return followingAccounts;
   }
+  
+  async getAccounts() {
+    const accounts = await AccountModel.find({});
+    
+    return accounts;
+  }
 }
 
 

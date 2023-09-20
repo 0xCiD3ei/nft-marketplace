@@ -6,7 +6,7 @@ import VerifyIcon from "../VerifyIcon";
 import FollowButton from "../FollowButton";
 import Badge from "src/components/shared/Badge/Badge";
 
-const CardAuthorBox4 = ({ className = "", following, authorIndex }) => {
+const CardAuthorBox4 = ({ className = "", following, user, authorIndex }) => {
   return (
     <div
       className={`nc-CardAuthorBox4 relative flex flex-col overflow-hidden group bg-white dark:bg-neutral-800 group rounded-3xl hover:shadow-xl transition-shadow ${className}`}
@@ -27,7 +27,7 @@ const CardAuthorBox4 = ({ className = "", following, authorIndex }) => {
 
         <NcImage
           containerClassName="flex h-full w-full flex-shrink-0 rounded-3xl overflow-hidden"
-          src={nftsAbstracts[Math.floor(Math.random() * nftsAbstracts.length)]}
+          src={nftsAbstracts[2]}
         />
       </div>
 
@@ -50,6 +50,7 @@ const CardAuthorBox4 = ({ className = "", following, authorIndex }) => {
 
             <div className="absolute -top-7 left-1/2 -translate-x-1/2">
               <Avatar
+                imgUrl={user.avatar}
                 containerClassName=""
                 sizeClass="w-12 h-12 text-2xl"
                 radius="rounded-full"
@@ -61,12 +62,12 @@ const CardAuthorBox4 = ({ className = "", following, authorIndex }) => {
           <div>
             <h2 className={`text-base font-medium flex items-center`}>
               <span className="">
-                {personNames[Math.floor(Math.random() * personNames.length)]}
+                {user.fullName}
               </span>
               <VerifyIcon />
             </h2>
             <span className={`block mt-0.5 text-sm `}>
-              <span className="font-medium">12.321</span>
+              <span className="font-medium">0</span>
               <span className={`ml-1.5 text-neutral-500 dark:text-neutral-400`}>
                 ETH
               </span>
@@ -74,7 +75,7 @@ const CardAuthorBox4 = ({ className = "", following, authorIndex }) => {
           </div>
           <FollowButton
             sizeClass="px-4 py-2 min-w-[84px]"
-            isFollowing={following}
+            isFollowing={false}
           />
         </div>
       </div>

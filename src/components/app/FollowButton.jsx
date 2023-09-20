@@ -6,7 +6,7 @@ const FollowButton = ({
   className = "relative z-10",
   sizeClass = "px-4 py-1.5 min-w-[84px]",
   fontSize = "text-sm font-medium",
-  isFollowing = Math.random() > 0.5,
+  isFollowing,
 }) => {
   const [following, setFollowing] = React.useState(isFollowing);
 
