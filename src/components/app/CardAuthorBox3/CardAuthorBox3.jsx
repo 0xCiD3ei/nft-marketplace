@@ -5,7 +5,7 @@ import { nftsAbstracts, personNames } from "src/assets/contains/fakeData";
 import VerifyIcon from "../VerifyIcon";
 import FollowButton from "../FollowButton";
 
-const CardAuthorBox3 = ({ className = "", following }) => {
+const CardAuthorBox3 = ({ className = "", following, account }) => {
   return (
     <div
       className={`nc-CardAuthorBox3 relative flex flex-col p-4 overflow-hidden [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] ${className}`}
@@ -32,13 +32,14 @@ const CardAuthorBox3 = ({ className = "", following }) => {
             containerClassName="ring-4 ring-white dark:ring-black !shadow-xl"
             sizeClass="w-12 h-12 text-2xl"
             radius="rounded-full"
+            imgUrl={account?.avatar}
           />
         </div>
         <div className="mt-2.5 flex items-start justify-between">
           <div>
             <h2 className={`text-base font-medium flex items-center`}>
               <span className="">
-                {personNames[Math.floor(Math.random() * personNames.length)]}
+                {account?.fullName}
               </span>
               <VerifyIcon />
             </h2>

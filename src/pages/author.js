@@ -1,5 +1,5 @@
 import MainLayout from "src/components/layouts/MainLayout";
-import {Fragment, useContext, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import {Helmet} from "react-helmet";
 import NcImage from "src/components/shared/NcImage/NcImage";
 import authorBanner from "src/assets/images/nfts/authorBanner.png";
@@ -23,6 +23,7 @@ import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useSnackbar} from "notistack";
+import webClientService from "src/lib/services/webClientService";
 
 export default function AuthorPage({className = "", account}) {
   const { enqueueSnackbar } = useSnackbar();
@@ -36,6 +37,19 @@ export default function AuthorPage({className = "", account}) {
   ]);
   const {nftCollection, marketplace} = useContext(NFTMarketplaceContext);
   const {data: ownedNFTs} = useOwnedNFTs(nftCollection, address);
+  const [followers, setFollowers] = useState([]);
+  
+  useEffect(() => {
+    (async () => {
+      const response = await webClientService.getFollowersAccount({
+        accountId: account._id
+      })
+      
+      if(response.code === 200) {
+        setFollowers(response.data)
+      }
+    })();
+  }, [account]);
   
   return (
     <div className={`nc-AuthorPage  ${className}`} data-nc-id="AuthorPage">
@@ -224,8 +238,8 @@ export default function AuthorPage({className = "", account}) {
               <Tab.Panel className="">
                 {/* LOOP ITEMS */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
-                  {Array.from("11111111").map((_, index) => (
-                    <CardAuthorBox3 following={false} key={index} />
+                  {followers && followers.map((account, index) => (
+                    <CardAuthorBox3 following={false} account={account} key={index} />
                   ))}
                 </div>
                 

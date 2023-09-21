@@ -75,6 +75,14 @@ class WebClientService {
     return data;
   }
   
+  async getFollowersAccount(payload) {
+    const {data} = await this.api(`account/follow/${payload.accountId}`, {}, {
+      method: 'GET'
+    })
+    
+    return data;
+  }
+  
   api(endPoint, data, options) {
     return axios({
       url: `${this.apiBase}/${endPoint}`,
