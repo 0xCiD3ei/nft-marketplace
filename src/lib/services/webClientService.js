@@ -67,7 +67,13 @@ class WebClientService {
     return data;
   }
   
-  
+  async followingUser(payload) {
+    const {data} = await this.api(`account/follow/${payload.accountId}/${payload.followerId}`, {}, {
+      method: 'POST'
+    });
+    
+    return data;
+  }
   
   api(endPoint, data, options) {
     return axios({

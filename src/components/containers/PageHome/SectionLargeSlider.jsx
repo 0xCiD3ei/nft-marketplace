@@ -22,8 +22,6 @@ const SectionLargeSlider = ({ className = "", auctions }) => {
       return state - 1;
     });
   };
-  
-  console.log(3);
 
   return (
     <div className={`nc-SectionLargeSlider relative ${className}`}>

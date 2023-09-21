@@ -21,7 +21,7 @@ import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import accountService from "src/lib/services/accountService";
 
-export default function HomePage({users}) {
+export default function HomePage({users, account}) {
   const [auctions, setAuctions] = useState([]);
   const {marketplace} = useContext(NFTMarketplaceContext);
   useEffect(() => {

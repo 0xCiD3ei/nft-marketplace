@@ -7,8 +7,10 @@ import {useAddress, useCreateAuctionListing} from "@thirdweb-dev/react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
 import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
+import {useSnackbar} from "notistack";
 
 const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const {marketplace} = useContext(NFTMarketplaceContext);
   const [state, setState] = useState({
     price: "0",
@@ -41,6 +43,9 @@ const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
       startTimestamp: "",
       endTimestamp: ""
     })
+    enqueueSnackbar('NFT listing successfully', {
+      variant: 'success'
+    });
     setLoading(false)
     return txResult;
   };
@@ -49,9 +54,9 @@ const ModalAuction = ({ show, nft, onCloseModalEdit }) => {
     return (
       <form action="#">
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
-          Direct Listing
+          Auction Listing
         </h3>
-        <span className="text-sm">Are you sure you want to direct listing?</span>
+        <span className="text-sm">Are you sure you want to auction listing?</span>
         <div className="mt-4 rounded-md shadow-sm">
           <Label>Start Date</Label>
           <Input

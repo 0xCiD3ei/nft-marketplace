@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Avatar from "src/components/shared/Avatar/Avatar";
 import NcImage from "src/components/shared/NcImage/NcImage";
-import { nftsAbstracts, personNames } from "src/assets/contains/fakeData";
+import { nftsAbstracts } from "src/assets/contains/fakeData";
 import VerifyIcon from "../VerifyIcon";
 import FollowButton from "../FollowButton";
 import Badge from "src/components/shared/Badge/Badge";
 
-const CardAuthorBox4 = ({ className = "", following, user, authorIndex }) => {
+const CardAuthorBox4 = ({ className = "", following, account, user, authorIndex }) => {
   return (
     <div
       className={`nc-CardAuthorBox4 relative flex flex-col overflow-hidden group bg-white dark:bg-neutral-800 group rounded-3xl hover:shadow-xl transition-shadow ${className}`}
@@ -75,7 +75,9 @@ const CardAuthorBox4 = ({ className = "", following, user, authorIndex }) => {
           </div>
           <FollowButton
             sizeClass="px-4 py-2 min-w-[84px]"
-            isFollowing={false}
+            isFollowing={account ? account?.followedUsers.includes(user._id) : false }
+            account={account}
+            user={user}
           />
         </div>
       </div>

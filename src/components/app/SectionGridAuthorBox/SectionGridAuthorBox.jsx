@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import CardAuthorBox from "../CardAuthorBox/CardAuthorBox";
 import CardAuthorBox2 from "../CardAuthorBox2/CardAuthorBox2";
 import CardAuthorBox3 from "../CardAuthorBox3/CardAuthorBox3";
@@ -9,6 +9,8 @@ import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import Nav from "src/components/shared/Nav/Nav";
 import SortOrderFilter from "./SortOrderFilter";
+import {useAddress} from "@thirdweb-dev/react";
+import webClientService from "src/lib/services/webClientService";
 
 const SectionGridAuthorBox = ({
   className = "",
@@ -18,6 +20,19 @@ const SectionGridAuthorBox = ({
   data = [],
 }) => {
   const [tabActive, setTabActive] = React.useState("Popular");
+  const [account, setAccount] = useState(null);
+  const address = useAddress();
+  
+  useEffect(() => {
+    (async () => {
+      if(address) {
+        const response = await webClientService.getAccountByAddress(address);
+        setAccount(response.data);
+      } else {
+        setAccount(null);
+      }
+    })();
+  }, [address]);
 
   const renderCard = (user, index) => {
     switch (boxCard) {
@@ -37,6 +52,7 @@ const SectionGridAuthorBox = ({
           <CardAuthorBox4
             authorIndex={index < 3 ? index + 1 : undefined}
             user={user}
+            account={account}
             key={index}
           />
         );
@@ -146,10 +162,10 @@ const SectionGridAuthorBox = ({
       <div className={`grid gap-4 md:gap-7 ${gridClassName}`}>
         {data.map((user, index) => renderCard(user, index))}
       </div>
-      <div className="mt-16 flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-5">
-        <ButtonSecondary>Show me more </ButtonSecondary>
-        <ButtonPrimary>Become a author</ButtonPrimary>
-      </div>
+      {/*<div className="mt-16 flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-5">*/}
+      {/*  <ButtonSecondary>Show me more </ButtonSecondary>*/}
+      {/*  <ButtonPrimary>Become a author</ButtonPrimary>*/}
+      {/*</div>*/}
     </div>
   );
 };
