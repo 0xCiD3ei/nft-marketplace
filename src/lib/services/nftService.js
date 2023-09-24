@@ -1,6 +1,8 @@
 import {NftModel} from "src/lib/models/nft.model";
+import {ApiError} from "src/lib/errors/ApiError";
+import {AccountModel} from "src/lib/models/account.model";
 
-class nftService {
+class NFTService {
   createNFT(payload) {
     return NftModel.create(payload);
   }
@@ -44,6 +46,45 @@ class nftService {
       paginationOptions: paginationOptions,
     };
   }
+  
+  async checkFavourite(payload) {
+    const {accountId, nftId} = payload;
+    const nft = await NftModel.findById(nftId);
+    if(!nft) {
+      throw ApiError({
+        code: 404,
+        message: 'No NFTs found'
+      })
+    }
+    
+    const isFavourite = nft.favorites.includes(accountId);
+    
+    if(isFavourite) {
+      nft.favorites = nft.favorites.filter(userId => userId !== accountId);
+    }else {
+      nft.favorites.push(accountId);
+    }
+    
+    await nft.save();
+    
+    return nft;
+  }
+  
+  async getFavourites(payload) {
+    const {userId} = payload;
+    const user = await AccountModel.findById(userId);
+    if(!user) {
+      throw ApiError({
+        code: 404,
+        message: 'Account not found'
+      })
+    }
+    
+    const favouritingNFTs = await NftModel.find({ _id: { $in: user.favorites }});
+    
+    return favouritingNFTs;
+  }
 }
 
-export default new nftService();
+const nftService = new NFTService();
+export default nftService;

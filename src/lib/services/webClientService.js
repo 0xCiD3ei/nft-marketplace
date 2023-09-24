@@ -83,6 +83,22 @@ class WebClientService {
     return data;
   }
   
+  async favouritesNFT(payload) {
+    const {data} = await this.api(`nft/favourites/${payload.nftId}/${payload.accountId}`, {}, {
+      method: "POST"
+    })
+    
+    return data;
+  }
+  
+  async getFavouritesAccount(payload) {
+    const {data} = await this.api(`nft/favourites/${payload.accountId}`, {}, {
+      method: "GET"
+    })
+    
+    return data;
+  }
+  
   api(endPoint, data, options) {
     return axios({
       url: `${this.apiBase}/${endPoint}`,
