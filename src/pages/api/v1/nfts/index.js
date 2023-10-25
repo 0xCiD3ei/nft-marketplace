@@ -13,7 +13,8 @@ async function handler(req, res) {
     code: 200,
     data: result.data,
     paginationOptions: result.paginationOptions,
-    message: "Get NFTs successfully"});
+    message: "Get NFTs successfully"
+  });
 }
 
 export default withSessionRoute(withApiErrorHandler(handler));

@@ -5,7 +5,7 @@ import {
   useContract,
   useMintNFT,
 } from "@thirdweb-dev/react";
-import {NFT_COLLECTION_ADDRESS, MARKETPLACE_ADDRESS} from "src/constant/addresses";
+import {NFT_COLLECTION_ADDRESS, MARKETPLACE_ADDRESS, NFT_COLLECTION_ADDRESS_2} from "src/constant/addresses";
 import webClientService from "src/lib/services/webClientService";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;

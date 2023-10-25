@@ -84,15 +84,22 @@ class WebClientService {
   }
   
   async favouritesNFT(payload) {
-    const {data} = await this.api(`nft/favourites/${payload.nftId}/${payload.accountId}`, {}, {
+    const {data} = await this.api(`nfts/favourites/${payload.accountId}/${payload.nftId}`, {}, {
       method: "POST"
     })
     
     return data;
   }
   
+  async getNFTById(nftId) {
+    const {data} = await this.api(`nfts/nft/${nftId}`, {}, {
+      method: "GET"
+    })
+    return data;
+  }
+  
   async getFavouritesAccount(payload) {
-    const {data} = await this.api(`nft/favourites/${payload.accountId}`, {}, {
+    const {data} = await this.api(`nfts/favourites/${payload.accountId}`, {}, {
       method: "GET"
     })
     

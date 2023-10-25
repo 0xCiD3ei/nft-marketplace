@@ -25,7 +25,7 @@ const Header = () => {
             console.log(res?.message);
           }
         })();
-      }
+      } 
     }
     if (connectionStatus === "disconnected") {
       (async () => {

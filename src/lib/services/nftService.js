@@ -7,6 +7,13 @@ class NFTService {
     return NftModel.create(payload);
   }
   
+  async getNFTById(payload) {
+    const nft = await NftModel.findOne({
+      'metadata.id': payload.nft
+    });
+    return nft;
+  }
+  
   findNFTsByCategory(categoryId) {
     const nfts = NftModel.find({ 'metadata.category': categoryId }).populate('metadata.category');
     return nfts;
@@ -49,7 +56,9 @@ class NFTService {
   
   async checkFavourite(payload) {
     const {accountId, nftId} = payload;
-    const nft = await NftModel.findById(nftId);
+    const nft = await NftModel.findOne({
+      'metadata.id': nftId
+    });
     if(!nft) {
       throw ApiError({
         code: 404,
@@ -71,14 +80,16 @@ class NFTService {
   }
   
   async getFavourites(payload) {
-    const {userId} = payload;
-    const user = await AccountModel.findById(userId);
+    const {accountId} = payload;
+    const user = await AccountModel.findById(accountId);
     if(!user) {
       throw ApiError({
         code: 404,
         message: 'Account not found'
       })
     }
+    
+    console.log({user});
     
     const favouritingNFTs = await NftModel.find({ _id: { $in: user.favorites }});
     

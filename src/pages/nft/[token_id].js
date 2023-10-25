@@ -37,12 +37,16 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const router = useRouter();
   const address = useAddress();
   const [owner , setOwner] = useState();
+  const [account, setAccount] = useState();
   const [category, setCategory] = useState();
   const {marketplace,nftCollection} = useContext(NFTMarketplaceContext);
   const { mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
   const [directListingModal, setDirectListingModal] = useState(false);
   const [auctionModal, setAuctionModal] = useState(false);
   const [offerOrBidModal, setOfferOrBidModal] = useState(false);
+  const [dataNFT, setDataNFT] = useState();
+  
+  console.log('dataNFT', dataNFT);
   
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
     tokenContract: NFT_COLLECTION_ADDRESS,
@@ -62,12 +66,23 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   }, [nft?.owner])
   
   useEffect(() => {
+    (async () => {
+      if(address) {
+        const accountResponse = await webClientService.getAccountByAddress(address);
+        setAccount(accountResponse.data);
+      }
+    })();
+  }, [address]);
+  
+  useEffect(() => {
     (
       async () => {
         const response = await webClientService.getCategoryById({
           categoryId: nft.metadata.category
         })
         setCategory(response.data);
+        const responseNFT = await webClientService.getNFTById(nft.metadata.id);
+        setDataNFT(responseNFT.data.nft);
       }
     )();
   }, [nft?.metadata])
@@ -80,6 +95,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
         },
         order: "desc",
       },
+      subscribe: true
     });
   
   const buyListing = async () =>  {
@@ -453,7 +469,7 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
               <ItemTypeImageIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10" />
               
               {/* META FAVORITES */}
-              <LikeButton className="absolute right-3 top-3 " />
+              <LikeButton className="absolute right-3 top-3" account={account} nftId={nft.metadata.id} liked={dataNFT?.favorites.includes(account?._id)} total={dataNFT?.favorites.length} />
             </div>
             
             <AccordionInfo data={nft?.metadata || []} />

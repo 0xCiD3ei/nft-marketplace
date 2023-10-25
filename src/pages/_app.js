@@ -17,7 +17,6 @@ import {SnackbarProvider} from "notistack";
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
   const router = useRouter();
-  
   React.useEffect(() => {
     const handleRouteStart = () => NProgress.start();
     const handleRouteDone = () => NProgress.done();
@@ -36,19 +35,19 @@ export default function App({ Component, pageProps }) {
     
     
     return (
-    <ThirdwebProvider
-      activeChain={ChainId.Mumbai}
-      clientId={process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID}
-    >
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <SnackbarProvider>
-            <NFTMarketplaceProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </NFTMarketplaceProvider>
-          </SnackbarProvider>
-        </PersistGate>
-      </Provider>
-    </ThirdwebProvider>
+      <ThirdwebProvider
+        activeChain={"mumbai"}
+        clientId={process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID}
+      >
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SnackbarProvider>
+              <NFTMarketplaceProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </NFTMarketplaceProvider>
+            </SnackbarProvider>
+          </PersistGate>
+        </Provider>
+      </ThirdwebProvider>
   )
 }
