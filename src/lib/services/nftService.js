@@ -67,16 +67,19 @@ class NFTService {
     }
     
     const isFavourite = nft.favorites.includes(accountId);
+    let message = '';
     
     if(isFavourite) {
       nft.favorites = nft.favorites.filter(userId => userId !== accountId);
+      message = 'Unfavorite a successful NFT';
     }else {
       nft.favorites.push(accountId);
+      message = 'Favourite a successful NFT';
     }
     
     await nft.save();
     
-    return nft;
+    return {nft, message};
   }
   
   async getFavourites(payload) {

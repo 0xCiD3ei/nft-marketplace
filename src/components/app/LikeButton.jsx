@@ -1,20 +1,31 @@
 import React, {useEffect, useState} from "react";
 import webClientService from "src/lib/services/webClientService";
+import {useSnackbar} from "notistack";
+import {useAddress} from "@thirdweb-dev/react";
 
 const LikeButton = ({ className, liked = false, nftId, account, total }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [isLiked, setIsLiked] = useState(liked);
+  const [totalLiked, setTotalLiked] = useState(total);
+  const address = useAddress();
   
   useEffect(() => {
     setIsLiked(liked);
-  }, [liked, nftId]);
+    setTotalLiked(total);
+  }, [liked, total, nftId, address]);
 
   return (
     <button
       className={`bg-black/50 px-3.5 h-10 flex items-center justify-center rounded-full text-white ${className}`}
       onClick={async () => {
         const response = await webClientService.favouritesNFT({nftId: nftId, accountId: account?._id});
-        
-        console.log('response', response);
+        if(response.data) {
+          setIsLiked(response.data.favorites.includes(account?._id));
+          setTotalLiked(response.data.favorites.length);
+          enqueueSnackbar(response.message, {
+            variant: 'success'
+          })
+        }
       }}
     >
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
@@ -27,7 +38,7 @@ const LikeButton = ({ className, liked = false, nftId, account, total }) => {
           strokeLinejoin="round"
         />
       </svg>
-      <span className="ml-2 text-sm">{total || 0 }</span>
+      <span className="ml-2 text-sm">{totalLiked || 0 }</span>
     </button>
   );
 };

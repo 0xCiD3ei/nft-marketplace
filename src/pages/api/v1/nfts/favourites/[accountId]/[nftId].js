@@ -8,12 +8,12 @@ async function handler(req, res) {
     const {accountId, nftId} = req.query;
     await dbConnect();
     console.log({accountId, nftId});
-    const nft = await nftService.checkFavourite({accountId, nftId});
+    const data = await nftService.checkFavourite({accountId, nftId});
     
     res.json({
       code: 200,
-      data: nft,
-      message: 'Favourite a successful NFT'
+      data: data.nft,
+      message: data.message
     })
   }catch (e) {
     console.log(e);
