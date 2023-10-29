@@ -38,6 +38,7 @@ export default function AuthorPage({className = "", account}) {
   const {nftCollection, marketplace} = useContext(NFTMarketplaceContext);
   const {data: ownedNFTs} = useOwnedNFTs(nftCollection, address);
   const [followers, setFollowers] = useState([]);
+  const [favorites, setFavorites] = useState([])
   
   useEffect(() => {
     (async () => {
@@ -48,8 +49,16 @@ export default function AuthorPage({className = "", account}) {
       if(response.code === 200) {
         setFollowers(response.data)
       }
+      
+      const responseNFTLiked = await webClientService.getFavouritesAccount({
+        accountId: account._id
+      })
+      
+      if(responseNFTLiked.code === 200) {
+        setFavorites(responseNFTLiked.data);
+      }
     })();
-  }, [account]);
+  }, [address]);
   
   return (
     <div className={`nc-AuthorPage  ${className}`} data-nc-id="AuthorPage">
@@ -210,8 +219,8 @@ export default function AuthorPage({className = "", account}) {
               <Tab.Panel className="">
                 {/* LOOP ITEMS */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-                  {Array.from("11111111").map((_, index) => (
-                    <CardNFT isLiked key={index} />
+                  {favorites && favorites.map((mft, index) => (
+                    <CardNFT isLiked key={index} nft={mft} />
                   ))}
                 </div>
                 

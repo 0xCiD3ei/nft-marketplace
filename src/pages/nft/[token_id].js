@@ -46,8 +46,6 @@ export default function NFTDetailPage({className = "",isPreviewMode, nft}) {
   const [offerOrBidModal, setOfferOrBidModal] = useState(false);
   const [dataNFT, setDataNFT] = useState();
   
-  console.log('dataNFT', dataNFT);
-  
   const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
     tokenContract: NFT_COLLECTION_ADDRESS,
     tokenId: nft.metadata.id

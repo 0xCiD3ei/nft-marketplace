@@ -71,7 +71,7 @@ class NFTService {
     
     if(isFavourite) {
       nft.favorites = nft.favorites.filter(userId => userId !== accountId);
-      message = 'Unfavorite a successful NFT';
+      message = 'Successfully unfavored NFT';
     }else {
       nft.favorites.push(accountId);
       message = 'Favourite a successful NFT';
@@ -92,9 +92,7 @@ class NFTService {
       })
     }
     
-    console.log({user});
-    
-    const favouritingNFTs = await NftModel.find({ _id: { $in: user.favorites }});
+    const favouritingNFTs = await NftModel.find({ favorites: { $in: user._id }});
     
     return favouritingNFTs;
   }
