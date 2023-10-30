@@ -85,7 +85,7 @@ const Header = () => {
               <div className="hidden sm:block h-6 border-l border-neutral-300 dark:border-neutral-6000"></div>
               <div className="flex">
                 <SwitchDarkMode />
-                <NotifyDropdown />
+                {/*<NotifyDropdown />*/}
               </div>
               <div></div>
               <ConnectWallet

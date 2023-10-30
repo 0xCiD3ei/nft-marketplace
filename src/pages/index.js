@@ -64,7 +64,7 @@ export default function HomePage({users, account}) {
           <SectionHowItWork />
         </div>
         
-        {/* SECTION LAERGE SLIDER */}
+        {/* SECTION LARGE SLIDER */}
         {
           auctions?.length > 0 && (
             <div className="bg-neutral-100/80 dark:bg-black/20 py-20 lg:py-32">
@@ -93,10 +93,10 @@ export default function HomePage({users, account}) {
           {/*<SectionSliderCardNftVideo />*/}
           
           {/* SECTION */}
-          <div className="relative py-20 lg:py-28">
-            <BackgroundSection />
-            <SectionSliderCollections cardStyle="style2" />
-          </div>
+          {/*<div className="relative py-20 lg:py-28">*/}
+          {/*  <BackgroundSection />*/}
+          {/*  <SectionSliderCollections cardStyle="style2" />*/}
+          {/*</div>*/}
           
           {/* SECTION */}
           <SectionSubscribe />

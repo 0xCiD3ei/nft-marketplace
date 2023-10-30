@@ -1,16 +1,11 @@
 import ncNanoId from "src/utils/ncNanoId";
 
 const otherPageChildMenus = [
-  {
-    id: ncNanoId(),
-    href: "/home2",
-    name: "Home Demo - 2",
-  },
-  {
-    id: ncNanoId(),
-    href: "/page-collection",
-    name: "Collection page",
-  },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/page-collection",
+  //   name: "Collection page",
+  // },
   {
     id: ncNanoId(),
     href: "/search",
@@ -25,68 +20,6 @@ const otherPageChildMenus = [
     id: ncNanoId(),
     href: "/account",
     name: "Account settings",
-  },
-  {
-    id: ncNanoId(),
-    href: "/upload-item",
-    name: "Upload Item",
-  },
-  {
-    id: ncNanoId(),
-    href: "/connect-wallet",
-    name: "Connect Wallet",
-  },
-
-  {
-    id: ncNanoId(),
-    href: "/about",
-    name: "Other Pages",
-    type: "dropdown",
-    children: [
-      {
-        id: ncNanoId(),
-        href: "/about",
-        name: "About",
-      },
-      {
-        id: ncNanoId(),
-        href: "/contact",
-        name: "Contact us",
-      },
-      {
-        id: ncNanoId(),
-        href: "/login",
-        name: "Login",
-      },
-      {
-        id: ncNanoId(),
-        href: "/signup",
-        name: "Signup",
-      },
-      {
-        id: ncNanoId(),
-        href: "/subscription",
-        name: "Subscription",
-      },
-    ],
-  },
-  {
-    id: ncNanoId(),
-    href: "/blog",
-    name: "Blog Page",
-    type: "dropdown",
-    children: [
-      {
-        id: ncNanoId(),
-        href: "/blog",
-        name: "Blog Page",
-      },
-      {
-        id: ncNanoId(),
-        href: "/blog-single",
-        name: "Blog Single",
-      },
-    ],
   },
 ];
 

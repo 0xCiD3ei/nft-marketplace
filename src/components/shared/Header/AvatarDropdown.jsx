@@ -3,8 +3,11 @@ import {avatarImgs} from "src/assets/contains/fakeData";
 import React, {Fragment} from "react";
 import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
+import {useAddress, useDisconnect} from "@thirdweb-dev/react";
+import {OWNER_ADDRESS} from "src/constant/addresses";
 
 export default function AvatarDropdown({account, address}) {
+  const disconnect = useDisconnect();
   function shortenMiddleString(inputStr, leftLength, rightLength) {
     if (inputStr?.length <= leftLength + rightLength) {
       return inputStr;
@@ -14,6 +17,7 @@ export default function AvatarDropdown({account, address}) {
     
     return leftPart + "..." + rightPart;
   }
+  
 
   return (
     <div className="AvatarDropdown">
@@ -49,7 +53,52 @@ export default function AvatarDropdown({account, address}) {
                     </div>
 
                     <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
-
+                    {
+                      OWNER_ADDRESS === address && (
+                        <Link
+                          href={"/upload-item"}
+                          className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                        >
+                          <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M13.26 3.59997L5.04997 12.29C4.73997 12.62 4.43997 13.27 4.37997 13.72L4.00997 16.96C3.87997 18.13 4.71997 18.93 5.87997 18.73L9.09997 18.18C9.54997 18.1 10.18 17.77 10.49 17.43L18.7 8.73997C20.12 7.23997 20.76 5.52997 18.55 3.43997C16.35 1.36997 14.68 2.09997 13.26 3.59997Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeMiterlimit="10"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M11.89 5.05005C12.32 7.81005 14.56 9.92005 17.34 10.2"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeMiterlimit="10"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3 22H21"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeMiterlimit="10"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
+                          <div className="ml-4">
+                            <p className="text-sm font-medium ">{"Create Item"}</p>
+                          </div>
+                        </Link>
+                      )
+                    }
                     {/* ------------------ 1 --------------------- */}
                     <Link
                       href={"/author"}
@@ -83,90 +132,47 @@ export default function AvatarDropdown({account, address}) {
                         <p className="text-sm font-medium ">{"My Profile"}</p>
                       </div>
                     </Link>
-                    
-                    <Link
-                      href={"/upload-item"}
-                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M13.26 3.59997L5.04997 12.29C4.73997 12.62 4.43997 13.27 4.37997 13.72L4.00997 16.96C3.87997 18.13 4.71997 18.93 5.87997 18.73L9.09997 18.18C9.54997 18.1 10.18 17.77 10.49 17.43L18.7 8.73997C20.12 7.23997 20.76 5.52997 18.55 3.43997C16.35 1.36997 14.68 2.09997 13.26 3.59997Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeMiterlimit="10"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M11.89 5.05005C12.32 7.81005 14.56 9.92005 17.34 10.2"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeMiterlimit="10"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M3 22H21"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeMiterlimit="10"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Create Item"}</p>
-                      </div>
-                    </Link>
 
                     {/* ------------------ 2 --------------------- */}
-                    <Link
-                      href={"/nft-detailt"}
-                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M9 10C10.1046 10 11 9.10457 11 8C11 6.89543 10.1046 6 9 6C7.89543 6 7 6.89543 7 8C7 9.10457 7.89543 10 9 10Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M2.67004 18.9501L7.60004 15.6401C8.39004 15.1101 9.53004 15.1701 10.24 15.7801L10.57 16.0701C11.35 16.7401 12.61 16.7401 13.39 16.0701L17.55 12.5001C18.33 11.8301 19.59 11.8301 20.37 12.5001L22 13.9001"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium ">{"My Items"}</p>
-                      </div>
-                    </Link>
+                    {/*<Link*/}
+                    {/*  href={"/nft-detailt"}*/}
+                    {/*  className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"*/}
+                    {/*>*/}
+                    {/*  <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">*/}
+                    {/*    <svg*/}
+                    {/*      width="24"*/}
+                    {/*      height="24"*/}
+                    {/*      viewBox="0 0 24 24"*/}
+                    {/*      fill="none"*/}
+                    {/*      xmlns="http://www.w3.org/2000/svg"*/}
+                    {/*    >*/}
+                    {/*      <path*/}
+                    {/*        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"*/}
+                    {/*        stroke="currentColor"*/}
+                    {/*        strokeWidth="1.5"*/}
+                    {/*        strokeLinecap="round"*/}
+                    {/*        strokeLinejoin="round"*/}
+                    {/*      />*/}
+                    {/*      <path*/}
+                    {/*        d="M9 10C10.1046 10 11 9.10457 11 8C11 6.89543 10.1046 6 9 6C7.89543 6 7 6.89543 7 8C7 9.10457 7.89543 10 9 10Z"*/}
+                    {/*        stroke="currentColor"*/}
+                    {/*        strokeWidth="1.5"*/}
+                    {/*        strokeLinecap="round"*/}
+                    {/*        strokeLinejoin="round"*/}
+                    {/*      />*/}
+                    {/*      <path*/}
+                    {/*        d="M2.67004 18.9501L7.60004 15.6401C8.39004 15.1101 9.53004 15.1701 10.24 15.7801L10.57 16.0701C11.35 16.7401 12.61 16.7401 13.39 16.0701L17.55 12.5001C18.33 11.8301 19.59 11.8301 20.37 12.5001L22 13.9001"*/}
+                    {/*        stroke="currentColor"*/}
+                    {/*        strokeWidth="1.5"*/}
+                    {/*        strokeLinecap="round"*/}
+                    {/*        strokeLinejoin="round"*/}
+                    {/*      />*/}
+                    {/*    </svg>*/}
+                    {/*  </div>*/}
+                    {/*  <div className="ml-4">*/}
+                    {/*    <p className="text-sm font-medium ">{"My Items"}</p>*/}
+                    {/*  </div>*/}
+                    {/*</Link>*/}
 
                     {/* ------------------ 2 --------------------- */}
                     <Link
@@ -282,8 +288,8 @@ export default function AvatarDropdown({account, address}) {
                     </Link>
 
                     {/* ------------------ 2 --------------------- */}
-                    <Link
-                      href={"/"}
+                    <div
+                      onClick={disconnect}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     >
                       <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -318,9 +324,9 @@ export default function AvatarDropdown({account, address}) {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium">{"Logout"}</p>
+                        <p className="text-sm font-medium">{"Disconnect"}</p>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </Popover.Panel>
