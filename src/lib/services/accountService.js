@@ -66,7 +66,7 @@ class AccountService {
     return followerAccount;
   }
   
-  async getFollowers(payload) {
+  async getFollowing(payload) {
     const { accountId } = payload;
     const account = await AccountModel.findById(accountId);
     if (!account) {
@@ -84,6 +84,27 @@ class AccountService {
     const accounts = await AccountModel.find({});
     
     return accounts;
+  }
+  
+  async getFollowers(payload) {
+    const { accountId } = payload;
+    const account = await AccountModel.findById(accountId);
+    if (!account) {
+      throw ApiError({
+        code: 404,
+        message: "Account not found"
+      })
+    }
+    try {
+      const followerAccounts = await AccountModel.find({ followedUsers: { $in: accountId } });
+      
+      return followerAccounts;
+    } catch (error) {
+      throw ApiError({
+        code: 500,
+        message: 'Error fetching accounts by followed users: ' + error.message
+      });
+    }
   }
 }
 

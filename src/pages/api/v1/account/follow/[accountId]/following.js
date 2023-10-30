@@ -1,3 +1,5 @@
+
+
 import dbConnect from "src/lib/dbConnect";
 import {withSessionRoute} from "src/lib/middlewares/withSession";
 import withApiErrorHandler from "src/lib/middlewares/withApiErrorHandler";
@@ -8,12 +10,12 @@ async function handler(req, res) {
     const {accountId} = req.query;
     await dbConnect();
     
-    const followerAccounts = await accountService.getFollowers({accountId});
+    const followingAccounts = await accountService.getFollowing({accountId});
     
     res.json({
       code: 200,
-      data: followerAccounts,
-      message: 'Get successfully following users'
+      data: followingAccounts,
+      message: 'Get successfully followed users'
     })
   } catch (e) {
     console.log(e);

@@ -75,8 +75,16 @@ class WebClientService {
     return data;
   }
   
-  async getFollowersAccount(payload) {
+  async getFollowerAccounts(payload) {
     const {data} = await this.api(`account/follow/${payload.accountId}`, {}, {
+      method: 'GET'
+    })
+    
+    return data;
+  }
+  
+  async getFollowingAccounts(payload) {
+    const {data} = await this.api(`account/follow/${payload.accountId}/following`, {}, {
       method: 'GET'
     })
     

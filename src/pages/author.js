@@ -1,5 +1,5 @@
 import MainLayout from "src/components/layouts/MainLayout";
-import {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import {Helmet} from "react-helmet";
 import NcImage from "src/components/shared/NcImage/NcImage";
 import authorBanner from "src/assets/images/nfts/authorBanner.png";
@@ -24,41 +24,81 @@ import dbConnect from "src/lib/dbConnect";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useSnackbar} from "notistack";
 import webClientService from "src/lib/services/webClientService";
+import CardAuthorBox from "src/components/app/CardAuthorBox/CardAuthorBox";
+import CardAuthorBox2 from "src/components/app/CardAuthorBox2/CardAuthorBox2";
+import CardAuthorBox4 from "src/components/app/CardAuthorBox4/CardAuthorBox4";
 
 export default function AuthorPage({className = "", account}) {
   const { enqueueSnackbar } = useSnackbar();
   const address = useAddress();
   const [categories] = useState([
-    "Collectibles",
+    // "Collectibles",
     "Created",
     "Liked",
-    "Following",
     "Followers",
+    "Following",
   ]);
   const {nftCollection, marketplace} = useContext(NFTMarketplaceContext);
   const {data: ownedNFTs} = useOwnedNFTs(nftCollection, address);
   const [followers, setFollowers] = useState([]);
-  const [favorites, setFavorites] = useState([])
+  const [following, setFollowing] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   
   useEffect(() => {
     (async () => {
-      const response = await webClientService.getFollowersAccount({
-        accountId: account._id
-      })
+      const responseFollower = await webClientService.getFollowerAccounts({
+        accountId: account._id,
+      });
       
-      if(response.code === 200) {
-        setFollowers(response.data)
+      if(responseFollower.code === 200) {
+        setFollowers(responseFollower.data);
+      }
+      
+      const responseFollowing = await webClientService.getFollowingAccounts({
+        accountId: account._id,
+      });
+      
+      if(responseFollowing.code === 200) {
+        setFollowing(responseFollowing.data);
       }
       
       const responseNFTLiked = await webClientService.getFavouritesAccount({
-        accountId: account._id
+        accountId: account._id,
       })
       
       if(responseNFTLiked.code === 200) {
         setFavorites(responseNFTLiked.data);
       }
     })();
-  }, [address]);
+  }, [account, address]);
+  
+  const renderCard = (user, index, boxCard) => {
+    switch (boxCard) {
+      case "box1":
+        return (
+          <CardAuthorBox
+            index={index < 3 ? index + 1 : undefined}
+            key={index}
+          />
+        );
+      case "box2":
+        return <CardAuthorBox2 key={index} />;
+      case "box3":
+        return <CardAuthorBox3 key={index} />;
+      case "box4":
+        return (
+          <CardAuthorBox4
+            authorIndex={index < 3 ? index + 1 : undefined}
+            user={user}
+            account={account}
+            key={index}
+          />
+        );
+      
+      default:
+        return null;
+    }
+  };
   
   return (
     <div className={`nc-AuthorPage  ${className}`} data-nc-id="AuthorPage">
@@ -186,21 +226,21 @@ export default function AuthorPage({className = "", account}) {
               </div>
             </div>
             <Tab.Panels>
-              <Tab.Panel className="">
-                {/* LOOP ITEMS */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-                  {[]?.length &&
-                    [].map((item, index) => (
-                      <CardNFT NFT={item} key={index} />
-                    ))}
-                </div>
-                
-                {/* PAGINATION */}
-                <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-                  <Pagination />
-                  <ButtonPrimary loading>Show me more</ButtonPrimary>
-                </div>
-              </Tab.Panel>
+              {/*<Tab.Panel className="">*/}
+              {/*  /!* LOOP ITEMS *!/*/}
+              {/*  <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">*/}
+              {/*    {[]?.length &&*/}
+              {/*      [].map((item, index) => (*/}
+              {/*        <CardNFT NFT={item} key={index} />*/}
+              {/*      ))}*/}
+              {/*  </div>*/}
+              {/*  */}
+              {/*  /!* PAGINATION *!/*/}
+              {/*  <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">*/}
+              {/*    <Pagination />*/}
+              {/*    <ButtonPrimary loading>Show me more</ButtonPrimary>*/}
+              {/*  </div>*/}
+              {/*</Tab.Panel>*/}
               <Tab.Panel className="">
                 {/* LOOP ITEMS */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
@@ -213,49 +253,59 @@ export default function AuthorPage({className = "", account}) {
                 {/* PAGINATION */}
                 <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
                   <Pagination />
-                  <ButtonPrimary loading>Show me more</ButtonPrimary>
+                  {
+                    ownedNFTs?.length > 8 && (
+                      <ButtonPrimary loading={false}>Show me more</ButtonPrimary>
+                    )
+                  }
                 </div>
               </Tab.Panel>
               <Tab.Panel className="">
                 {/* LOOP ITEMS */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-                  {favorites && favorites.map((mft, index) => (
-                    <CardNFT isLiked key={index} nft={mft} />
+                  {favorites && favorites.map((nft, index) => (
+                    <CardNFT isLiked key={index} nft={nft} />
                   ))}
                 </div>
                 
                 {/* PAGINATION */}
                 <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
                   <Pagination />
-                  <ButtonPrimary loading>Show me more</ButtonPrimary>
-                </div>
-              </Tab.Panel>
-              <Tab.Panel className="">
-                {/* LOOP ITEMS */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8 lg:mt-10">
-                  {Array.from("11111111").map((_, index) => (
-                    <CardAuthorBox3 following key={index} />
-                  ))}
-                </div>
-                
-                {/* PAGINATION */}
-                <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-                  <Pagination />
-                  <ButtonPrimary loading>Show me more</ButtonPrimary>
+                  {
+                    favorites?.length > 8 && (
+                      <ButtonPrimary loading={false}>Show me more</ButtonPrimary>
+                    )
+                  }
                 </div>
               </Tab.Panel>
               <Tab.Panel className="">
                 {/* LOOP ITEMS */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
-                  {followers && followers.map((account, index) => (
-                    <CardAuthorBox3 following={false} account={account} key={index} />
-                  ))}
+                  {followers && followers.map((account, index) => renderCard(account, index, 'box4'))}
                 </div>
                 
                 {/* PAGINATION */}
                 <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
                   <Pagination />
-                  <ButtonPrimary loading>Show me more</ButtonPrimary>
+                  {
+                    followers.length > 8 && (
+                      <ButtonPrimary loading={false}>Show me more</ButtonPrimary>
+                    )
+                  }
+                </div>
+              </Tab.Panel>
+              <Tab.Panel className="">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
+                  {following && following.map((account, index) => renderCard(account, index, 'box4'))}
+                </div>
+                {/* PAGINATION */}
+                <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
+                  <Pagination />
+                  {
+                    following.length > 8 && (
+                      <ButtonPrimary loading={false}>Show me more</ButtonPrimary>
+                    )
+                  }
                 </div>
               </Tab.Panel>
             </Tab.Panels>
@@ -263,10 +313,10 @@ export default function AuthorPage({className = "", account}) {
         </main>
         
         {/* === SECTION 5 === */}
-        <div className="relative py-16 lg:py-28">
-          <BackgroundSection />
-          <SectionGridAuthorBox data={Array.from("11111111")} boxCard="box4" />
-        </div>
+        {/*<div className="relative py-16 lg:py-28">*/}
+        {/*  <BackgroundSection />*/}
+        {/*  <SectionGridAuthorBox data={followers} boxCard="box4" />*/}
+        {/*</div>*/}
         
         {/* SUBCRIBES */}
         <SectionBecomeAnAuthor />

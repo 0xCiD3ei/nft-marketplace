@@ -58,7 +58,7 @@ const CardAuthorBox4 = ({ className = "", following, account, user, authorIndex 
             </div>
           </div>
         </div>
-        <div className="mt-2.5 flex items-start items-center justify-between">
+        <div className="mt-2.5 flex items-center justify-between">
           <div>
             <h2 className={`text-base font-medium flex items-center`}>
               <span className="">
