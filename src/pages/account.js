@@ -49,7 +49,7 @@ export default function AccountPage({className = "", account}) {
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
       <Helmet>
-        <title>Account || Ciscryp React Template</title>
+        <title>Account</title>
       </Helmet>
       
       <div className="container">
