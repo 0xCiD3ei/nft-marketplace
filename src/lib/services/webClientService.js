@@ -114,6 +114,32 @@ class WebClientService {
     return data;
   }
   
+  //appprove
+  
+  async grantRole(payload) {
+    const {data} = await this.api('mint/grant', payload, {
+      method: 'POST'
+    });
+    
+    return data;
+  }
+  
+  async revokeRole(payload) {
+    const {data} = await this.api('mint/revoke', payload, {
+      method: 'POST'
+    });
+    
+    return data;
+  }
+  
+  async getAddressRole() {
+    const {data} = await this.api('mint', {}, {
+      method: 'GET'
+    })
+    
+    return data;
+  }
+  
   api(endPoint, data, options) {
     return axios({
       url: `${this.apiBase}/${endPoint}`,
