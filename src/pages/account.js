@@ -71,7 +71,6 @@ export default function AccountPage({className = "", account}) {
                 <Avatar
                   sizeClass="w-32 h-32"
                   imgUrl={formValues.avatar}
-                  onChange={handleOnchangeFile}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                   <svg
@@ -94,6 +93,7 @@ export default function AccountPage({className = "", account}) {
                 </div>
                 <input
                   type="file"
+                  onChange={handleOnchangeFile}
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
