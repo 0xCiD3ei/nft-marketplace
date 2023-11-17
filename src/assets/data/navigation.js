@@ -8,8 +8,8 @@ const otherPageChildMenus = [
   // },
   {
     id: ncNanoId(),
-    href: "/search",
-    name: "Search page",
+    href: "/explore",
+    name: "Explore page",
   },
   {
     id: ncNanoId(),

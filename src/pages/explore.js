@@ -96,21 +96,21 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
           </div>
           
           {/* PAGINATION */}
-          <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-            <Pagination paginationOptions={paginationOptions} />
-            {
-              paginationOptions?.totalPages > 1 && (
-                <ButtonPrimary>Show me more</ButtonPrimary>
-              )
-            }
-          </div>
+          {/*<div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">*/}
+          {/*    <Pagination paginationOptions={paginationOptions} />*/}
+          {/*  {*/}
+          {/*    paginationOptions?.totalPages > 1 && (*/}
+          {/*      <ButtonPrimary>Show me more</ButtonPrimary>*/}
+          {/*    )*/}
+          {/*  }*/}
+          {/*</div>*/}
         </main>
         
         {/* === SECTION 5 === */}
-        <div className="relative py-16 lg:py-28">
-          <BackgroundSection />
-          <SectionSliderCollections />
-        </div>
+        {/*<div className="relative py-16 lg:py-28">*/}
+        {/*  <BackgroundSection />*/}
+        {/*  <SectionSliderCollections />*/}
+        {/*</div>*/}
         
         {/* SUBCRIBES */}
         <SectionBecomeAnAuthor />
@@ -128,7 +128,7 @@ SearchPage.getLayout = (page) => (
 export const getServerSideProps = withSessionSsr(async (ctx) => {
   await dbConnect();
   try {
-    const response = await nftService.getAllNfts(1, 8);
+    const response = await nftService.getAllNfts(1, 99);
     return {
       props: {
         nfts: JSON.parse(JSON.stringify(response.data)),
