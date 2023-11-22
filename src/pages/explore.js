@@ -12,13 +12,87 @@ import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import nftService from "src/lib/services/nftService";
+import React, {useEffect, useState} from "react";
+import account from "src/pages/api/v1/account";
 
 export default function SearchPage({className= "", nfts, paginationOptions}) {
+  const [data, setData]  = useState(nfts);
+  const [searchInput, setSearchInput] = useState('');
+  const [tabActive, setTabActive] = React.useState("all");
+  const tabs = [{
+    key: 'all',
+    label: 'All NFTs'
+  }, {
+    key: 'arts',
+    label: 'Arts'
+  }, {
+    key: 'entertainment',
+    label: 'Entertainment'
+  }, {
+    key: 'music',
+    label: 'Musics'
+  }, {
+    key: 'news',
+    label: 'News'
+  }, {
+    key: 'science',
+    label: 'Science'
+  }, {
+    key: 'sports',
+    label: 'Sports'
+  }]
+  const handleOnChangeInput = (e) => {
+    setSearchInput(e.target.value);
+  }
+  
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const nftsFilter = nfts.filter((nft) => nft?.metadata?.name?.toLowerCase().includes(searchInput.toLowerCase()));
+    setData(nftsFilter);
+  }
+  
+  const handleActiveTab = (tab) => {
+    setTabActive(tab);
+    if(tab === 'all') {
+      setData(nfts);
+      return;
+    }
+    const nftsFilter = nfts.filter((nft) => nft?.metadata?.category?.name?.toLowerCase() === tab);
+    setData(nftsFilter);
+  }
+  
+  const handleRangePrice = (rangePrice) => {
+    console.log(rangePrice);
+  }
+  
+  const handleSaleStates = (states) => {
+    console.log(states);
+  }
+  
+  const handleSortOrderStates = (states) => {
+    console.log(states);
+  }
+  
+  const handleUpdateData = (direct, auction) => {
+    // if(direct?.length > 0) {
+    //   const nft = data?.filter(ele => ele?.metadata?.id === direct[0]?.id);
+    //   return setData([...data, {
+    //     ...nft, ...direct
+    //   }]);
+    // } else if(auction?.length > 0) {
+    //   const nft = data?.filter(ele => ele?.metadata?.id === auction[0]?.id);
+    //   return setData([...data, {
+    //     ...nft, ...auction
+    //   }])
+    // }
+  }
+  
+  console.log(data);
   
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="searchPage">
       <Helmet>
-        <title>Search || Ciscryp NFT Template</title>
+        <title>Explore</title>
       </Helmet>
       
       <div
@@ -35,6 +109,9 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
             >
               <span className="sr-only">Search all icons</span>
               <Input
+                value={searchInput}
+                name='search'
+                onChange={handleOnChangeInput}
                 className="shadow-lg border-0 dark:border"
                 id="search-input"
                 type="search"
@@ -45,6 +122,7 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
               <ButtonCircle
                 className="absolute right-2.5 top-1/2 transform -translate-y-1/2"
                 size=" w-11 h-11"
+                onClick={handleSearch}
               >
                 <i className="las la-arrow-right text-xl"></i>
               </ButtonCircle>
@@ -79,19 +157,28 @@ export default function SearchPage({className= "", nfts, paginationOptions}) {
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
         <main>
           {/* FILTER */}
-          <HeaderFilterSearchPage />
+          <HeaderFilterSearchPage
+            onActiveTab={handleActiveTab}
+            tabs={tabs}
+            tabActive={tabActive}
+            onRangePrice={handleRangePrice}
+            onSaleStates={handleSaleStates}
+            onSortOrderStates={handleSortOrderStates}
+          />
           
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-            {nfts?.length > 0 ? (
-              nfts.map((item) => <CardNFT
+            {data?.length > 0 ? (
+              data.map((item) => <CardNFT
                 key={item?.metadata?.id}
                 nft={item}
                 quantity={item?.supply}
+                onUpdateData={handleUpdateData}
               />
               )
             ) : (
-              <p>Not listed</p>
+              // eslint-disable-next-line react/no-unescaped-entities
+              <p>There aren't any NFTs</p>
             )}
           </div>
           

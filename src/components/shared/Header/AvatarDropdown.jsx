@@ -1,13 +1,28 @@
 import {Popover, Transition} from "@headlessui/react";
 import {avatarImgs} from "src/assets/contains/fakeData";
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect} from "react";
 import Avatar from "../Avatar/Avatar";
 import Link from "next/link";
-import {useDisconnect} from "@thirdweb-dev/react";
+import {useDisconnect, useSafe} from "@thirdweb-dev/react";
 import {OWNER_ADDRESS} from "src/constant/addresses";
+import webClientService from "src/lib/services/webClientService";
 
 export default function AvatarDropdown({account, address}) {
   const disconnect = useDisconnect();
+  const [addresses, setAddresses] = React.useState([]);
+  
+  const loadAddresses = async () => {
+    const response = await webClientService.getAddressRole();
+    if (response.code === 200) {
+      setAddresses([...OWNER_ADDRESS, ...response?.data]);
+    }
+  }
+  
+  useEffect(() => {
+    loadAddresses().then();
+  }, []);
+  
+  console.log(addresses);
   function shortenMiddleString(inputStr, leftLength, rightLength) {
     if (inputStr?.length <= leftLength + rightLength) {
       return inputStr;
@@ -54,7 +69,7 @@ export default function AvatarDropdown({account, address}) {
 
                     <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
                     {
-                      OWNER_ADDRESS.includes(address) && (
+                      addresses.map(ele => ele.address === address) && (
                         <Link
                           href={"/upload-item"}
                           className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"

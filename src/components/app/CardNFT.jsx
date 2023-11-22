@@ -5,18 +5,12 @@ import ItemTypeImageIcon from "./ItemTypeImageIcon";
 import Prices from "./Prices";
 import { ClockIcon } from "@heroicons/react/outline";
 import moment from "moment";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useValidDirectListings, useValidEnglishAuctions} from "@thirdweb-dev/react";
 import { NFT_COLLECTION_ADDRESS } from "src/constant/addresses";
 
-const CardNFT = ({
-                   className = "",
-                   isLiked,
-                   nft,
-                   quantity,
-                 }) => {
-  
+const CardNFT = ({className = "", isLiked, nft, quantity, onUpdateData}) => {
   const {marketplace} = useContext(NFTMarketplaceContext);
   
   const {
@@ -33,6 +27,10 @@ const CardNFT = ({
       tokenContract: NFT_COLLECTION_ADDRESS,
       tokenId: nft?.metadata?.id,
     });
+  
+  useEffect(() => {
+    // onUpdateData(directListing, auctionListing);
+  }, [auctionListing, directListing, onUpdateData]);
   
   const renderAvatars = () => {
     return (

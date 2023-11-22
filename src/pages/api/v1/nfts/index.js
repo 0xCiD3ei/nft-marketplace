@@ -7,7 +7,7 @@ async function handler(req, res) {
   
   await dbConnect();
   
-  const result = await nftService.getAllNfts(1, 8);
+  const result = await nftService.getAllNfts(1, 6);
   
   res.json({
     code: 200,

@@ -1,5 +1,5 @@
- const mongoose = require('mongoose')
- const mongoosePaginate = require('mongoose-paginate-v2');
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const NftSchema = new mongoose.Schema({
   metadata: {
@@ -13,7 +13,7 @@ const NftSchema = new mongoose.Schema({
     id: { type: String, required: true },
     image: { type: String, required: true },
     name: { type: String, required: true },
-    uri: { type: String},
+    uri: { type: String },
   },
   owner: String,
   supply: String,
@@ -25,7 +25,7 @@ const NftSchema = new mongoose.Schema({
   ]
 }, {
   timestamps: true
-})
+});
 
 NftSchema.plugin(mongoosePaginate);
 

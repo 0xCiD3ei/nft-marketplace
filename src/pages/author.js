@@ -8,7 +8,6 @@ import SocialsList from "src/components/shared/SocialsList/SocialsList";
 import NftMoreDropdown from "src/components/app/NftMoreDropdown";
 import ButtonDropDownShare from "src/components/app/ButtonDropDownShare";
 import FollowButton from "src/components/app/FollowButton";
-import { nftsImgs } from "src/assets/contains/fakeData";
 import {useAddress, useOwnedNFTs} from "@thirdweb-dev/react";
 import {Tab} from "@headlessui/react";
 import ArchiveFilterListBox from "src/components/app/ArchiveFilterListBox";
@@ -27,6 +26,7 @@ import webClientService from "src/lib/services/webClientService";
 import CardAuthorBox from "src/components/app/CardAuthorBox/CardAuthorBox";
 import CardAuthorBox2 from "src/components/app/CardAuthorBox2/CardAuthorBox2";
 import CardAuthorBox4 from "src/components/app/CardAuthorBox4/CardAuthorBox4";
+import avatar from "../assets/images/avatars/avatar.png";
 
 export default function AuthorPage({className = "", account}) {
   const { enqueueSnackbar } = useSnackbar();
@@ -103,7 +103,7 @@ export default function AuthorPage({className = "", account}) {
   return (
     <div className={`nc-AuthorPage  ${className}`} data-nc-id="AuthorPage">
       <Helmet>
-        <title>Creator || Ciscryp NFT Template</title>
+        <title>Creator</title>
       </Helmet>
       
       {/* HEADER */}
@@ -119,7 +119,7 @@ export default function AuthorPage({className = "", account}) {
           <div className="relative bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 p-5 lg:p-8 rounded-3xl md:rounded-[40px] shadow-xl flex flex-col md:flex-row">
             <div className="w-32 lg:w-44 flex-shrink-0 mt-12 sm:mt-0">
               <NcImage
-                src={account ? account?.avatar : nftsImgs[5]}
+                src={account ? account?.avatar : avatar}
                 containerClassName="aspect-w-1 aspect-h-1 rounded-3xl overflow-hidden"
               />
             </div>
@@ -133,9 +133,9 @@ export default function AuthorPage({className = "", account}) {
                   />
                 </h2>
                 <div className="flex items-center text-sm font-medium space-x-2.5 mt-2.5 text-green-600 cursor-pointer">
-                    <span className="text-neutral-700 dark:text-neutral-300">
-                      {address}
-                    </span>
+                  <span className="text-neutral-700 dark:text-neutral-300">
+                    {address}
+                  </span>
                   <svg
                     width="20"
                     height="21"

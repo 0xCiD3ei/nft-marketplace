@@ -1,6 +1,7 @@
 import {NftModel} from "src/lib/models/nft.model";
 import {ApiError} from "src/lib/errors/ApiError";
 import {AccountModel} from "src/lib/models/account.model";
+import {CategoryModel} from "src/lib/models/category.model";
 
 class NFTService {
   createNFT(payload) {
@@ -30,28 +31,51 @@ class NFTService {
     return nfts;
   }
   
-  async getAllNfts (page, limit) {
+  async getAllNfts(page, limit) {
     const options = {
       page: page,
       limit: limit
     };
-    const result = await NftModel.paginate({}, options);
-    const paginationOptions = {
-      hasNextPage: result.hasNextPage,
-      hasPrevPage: result.hasPrevPage,
-      limit: result.limit,
-      nextPage: result.nextPage,
-      page: result.page,
-      pagingCounter: result.pagingCounter,
-      prevPage: result.prevPage,
-      totalDocs: result.totalDocs,
-      totalPages: result.totalPages,
-    };
     
-    return {
-      data: result.docs,
-      paginationOptions: paginationOptions,
-    };
+    try {
+      const paginatedResult = await NftModel.paginate({}, options);
+      
+      const nfts = paginatedResult.docs;
+      
+      const categoryIds = nfts.map(nft => nft.metadata.category);
+      
+      const populatedCategories = await CategoryModel.find({ _id: { $in: categoryIds } });
+      
+      const categoryMap = new Map(populatedCategories.map(category => [category._id.toString(), category]));
+      
+      const nftsWithPopulatedCategories = nfts.map(nft => ({
+        ...nft.toObject(),
+        metadata: {
+          ...nft.metadata.toObject(),
+          category: categoryMap.get(nft.metadata.category.toString())
+        }
+      }));
+      
+      const paginationOptions = {
+        hasNextPage: paginatedResult.hasNextPage,
+        hasPrevPage: paginatedResult.hasPrevPage,
+        limit: paginatedResult.limit,
+        nextPage: paginatedResult.nextPage,
+        page: paginatedResult.page,
+        pagingCounter: paginatedResult.pagingCounter,
+        prevPage: paginatedResult.prevPage,
+        totalDocs: paginatedResult.totalDocs,
+        totalPages: paginatedResult.totalPages,
+      };
+      
+      return {
+        data: nftsWithPopulatedCategories,
+        paginationOptions: paginationOptions,
+      };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
   
   async checkFavourite(payload) {
