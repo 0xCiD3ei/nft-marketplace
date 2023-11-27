@@ -2,88 +2,43 @@ import MainLayout from "src/components/layouts/MainLayout";
 import {Helmet} from "react-helmet";
 import Input from "src/components/shared/Input/Input";
 import ButtonCircle from "src/components/shared/Button/ButtonCircle";
-import HeaderFilterSearchPage from "src/components/app/HeaderFilterSearchPage";
-import CardNFT from "src/components/app/CardNFT";
-import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import {withSessionSsr} from "src/lib/middlewares/withSession";
+import React, {useEffect, useState} from "react";
 import dbConnect from "src/lib/dbConnect";
-import nftService from "src/lib/services/nftService";
-import React, {useState} from "react";
+import {withSessionSsr} from "src/lib/middlewares/withSession";
+import accountService from "src/lib/services/accountService";
+import CardAuthorBox4 from "src/components/app/CardAuthorBox4/CardAuthorBox4";
+import {useAddress} from "@thirdweb-dev/react";
+import webClientService from "src/lib/services/webClientService";
+import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 
-export default function SearchPage({className = "", nfts, paginationOptions}) {
-	const [data, setData] = useState(nfts);
+export default function ListUserPage({className = "", accounts}) {
+	const [data, setData] = useState(accounts);
 	const [searchInput, setSearchInput] = useState('');
-	const [tabActive, setTabActive] = React.useState("all");
-	const tabs = [{
-		key: 'all',
-		label: 'All NFTs'
-	}, {
-		key: 'arts',
-		label: 'Arts'
-	}, {
-		key: 'entertainment',
-		label: 'Entertainment'
-	}, {
-		key: 'music',
-		label: 'Musics'
-	}, {
-		key: 'news',
-		label: 'News'
-	}, {
-		key: 'science',
-		label: 'Science'
-	}, {
-		key: 'sports',
-		label: 'Sports'
-	}]
+	const [account, setAccount] = useState(null);
+	const address = useAddress();
 	const handleOnChangeInput = (e) => {
 		setSearchInput(e.target.value);
 	}
 	
+	
+	useEffect(() => {
+		(async () => {
+			if (address) {
+				const response = await webClientService.getAccountByAddress(address);
+				setAccount(response.data);
+			} else {
+				setAccount(null);
+			}
+		})();
+	}, [address]);
 	const handleSearch = (e) => {
 		e.preventDefault();
-		const nftsFilter = nfts.filter((nft) => nft?.metadata?.name?.toLowerCase().includes(searchInput.toLowerCase()));
-		setData(nftsFilter);
-	}
-	
-	const handleActiveTab = (tab) => {
-		setTabActive(tab);
-		if (tab === 'all') {
-			setData(nfts);
-			return;
-		}
-		const nftsFilter = nfts.filter((nft) => nft?.metadata?.category?.name?.toLowerCase() === tab);
-		setData(nftsFilter);
-	}
-	
-	const handleRangePrice = (rangePrice) => {
-		console.log(rangePrice);
-	}
-	
-	const handleSaleStates = (states) => {
-		console.log(states);
-	}
-	
-	const handleSortOrderStates = (states) => {
-		console.log(states);
-	}
-	
-	const handleUpdateData = (direct, auction) => {
-		// if(direct?.length > 0) {
-		//   const nft = data?.filter(ele => ele?.metadata?.id === direct[0]?.id);
-		//   return setData([...data, {
-		//     ...nft, ...direct
-		//   }]);
-		// } else if(auction?.length > 0) {
-		//   const nft = data?.filter(ele => ele?.metadata?.id === auction[0]?.id);
-		//   return setData([...data, {
-		//     ...nft, ...auction
-		//   }])
-		// }
+		const accountsFilter = accounts.filter((acc) => acc?.fullName?.toLowerCase().includes(searchInput.toLowerCase()));
+		setData(accountsFilter);
 	}
 	
 	return (
-		<div className={`nc-PageSearch  ${className}`} data-nc-id="searchPage">
+		<div className={`nc-PageSearch  ${className} h-full`} data-nc-id="searchPage">
 			<Helmet>
 				<title>Explore</title>
 			</Helmet>
@@ -147,31 +102,21 @@ export default function SearchPage({className = "", nfts, paginationOptions}) {
 				</header>
 			</div>
 			
-			<div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
+			<div className="container h-3/4 min-h-full py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
 				<main>
-					{/* FILTER */}
-					<HeaderFilterSearchPage
-						onActiveTab={handleActiveTab}
-						tabs={tabs}
-						tabActive={tabActive}
-						onRangePrice={handleRangePrice}
-						onSaleStates={handleSaleStates}
-						onSortOrderStates={handleSortOrderStates}
-					/>
-					
 					{/* LOOP ITEMS */}
 					<div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
 						{data?.length > 0 ? (
-							data.map((item) => <CardNFT
-									key={item?.metadata?.id}
-									nft={item}
-									quantity={item?.supply}
-									onUpdateData={handleUpdateData}
+							data.map((user, index) => <CardAuthorBox4
+									authorIndex={index}
+									user={user}
+									account={account}
+									key={index}
 								/>
 							)
 						) : (
 							// eslint-disable-next-line react/no-unescaped-entities
-							<p>There aren't any NFTs</p>
+							<p>No user</p>
 						)}
 					</div>
 				</main>
@@ -183,7 +128,7 @@ export default function SearchPage({className = "", nfts, paginationOptions}) {
 	);
 }
 
-SearchPage.getLayout = (page) => (
+ListUserPage.getLayout = (page) => (
 	<MainLayout>
 		{page}
 	</MainLayout>
@@ -192,11 +137,10 @@ SearchPage.getLayout = (page) => (
 export const getServerSideProps = withSessionSsr(async (ctx) => {
 	await dbConnect();
 	try {
-		const response = await nftService.getAllNfts(1, 99);
+		const response = await accountService.getAccounts();
 		return {
 			props: {
-				nfts: JSON.parse(JSON.stringify(response.data)),
-				paginationOptions: JSON.parse(JSON.stringify(response.paginationOptions)),
+				accounts: JSON.parse(JSON.stringify(response)),
 			},
 		};
 	} catch (e) {
