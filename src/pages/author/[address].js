@@ -5,7 +5,6 @@ import NcImage from "src/components/shared/NcImage/NcImage";
 import authorBanner from "src/assets/images/nfts/authorBanner.png";
 import VerifyIcon from "src/components/app/VerifyIcon";
 import SocialsList from "src/components/shared/SocialsList/SocialsList";
-import NftMoreDropdown from "src/components/app/NftMoreDropdown";
 import ButtonDropDownShare from "src/components/app/ButtonDropDownShare";
 import FollowButton from "src/components/app/FollowButton";
 import {useOwnedNFTs} from "@thirdweb-dev/react";
@@ -174,16 +173,16 @@ export default function AuthorPage({className = "", account}) {
 						</div>
 						<div
 							className="absolute md:static left-5 top-4 sm:left-auto sm:top-5 sm:right-5 flex flex-row-reverse justify-end">
-							<NftMoreDropdown
-								actions={[
-									{
-										id: "report",
-										name: "Report abuse",
-										icon: "las la-flag",
-									},
-								]}
-								containerClassName="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 dark:hover:bg-neutral-700 dark:bg-neutral-800 cursor-pointer"
-							/>
+							{/*<NftMoreDropdown*/}
+							{/*	actions={[*/}
+							{/*		{*/}
+							{/*			id: "report",*/}
+							{/*			name: "Report abuse",*/}
+							{/*			icon: "las la-flag",*/}
+							{/*		},*/}
+							{/*	]}*/}
+							{/*	containerClassName="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 dark:hover:bg-neutral-700 dark:bg-neutral-800 cursor-pointer"*/}
+							{/*/>*/}
 							<ButtonDropDownShare
 								className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 dark:hover:bg-neutral-700 dark:bg-neutral-800 cursor-pointer mx-2"
 								panelMenusClass="origin-top-right !-right-5 !w-40 sm:!w-52"
