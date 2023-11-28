@@ -40,6 +40,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 	const address = useAddress();
 	const [owner, setOwner] = useState();
 	const [account, setAccount] = useState();
+	const [creator, setCreator] = useState();
 	const [category, setCategory] = useState();
 	const {marketplace, nftCollection} = useContext(NFTMarketplaceContext);
 	const {mutateAsync: cancelDirectListing} = useCancelDirectListing(marketplace);
@@ -90,6 +91,15 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 			}
 		)();
 	}, [nft?.metadata])
+	
+	useEffect(() => {
+		(async () => {
+			if (dataNFT) {
+				const creatorResponse = await webClientService.getAccountByAddress(dataNFT?.owner);
+				setCreator(creatorResponse.data);
+			}
+		})();
+	}, [dataNFT])
 	
 	const {data: transferEvents, isLoading: loadingTransferEvents} =
 		useContractEvents(nftCollection, "Transfer", {
@@ -143,14 +153,14 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 					{/* ---------- 4 ----------  */}
 					<div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 text-sm">
 						<div className="flex items-center ">
-							<Avatar imgUrl={owner?.avatar || ""} sizeClass="h-9 w-9" radius="rounded-full"/>
+							<Avatar imgUrl={creator?.avatar || ""} sizeClass="h-9 w-9" radius="rounded-full"/>
 							<span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
               <span className="text-sm">Creator</span>
                 <Link
-									href={`/author/${owner?.address}`}
+									href={`/author/${creator?.address}`}
 								>
                   <span className="text-neutral-900 dark:text-neutral-200 font-medium flex items-center">
-                    <span>{owner?.fullName || "Exchange"}</span>
+                    <span>{creator?.fullName || ""}</span>
                     <VerifyIcon iconClass="w-4 h-4"/>
                   </span>
                 </Link>
