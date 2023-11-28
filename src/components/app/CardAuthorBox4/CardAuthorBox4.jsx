@@ -7,7 +7,6 @@ import FollowButton from "../FollowButton";
 import Badge from "src/components/shared/Badge/Badge";
 
 const CardAuthorBox4 = ({className = "", following, account, user, authorIndex}) => {
-	console.log("CardAuthorBox", user);
 	return (
 		<div
 			className={`nc-CardAuthorBox4 relative flex flex-col overflow-hidden group bg-white dark:bg-neutral-800 group rounded-3xl hover:shadow-xl transition-shadow ${className}`}

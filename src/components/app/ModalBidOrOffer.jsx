@@ -1,17 +1,20 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import Input from "src/components/shared/Input/Input";
 import NcModal from "src/components/shared/NcModal/NcModal";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import Label from "src/components/app/Label/Label";
-import {ThirdwebSDK, useContractEvents} from "@thirdweb-dev/react";
-import {NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
+import {useAddress} from "@thirdweb-dev/react";
+import webClientService from "src/lib/services/webClientService";
+import {useSnackbar} from "notistack";
 
-const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit}) => {
+const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit, loadNFT}) => {
+	const {enqueueSnackbar} = useSnackbar();
 	const {marketplace} = useContext(NFTMarketplaceContext);
 	const [bidValue, setBidValue] = useState('0')
 	const [loading, setLoading] = useState(false);
+	const address = useAddress();
 	const handleInputChange = (e) => {
 		setBidValue(e.target.value);
 	};
@@ -31,6 +34,21 @@ const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit}) => {
 				auctionId,
 				+bidValue
 			);
+			const response = await webClientService.addTransaction({
+				nftId: auctionId,
+				data: {
+					address: address,
+					bid: bidValue
+				}
+			})
+			
+			if (response.code === 200) {
+				loadNFT().then();
+				enqueueSnackbar('Place a bid successfully', {
+					variant: 'success'
+				})
+			}
+			
 		} else {
 			throw new Error("No valid listing found for this NFT");
 		}

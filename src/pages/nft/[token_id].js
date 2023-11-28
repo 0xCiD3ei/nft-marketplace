@@ -17,12 +17,12 @@ import SectionSliderCategories from "src/components/app/SectionSliderCategories/
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import {useRouter} from "next/router";
 import {
-  ThirdwebSDK,
-  useAddress,
-  useCancelDirectListing,
-  useContractEvents,
-  useValidDirectListings,
-  useValidEnglishAuctions,
+	ThirdwebSDK,
+	useAddress,
+	useCancelDirectListing,
+	useContractEvents,
+	useValidDirectListings,
+	useValidEnglishAuctions,
 } from "@thirdweb-dev/react";
 import {useContext, useEffect, useState} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
@@ -74,6 +74,11 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		})();
 	}, [address]);
 	
+	const loadNFT = async () => {
+		const responseNFT = await webClientService.getNFTById(nft.metadata.id);
+		setDataNFT(responseNFT.data.nft);
+	}
+	
 	useEffect(() => {
 		(
 			async () => {
@@ -81,8 +86,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 					categoryId: nft.metadata.category
 				})
 				setCategory(response.data);
-				const responseNFT = await webClientService.getNFTById(nft.metadata.id);
-				setDataNFT(responseNFT.data.nft);
+				loadNFT().then();
 			}
 		)();
 	}, [nft?.metadata])
@@ -103,11 +107,14 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		
 		if (auctionListing?.[0]) {
 			txResult = await marketplace?.englishAuctions.buyoutAuction(
-				auctionListing[0].id
+				auctionListing[0]?.id
 			);
+			await webClientService.deleteAllTransaction({
+				nftId: auctionListing[0]?.id
+			});
 		} else if (directListing?.[0]) {
 			txResult = await marketplace?.directListings.buyFromListing(
-				directListing[0].id,
+				directListing[0]?.id,
 				1
 			);
 		} else {
@@ -116,6 +123,8 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		
 		return txResult;
 	}
+	
+	console.log('dataNFT', owner);
 	
 	
 	const renderSection1 = () => {
@@ -137,14 +146,14 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 					{/* ---------- 4 ----------  */}
 					<div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-8 text-sm">
 						<div className="flex items-center ">
-							<Avatar imgUrl={""} sizeClass="h-9 w-9" radius="rounded-full"/>
+							<Avatar imgUrl={owner?.avatar || ""} sizeClass="h-9 w-9" radius="rounded-full"/>
 							<span className="ml-2.5 text-neutral-500 dark:text-neutral-400 flex flex-col">
               <span className="text-sm">Creator</span>
                 <Link
-									href={{pathname: "author", query: `query`}}
+									href={`/author/${owner?.address}`}
 								>
                   <span className="text-neutral-900 dark:text-neutral-200 font-medium flex items-center">
-                    <span>{"Admin"}</span>
+                    <span>{owner?.fullName || "Exchange"}</span>
                     <VerifyIcon iconClass="w-4 h-4"/>
                   </span>
                 </Link>
@@ -171,7 +180,8 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 				{/* ---------- 6 ----------  */}
 				<div className="py-9">
 					<TimeCountDown
-						endTime={(directListing && directListing[0]?.endTimeInSeconds) || (auctionListing && auctionListing[0]?.endTimeInSeconds)}/>
+						endTime={(directListing && directListing[0]?.endTimeInSeconds) || (auctionListing && auctionListing[0]?.endTimeInSeconds)}
+					/>
 				</div>
 				
 				{/* ---------- 7 ----------  */}
@@ -447,8 +457,8 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 				{/* ---------- 9 ----------  */}
 				<div className="pt-9">
 					<TabDetail
+						nft={dataNFT}
 						owner={owner}
-						transferEvents={transferEvents || []}
 					/>
 				</div>
 			</div>
@@ -475,8 +485,13 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 							<ItemTypeImageIcon className="absolute left-3 top-3  w-8 h-8 md:w-10 md:h-10"/>
 							
 							{/* META FAVORITES */}
-							<LikeButton className="absolute right-3 top-3" account={account} nftId={nft.metadata.id}
-													liked={dataNFT?.favorites.includes(account?._id)} total={dataNFT?.favorites.length}/>
+							<LikeButton
+								className="absolute right-3 top-3"
+								account={account}
+								nftId={nft.metadata.id}
+								liked={dataNFT?.favorites?.includes(account?._id)}
+								total={dataNFT?.favorites?.length}
+							/>
 						</div>
 						
 						<AccordionInfo data={nft?.metadata || []}/>
@@ -513,6 +528,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 				onCloseModalEdit={() => setAuctionModal(false)}
 			/>
 			<ModalBidOrOffer
+				loadNFT={loadNFT}
 				show={offerOrBidModal}
 				nft={nft}
 				auctionListing={auctionListing || []}

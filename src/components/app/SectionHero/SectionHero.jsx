@@ -28,8 +28,6 @@ const SectionHero = (props) => {
 		loadAddresses().then();
 	}, [address]);
 	
-	console.log("addresses", addresses.map(ele => ele.address.includes(address)));
-	
 	return (
 		<div
 			className={`nc-SectionHero relative ${className}`}
@@ -50,7 +48,7 @@ const SectionHero = (props) => {
 							<SearchIcon className="w-5 h-5 ml-2.5"/>
 						</ButtonPrimary>
 						{
-							addresses.map(ele => ele?.address?.includes(address)) && (
+							addresses?.some(owner => owner.address === address) && (
 								<ButtonSecondary to="/upload-item">
 									<span>Create</span>
 									<svg className="w-5 h-5 ml-2.5" viewBox="0 0 24 24" fill="none">

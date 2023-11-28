@@ -1,10 +1,11 @@
 import NcDropDown from "src/components/shared/NcDropDown/NcDropDown";
 import {FacebookShareButton, LinkedinShareButton, TwitterShareButton} from "next-share";
 
-const ButtonDropDownShare = ({
-															 className = "py-1.5 px-3 flex rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer ",
-															 panelMenusClass = "",
-														 }) => {
+const ButtonDropDownShare = (props) => {
+	const {
+		className = "py-1.5 px-3 flex rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer ",
+		panelMenusClass = "",
+	} = props;
 	return (
 		<NcDropDown
 			className={className}

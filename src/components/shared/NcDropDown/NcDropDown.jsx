@@ -14,8 +14,6 @@ const NcDropDown = ({
 											onClick,
 										}) => {
 	const location = useLocation();
-	
-	console.log("location", location);
 	return (
 		<Menu as="div" className="relative inline-block text-left">
 			<Menu.Button className={className} title={title}>
