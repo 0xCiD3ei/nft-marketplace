@@ -124,9 +124,6 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		return txResult;
 	}
 	
-	console.log('dataNFT', owner);
-	
-	
 	const renderSection1 = () => {
 		return (
 			<div className="divide-y divide-neutral-100 dark:divide-neutral-800">
