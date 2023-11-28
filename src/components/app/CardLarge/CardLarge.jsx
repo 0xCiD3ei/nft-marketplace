@@ -14,15 +14,16 @@ import webClientService from "src/lib/services/webClientService";
 import ModalBidOrOffer from "src/components/app/ModalBidOrOffer";
 import {useAddress} from "@thirdweb-dev/react";
 
-const CardLarge = ({
-										 className = "",
-										 isShowing = true,
-										 auction,
-										 onClickNext = () => {
-										 },
-										 onClickPrev = () => {
-										 },
-									 }) => {
+const CardLarge = (props) => {
+	const {
+		className = "",
+		isShowing = true,
+		auction,
+		onClickNext = () => {
+		},
+		onClickPrev = () => {
+		},
+	} = props;
 	const [creator, setCreator] = useState();
 	const [collection, setCollection] = useState();
 	const [offerOrBidModal, setOfferOrBidModal] = useState(false);
