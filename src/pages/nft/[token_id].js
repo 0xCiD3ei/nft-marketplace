@@ -34,6 +34,7 @@ import ModalAuction from "src/components/app/ModalAuction";
 import {Helmet} from "react-helmet";
 import ModalBidOrOffer from "src/components/app/ModalBidOrOffer";
 import {NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
+import {useSnackbar} from "notistack";
 
 export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 	const router = useRouter();
@@ -47,7 +48,9 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 	const [directListingModal, setDirectListingModal] = useState(false);
 	const [auctionModal, setAuctionModal] = useState(false);
 	const [offerOrBidModal, setOfferOrBidModal] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [dataNFT, setDataNFT] = useState();
+	const {enqueueSnackbar} = useSnackbar();
 	
 	const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
 		tokenContract: NFT_COLLECTION_ADDRESS,
@@ -113,25 +116,43 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		});
 	
 	const buyListing = async () => {
-		let txResult;
-		
-		if (auctionListing?.[0]) {
-			txResult = await marketplace?.englishAuctions.buyoutAuction(
-				auctionListing[0]?.id
-			);
-			await webClientService.deleteAllTransaction({
-				nftId: auctionListing[0]?.id
-			});
-		} else if (directListing?.[0]) {
-			txResult = await marketplace?.directListings.buyFromListing(
-				directListing[0]?.id,
-				1
-			);
-		} else {
-			throw new Error("No listing found");
+		try {
+			setLoading(true);
+			let txResult;
+			if (auctionListing?.[0]) {
+				txResult = await marketplace?.englishAuctions.buyoutAuction(
+					auctionListing[0]?.id
+				);
+				await webClientService.deleteAllTransaction({
+					nftId: auctionListing[0]?.id
+				});
+				enqueueSnackbar('Buy NFT successfully', {
+					variant: 'success'
+				})
+			} else if (directListing?.[0]) {
+				txResult = await marketplace?.directListings.buyFromListing(
+					directListing[0]?.id,
+					1
+				);
+				enqueueSnackbar('Buy NFT successfully', {
+					variant: 'success'
+				})
+			} else {
+				enqueueSnackbar('No listing found', {
+					variant: 'error'
+				})
+				setLoading(false);
+				return;
+			}
+			setLoading(false);
+			return txResult;
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+			enqueueSnackbar('There was an error when purchasing the NFT', {
+				variant: 'error'
+			})
 		}
-		
-		return txResult;
 	}
 	
 	const renderSection1 = () => {
@@ -292,6 +313,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 									</ButtonPrimary>
 								) : (
 									<ButtonPrimary
+										loading={loading}
 										onClick={async () => buyListing()}
 										className="flex-1"
 									>

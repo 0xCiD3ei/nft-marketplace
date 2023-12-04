@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import Input from "src/components/shared/Input/Input";
@@ -19,43 +19,69 @@ const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit, loadNFT})
 		setBidValue(e.target.value);
 	};
 	
+	useEffect(() => {
+		if (auctionListing?.length > 0) {
+			setBidValue(auctionListing[0]?.minimumBidCurrencyValue?.displayValue);
+		}
+	}, [auctionListing]);
+	
 	const handleOnSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true);
-		let txResult;
-		if (!bidValue) {
+		
+		if (+bidValue <= +auctionListing[0]?.minimumBidCurrencyValue?.displayValue) {
+			enqueueSnackbar('There was an error when setting the price', {
+				variant: 'error'
+			});
 			return;
 		}
 		
-		const auctionId = +auctionListing[0].id;
-		
-		if (auctionListing.length > 0) {
-			txResult = await marketplace?.englishAuctions.makeBid(
-				auctionId,
-				+bidValue
-			);
-			const response = await webClientService.addTransaction({
-				nftId: auctionId,
-				data: {
-					address: address,
-					bid: bidValue
-				}
-			})
-			
-			if (response.code === 200) {
-				loadNFT().then();
-				enqueueSnackbar('Place a bid successfully', {
-					variant: 'success'
-				})
+		try {
+			setLoading(true);
+			let txResult;
+			if (!bidValue) {
+				return;
 			}
 			
-		} else {
-			throw new Error("No valid listing found for this NFT");
+			const auctionId = +auctionListing[0].id;
+			
+			if (auctionListing.length > 0) {
+				txResult = await marketplace?.englishAuctions.makeBid(
+					auctionId,
+					+bidValue
+				);
+				const response = await webClientService.addTransaction({
+					nftId: auctionId,
+					data: {
+						address: address,
+						bid: bidValue
+					}
+				})
+				
+				if (response.code === 200) {
+					loadNFT().then();
+					enqueueSnackbar('Place a bid successfully', {
+						variant: 'success'
+					})
+				}
+				
+			} else {
+				setLoading(false);
+				enqueueSnackbar('No valid listing found for this NFT', {
+					variant: 'error'
+				})
+				return;
+			}
+			onCloseModalEdit();
+			setBidValue("0");
+			setLoading(false);
+			return txResult;
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+			enqueueSnackbar('An error has occurred', {
+				variant: "error"
+			})
 		}
-		onCloseModalEdit();
-		setBidValue("0");
-		setLoading(false);
-		return txResult;
 	};
 	
 	const renderContent = () => {

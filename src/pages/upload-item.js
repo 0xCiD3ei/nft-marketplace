@@ -14,6 +14,7 @@ import dbConnect from "src/lib/dbConnect";
 import categoryService from "src/lib/services/categoryService";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useSnackbar} from "notistack";
+import Image from 'next/image';
 
 export default function UploadItemPage({className = "", categories}) {
 	const {enqueueSnackbar} = useSnackbar();
@@ -24,10 +25,12 @@ export default function UploadItemPage({className = "", categories}) {
 		description: "",
 		image: ""
 	});
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
+	const [preview, setPreview] = useState('');
 	
 	const handleOnchangeFile = async (e) => {
 		const url = await uploadToIPFS(e.target.files[0]);
+		setPreview(url)
 		setFormValues({...formValues, image: url});
 	};
 	
@@ -61,15 +64,14 @@ export default function UploadItemPage({className = "", categories}) {
 					<div className="mt-10 md:mt-0 space-y-5 sm:space-y-6 md:sm:space-y-8">
 						<div>
 							<h3 className="text-lg sm:text-2xl font-semibold">
-								Image, Video, Audio, or 3D Model
+								Image
 							</h3>
 							<span className="text-neutral-500 dark:text-neutral-400 text-sm">
-                File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV,
-                OGG, GLB, GLTF. Max size: 100 MB
+                File types supported: JPG, PNG, GIF. Max size: 1 MB
               </span>
-							<div className="mt-5 ">
+							<div className="mt-5 flex gap-2">
 								<div
-									className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
+									className="mt-1 flex flex-1 justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-6000 border-dashed rounded-xl">
 									<div className="space-y-1 text-center">
 										<svg
 											className="mx-auto h-12 w-12 text-neutral-400"
@@ -102,10 +104,21 @@ export default function UploadItemPage({className = "", categories}) {
 											<p className="pl-1">or drag and drop</p>
 										</div>
 										<p className="text-xs text-neutral-500 dark:text-neutral-400">
-											PNG, JPG, GIF up to 10MB
+											PNG, JPG, GIF up to 1MB
 										</p>
 									</div>
 								</div>
+								{
+									preview && (
+										<Image
+											className="h-auto max-w-full rounded-xl"
+											width={140}
+											height={140}
+											src={preview}
+											alt="image preview"
+										/>
+									)
+								}
 							</div>
 						</div>
 						
