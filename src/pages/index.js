@@ -19,21 +19,22 @@ import {withSessionSsr} from "src/lib/middlewares/withSession";
 import dbConnect from "src/lib/dbConnect";
 import accountService from "src/lib/services/accountService";
 import SectionLargeSlider from "src/components/containers/PageHome/SectionLargeSlider";
+import nftService from "src/lib/services/nftService";
 
-export default function HomePage({users, account}) {
+export default function HomePage({users, nfts}) {
 	const [auctions, setAuctions] = useState([]);
 	const {marketplace} = useContext(NFTMarketplaceContext);
 	useEffect(() => {
 		(async () => {
 			const txResult = await marketplace?.englishAuctions.getAllValid(MARKETPLACE_ADDRESS)
-			setAuctions(txResult)
+			setAuctions(txResult);
 		})()
 	}, [marketplace]);
 	
 	return (
 		<>
 			<Head>
-				<title>Ciscryp || NFT Marketplace Template</title>
+				<title>Home</title>
 			</Head>
 			<div className="nc-PageHome relative overflow-hidden">
 				{/* GLASSMOPHIN */}
@@ -103,7 +104,7 @@ export default function HomePage({users, account}) {
 					{/* SECTION */}
 					<div className="relative py-20 lg:py-28">
 						<BackgroundSection className="bg-neutral-100/70 dark:bg-black/20 "/>
-						<SectionGridFeatureNFT/>
+						<SectionGridFeatureNFT nfts={nfts}/>
 					</div>
 					
 					{/* SECTION 1 */}
@@ -133,9 +134,11 @@ export const getServerSideProps = withSessionSsr(async (ctx) => {
 	await dbConnect();
 	try {
 		const users = await accountService.getAccounts();
+		const response = await nftService.getAllNfts(1, 6);
 		return {
 			props: {
 				users: JSON.parse(JSON.stringify(users)),
+				nfts: JSON.parse(JSON.stringify(response?.data)),
 			},
 		};
 	} catch (e) {

@@ -5,13 +5,17 @@ import ItemTypeImageIcon from "./ItemTypeImageIcon";
 import Prices from "./Prices";
 import {ClockIcon} from "@heroicons/react/outline";
 import moment from "moment";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
 import {useValidDirectListings, useValidEnglishAuctions} from "@thirdweb-dev/react";
 import {NFT_COLLECTION_ADDRESS} from "src/constant/addresses";
+import WebClientService from "src/lib/services/webClientService";
+import {useRouter} from "next/router";
 
 const CardNFT = ({className = "", isLiked, nft, quantity, onUpdateData}) => {
 	const {marketplace} = useContext(NFTMarketplaceContext);
+	const [owner, setOwner] = useState();
+	const router = useRouter();
 	
 	const {
 		data: directListing,
@@ -29,12 +33,17 @@ const CardNFT = ({className = "", isLiked, nft, quantity, onUpdateData}) => {
 		});
 	
 	useEffect(() => {
-		// onUpdateData(directListing, auctionListing);
-	}, [auctionListing, directListing, onUpdateData]);
+		(async () => {
+			if (nft) {
+				const response = await WebClientService.getAccountByAddress(nft?.owner);
+				setOwner(response.data);
+			}
+		})();
+	}, [nft]);
 	
 	const renderAvatars = () => {
 		return (
-			<div className="flex -space-x-1 ">
+			<div className="flex-space-x-1 ">
 				<Avatar
 					containerClassName="ring-2 ring-white dark:ring-neutral-900"
 					sizeClass="h-5 w-5 text-sm"
@@ -73,8 +82,15 @@ const CardNFT = ({className = "", isLiked, nft, quantity, onUpdateData}) => {
 			</div>
 			
 			<div className="p-4 py-5 space-y-3">
-				<div className="flex justify-between">
-					{renderAvatars()}
+				<div className="flex justify-between items-start">
+					<Avatar
+						imgUrl={owner?.avatar || ""}
+						containerClassName="ring-2 ring-white dark:ring-neutral-900"
+						sizeClass="h-5 w-5 text-sm"
+						onClick={() => {
+							router.push(`/author/${owner?.address}`);
+						}}
+					/>
 					<span className="text-neutral-700 dark:text-neutral-400 text-xs">
             {nft?.quantity || "1"} in stock
           </span>
