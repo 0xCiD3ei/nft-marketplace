@@ -133,11 +133,11 @@ HomePage.getLayout = (page) => (
 export const getServerSideProps = withSessionSsr(async (ctx) => {
 	await dbConnect();
 	try {
-		const users = await accountService.getAccounts();
+		const users = await accountService.getAccounts(1, 8);
 		const response = await nftService.getAllNfts(1, 6);
 		return {
 			props: {
-				users: JSON.parse(JSON.stringify(users)),
+				users: JSON.parse(JSON.stringify(users?.data)),
 				nfts: JSON.parse(JSON.stringify(response?.data)),
 			},
 		};

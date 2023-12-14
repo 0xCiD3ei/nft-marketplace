@@ -137,10 +137,10 @@ ListUserPage.getLayout = (page) => (
 export const getServerSideProps = withSessionSsr(async (ctx) => {
 	await dbConnect();
 	try {
-		const response = await accountService.getAccounts();
+		const response = await accountService.getAccounts(1, 99);
 		return {
 			props: {
-				accounts: JSON.parse(JSON.stringify(response)),
+				accounts: JSON.parse(JSON.stringify(response?.data)),
 			},
 		};
 	} catch (e) {
