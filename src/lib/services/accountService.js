@@ -84,7 +84,8 @@ class AccountService {
 		try {
 			const options = {
 				page: page,
-				limit: limit
+				limit: limit,
+				sort: {_id: -1}
 			};
 			const paginatedResult = await AccountModel.paginate({}, options);
 			

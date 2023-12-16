@@ -51,7 +51,8 @@ class NFTService {
 	async getAllNfts(page, limit) {
 		const options = {
 			page: page,
-			limit: limit
+			limit: limit,
+			sort: {_id: -1}
 		};
 		
 		try {
