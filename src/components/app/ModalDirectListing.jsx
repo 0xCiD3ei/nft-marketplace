@@ -38,6 +38,13 @@ const ModalDirectListing = ({show, nft, onCloseModalEdit}) => {
 			return;
 		}
 		
+		if (!(/^-?\d*\.?\d+$/.test(state.price))) {
+			enqueueSnackbar('Invalid the buy now price value', {
+				variant: 'error'
+			});
+			return;
+		}
+		
 		try {
 			setLoading(true);
 			const txResult = await createDirectListing({

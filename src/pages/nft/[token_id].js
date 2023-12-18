@@ -106,20 +106,19 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 	
 	useEffect(() => {
 		(async () => {
-			console.log('nft?.metadata?.id', nft?.metadata?.id)
-			const txResult = await marketplace?.englishAuctions?.getAll({
-				tokenContract: NFT_COLLECTION_ADDRESS,
-				tokenId: nft?.metadata?.id
-			});
-			if (txResult?.length > 0) {
-				const listing = await marketplace?.englishAuctions?.getAuction(txResult[txResult.length - 1]?.id);
-				if (listing?.status === 5) {
-					try {
+			try {
+				const txResult = await marketplace?.englishAuctions?.getAll({
+					tokenContract: NFT_COLLECTION_ADDRESS,
+					tokenId: nft?.metadata?.id
+				});
+				if (txResult?.length > 0) {
+					const listing = await marketplace?.englishAuctions?.getAuction(txResult[txResult.length - 1]?.id);
+					if (listing?.status === 5) {
 						await marketplace?.englishAuctions?.executeSale(listing?.id);
-					} catch (e) {
-						console.log(e)
 					}
 				}
+			} catch (e) {
+				console.log(e)
 			}
 		})();
 	}, [marketplace?.englishAuctions, nft]);

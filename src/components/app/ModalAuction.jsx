@@ -39,6 +39,28 @@ const ModalAuction = ({show, nft, onCloseModalEdit}) => {
 			});
 			return;
 		}
+		
+		if (Number(state.price) < Number(state.floorPrice)) {
+			enqueueSnackbar('The buy now price must be greater than the minimum bid price', {
+				variant: 'error'
+			});
+			return;
+		}
+		
+		if (!(/^-?\d*\.?\d+$/.test(state.price))) {
+			enqueueSnackbar('Invalid the buy now price value', {
+				variant: 'error'
+			});
+			return;
+		}
+		
+		if (!(/^-?\d*\.?\d+$/.test(state.floorPrice))) {
+			enqueueSnackbar('Invalid the minimum bid price value', {
+				variant: 'error'
+			});
+			return;
+		}
+		
 		try {
 			setLoading(true);
 			const txResult = await createAuctionListing({

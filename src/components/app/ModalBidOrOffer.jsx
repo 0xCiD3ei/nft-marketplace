@@ -29,6 +29,13 @@ const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit, loadNFT})
 			return;
 		}
 		
+		if (!(/^-?\d*\.?\d+$/.test(bidValue))) {
+			enqueueSnackbar('Invalid price value', {
+				variant: 'error'
+			});
+			return;
+		}
+		
 		try {
 			setLoading(true);
 			let txResult;

@@ -116,8 +116,7 @@ export default function ApprovePage({className = "", account}) {
 							Permission for mint NFT
 						</h2>
 						<span className="block mt-3 text-neutral-500 dark:text-neutral-400">
-              You can set preferred display name, create your profile URL and
-              manage other personal settings.
+              You can grant or revoke permission for others to create NFTs.
             </span>
 					</div>
 					<div className="w-full border-b-2 border-neutral-100 dark:border-neutral-700"></div>

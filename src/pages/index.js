@@ -26,9 +26,13 @@ export default function HomePage({users, nfts}) {
 	const {marketplace} = useContext(NFTMarketplaceContext);
 	useEffect(() => {
 		(async () => {
-			const txResult = await marketplace?.englishAuctions?.getAllValid(MARKETPLACE_ADDRESS)
-			setAuctions(txResult || []);
-		})()
+			try {
+				const txResult = await marketplace?.englishAuctions?.getAllValid(MARKETPLACE_ADDRESS)
+				setAuctions(txResult || []);
+			} catch (e) {
+				console.log(e)
+			}
+		})();
 	}, [marketplace]);
 	
 	return (
