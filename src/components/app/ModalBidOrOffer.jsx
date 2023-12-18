@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import ButtonSecondary from "src/components/shared/Button/ButtonSecondary";
 import Input from "src/components/shared/Input/Input";
@@ -18,12 +18,6 @@ const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit, loadNFT})
 	const handleInputChange = (e) => {
 		setBidValue(e.target.value);
 	};
-	
-	useEffect(() => {
-		if (auctionListing?.length > 0) {
-			setBidValue(auctionListing[0]?.minimumBidCurrencyValue?.displayValue);
-		}
-	}, [auctionListing]);
 	
 	const handleOnSubmit = async (e) => {
 		e.preventDefault();
@@ -50,7 +44,7 @@ const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit, loadNFT})
 					+bidValue
 				);
 				const response = await webClientService.addTransaction({
-					nftId: auctionId,
+					nftId: auctionListing[0].tokenId,
 					data: {
 						address: address,
 						bid: bidValue
@@ -63,7 +57,6 @@ const ModalBidOrOffer = ({show, nft, auctionListing, onCloseModalEdit, loadNFT})
 						variant: 'success'
 					})
 				}
-				
 			} else {
 				setLoading(false);
 				enqueueSnackbar('No valid listing found for this NFT', {

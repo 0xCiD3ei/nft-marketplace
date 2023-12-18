@@ -104,6 +104,26 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		})();
 	}, [dataNFT])
 	
+	useEffect(() => {
+		(async () => {
+			console.log('nft?.metadata?.id', nft?.metadata?.id)
+			const txResult = await marketplace?.englishAuctions?.getAll({
+				tokenContract: NFT_COLLECTION_ADDRESS,
+				tokenId: nft?.metadata?.id
+			});
+			if (txResult?.length > 0) {
+				const listing = await marketplace?.englishAuctions?.getAuction(txResult[txResult.length - 1]?.id);
+				if (listing?.status === 5) {
+					try {
+						await marketplace?.englishAuctions?.executeSale(listing?.id);
+					} catch (e) {
+						console.log(e)
+					}
+				}
+			}
+		})();
+	}, [marketplace?.englishAuctions, nft]);
+	
 	const {data: transferEvents, isLoading: loadingTransferEvents} =
 		useContractEvents(nftCollection, "Transfer", {
 			queryFilter: {
@@ -123,9 +143,6 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 				txResult = await marketplace?.englishAuctions.buyoutAuction(
 					auctionListing[0]?.id
 				);
-				await webClientService.deleteAllTransaction({
-					nftId: auctionListing[0]?.id
-				});
 				enqueueSnackbar('Buy NFT successfully', {
 					variant: 'success'
 				})
@@ -357,7 +374,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 						{
 							loadingDirectListing || loadingAuction ? (
 								<div></div>
-							) : directListing?.length === 0 && auctionListing?.length === 0 && nft.owner === address ?
+							) : (!directListing || directListing?.length === 0) && (!auctionListing || auctionListing?.length === 0) && nft.owner === address ?
 								(
 									<>
 										<ButtonPrimary

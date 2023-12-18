@@ -4,8 +4,12 @@ import {AccountModel} from "src/lib/models/account.model";
 import {CategoryModel} from "src/lib/models/category.model";
 
 class NFTService {
-	createNFT(payload) {
-		return NftModel.create(payload);
+	async createNFT(payload) {
+		const newNFT = await NftModel.create(payload);
+		const categoryId = payload.metadata.category;
+		const increaseValue = 1;
+		await CategoryModel.findByIdAndUpdate(categoryId, {$inc: {totalItems: increaseValue}});
+		return newNFT;
 	}
 	
 	async getNFTById(payload) {
@@ -140,6 +144,7 @@ class NFTService {
 	}
 	
 	async addTransaction(payload) {
+		console.log(payload);
 		const {nftId, data} = payload;
 		const nft = await NftModel.findOne({'metadata.id': nftId});
 		
@@ -150,13 +155,12 @@ class NFTService {
 			})
 		}
 		
-		if (!nft.transaction) {
-			nft.transaction = [];
-		}
-		
 		nft.transaction.push(data);
 		
 		await nft.save();
+		
+		
+		console.log('nft', nft);
 		
 		return nft;
 	}

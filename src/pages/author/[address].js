@@ -9,10 +9,7 @@ import ButtonDropDownShare from "src/components/app/ButtonDropDownShare";
 import FollowButton from "src/components/app/FollowButton";
 import {useOwnedNFTs} from "@thirdweb-dev/react";
 import {Tab} from "@headlessui/react";
-import ArchiveFilterListBox from "src/components/app/ArchiveFilterListBox";
 import CardNFT from "src/components/app/CardNFT";
-import Pagination from "src/components/shared/Pagination/Pagination";
-import ButtonPrimary from "src/components/shared/Button/ButtonPrimary";
 import CardAuthorBox3 from "src/components/app/CardAuthorBox3/CardAuthorBox3";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
 import {withSessionSsr} from "src/lib/middlewares/withSession";
@@ -220,9 +217,9 @@ export default function AuthorPage({className = "", account}) {
 									</Tab>
 								))}
 							</Tab.List>
-							<div className="mt-5 lg:mt-0 flex items-end justify-end">
-								<ArchiveFilterListBox/>
-							</div>
+							{/*<div className="mt-5 lg:mt-0 flex items-end justify-end">*/}
+							{/*	<ArchiveFilterListBox/>*/}
+							{/*</div>*/}
 						</div>
 						<Tab.Panels>
 							<Tab.Panel className="">
@@ -234,17 +231,6 @@ export default function AuthorPage({className = "", account}) {
 											<CardNFT nft={item} quantity={item?.supply || 1} key={index}/>
 										))}
 								</div>
-								
-								{/* PAGINATION */}
-								<div
-									className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-									<Pagination/>
-									{
-										ownedNFTs?.length > 8 && (
-											<ButtonPrimary loading={false}>Show me more</ButtonPrimary>
-										)
-									}
-								</div>
 							</Tab.Panel>
 							<Tab.Panel className="">
 								{/* LOOP ITEMS */}
@@ -254,17 +240,6 @@ export default function AuthorPage({className = "", account}) {
 										<CardNFT isLiked key={index} nft={nft}/>
 									))}
 								</div>
-								
-								{/* PAGINATION */}
-								<div
-									className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-									<Pagination/>
-									{
-										favorites?.length > 8 && (
-											<ButtonPrimary loading={false}>Show me more</ButtonPrimary>
-										)
-									}
-								</div>
 							</Tab.Panel>
 							<Tab.Panel className="">
 								{/* LOOP ITEMS */}
@@ -272,32 +247,11 @@ export default function AuthorPage({className = "", account}) {
 									className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
 									{followers && followers.map((account, index) => renderCard(account, index, 'box4'))}
 								</div>
-								
-								{/* PAGINATION */}
-								<div
-									className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-									<Pagination/>
-									{
-										followers.length > 8 && (
-											<ButtonPrimary loading={false}>Show me more</ButtonPrimary>
-										)
-									}
-								</div>
 							</Tab.Panel>
 							<Tab.Panel className="">
 								<div
 									className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
 									{following && following.map((account, index) => renderCard(account, index, 'box4'))}
-								</div>
-								{/* PAGINATION */}
-								<div
-									className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-									<Pagination/>
-									{
-										following.length > 8 && (
-											<ButtonPrimary loading={false}>Show me more</ButtonPrimary>
-										)
-									}
 								</div>
 							</Tab.Panel>
 						</Tab.Panels>

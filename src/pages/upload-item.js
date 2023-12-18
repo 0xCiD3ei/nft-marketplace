@@ -252,6 +252,7 @@ export default function UploadItemPage({className = "", categories}) {
 										image: formValues.image,
 										category: selected,
 									})
+									console.log('response', response);
 									if (response.code === 200) {
 										enqueueSnackbar('Mint NFT successfully', {
 											variant: 'success'

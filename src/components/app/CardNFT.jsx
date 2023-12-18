@@ -41,29 +41,6 @@ const CardNFT = ({className = "", isLiked, nft, quantity, onUpdateData}) => {
 		})();
 	}, [nft]);
 	
-	const renderAvatars = () => {
-		return (
-			<div className="flex-space-x-1 ">
-				<Avatar
-					containerClassName="ring-2 ring-white dark:ring-neutral-900"
-					sizeClass="h-5 w-5 text-sm"
-				/>
-				<Avatar
-					containerClassName="ring-2 ring-white dark:ring-neutral-900"
-					sizeClass="h-5 w-5 text-sm"
-				/>
-				<Avatar
-					containerClassName="ring-2 ring-white dark:ring-neutral-900"
-					sizeClass="h-5 w-5 text-sm"
-				/>
-				<Avatar
-					containerClassName="ring-2 ring-white dark:ring-neutral-900"
-					sizeClass="h-5 w-5 text-sm"
-				/>
-			</div>
-		);
-	};
-	
 	return (
 		<div
 			className={`nc-CardNFT relative flex flex-col group !border-0 [ nc-box-has-hover nc-dark-box-bg-has-hover ] ${className}`}
@@ -104,12 +81,12 @@ const CardNFT = ({className = "", isLiked, nft, quantity, onUpdateData}) => {
 				<div className="flex justify-between items-end ">
 					{loadingDirectListing || loadingAuction ? (
 						<p className={"mt-4"}>Loading...</p>
-					) : directListing.length > 0 ? (
+					) : directListing?.length > 0 ? (
 						<Prices
 							price={directListing[0]?.currencyValuePerToken.displayValue}
 							labelTextClassName="bg-white dark:bg-neutral-900 dark:group-hover:bg-neutral-800 group-hover:bg-neutral-50"
 						/>
-					) : auctionListing.length > 0 ? (
+					) : auctionListing?.length > 0 ? (
 						<Prices
 							labelText={'Current Bid'}
 							price={auctionListing[0]?.minimumBidCurrencyValue.displayValue}

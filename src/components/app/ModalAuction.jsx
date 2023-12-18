@@ -46,9 +46,10 @@ const ModalAuction = ({show, nft, onCloseModalEdit}) => {
 				tokenId: nft.metadata.id,
 				buyoutBidAmount: state.price,
 				minimumBidAmount: state.floorPrice,
+				timeBufferInSeconds: "10",
 				startTimestamp: new Date(state.startTimestamp),
 				endTimestamp: new Date(state.endTimestamp),
-			})
+			});
 			onCloseModalEdit();
 			setState({
 				price: "0",
