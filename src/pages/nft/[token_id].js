@@ -50,6 +50,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 	const [offerOrBidModal, setOfferOrBidModal] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [dataNFT, setDataNFT] = useState();
+	const [categories, setCategories] = useState([]);
 	const {enqueueSnackbar} = useSnackbar();
 	
 	const {data: directListing, isLoading: loadingDirectListing} = useValidDirectListings(marketplace, {
@@ -61,6 +62,13 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 		tokenContract: NFT_COLLECTION_ADDRESS,
 		tokenId: nft.metadata.id
 	})
+	
+	useEffect(() => {
+		(async () => {
+			const response = await webClientService.getCategories();
+			setCategories(response?.data);
+		})()
+	}, []);
 	
 	useEffect(() => {
 		(async () => {
@@ -555,7 +563,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 					{/* SECTION 1 */}
 					<div className="relative py-24 lg:py-28">
 						<BackgroundSection/>
-						<SectionSliderCategories/>
+						<SectionSliderCategories categories={categories || []}/>
 					</div>
 					
 					{/* SECTION */}

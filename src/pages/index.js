@@ -20,8 +20,9 @@ import dbConnect from "src/lib/dbConnect";
 import accountService from "src/lib/services/accountService";
 import SectionLargeSlider from "src/components/containers/PageHome/SectionLargeSlider";
 import nftService from "src/lib/services/nftService";
+import categoryService from "src/lib/services/categoryService";
 
-export default function HomePage({users, nfts}) {
+export default function HomePage({users, nfts, categories}) {
 	const [auctions, setAuctions] = useState([]);
 	const {marketplace} = useContext(NFTMarketplaceContext);
 	useEffect(() => {
@@ -112,7 +113,7 @@ export default function HomePage({users, nfts}) {
 					</div>
 					
 					{/* SECTION 1 */}
-					<SectionSliderCategories/>
+					<SectionSliderCategories categories={categories}/>
 					
 					{/* SECTION */}
 					<div className="relative py-20 lg:py-24">
@@ -138,11 +139,13 @@ export const getServerSideProps = withSessionSsr(async (ctx) => {
 	await dbConnect();
 	try {
 		const users = await accountService.getAccounts(1, 8);
+		const categories = await categoryService.getCategories();
 		const response = await nftService.getAllNfts(1, 6);
 		return {
 			props: {
 				users: JSON.parse(JSON.stringify(users?.data)),
 				nfts: JSON.parse(JSON.stringify(response?.data)),
+				categories: JSON.parse(JSON.stringify(categories)),
 			},
 		};
 	} catch (e) {
