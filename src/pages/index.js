@@ -11,7 +11,6 @@ import SectionSubscribe from "src/components/app/SectionSubscribe/SectionSubscri
 import SectionGridFeatureNFT from "src/components/containers/PageHome/SectionGridFeatureNFT";
 import SectionSliderCategories from "src/components/app/SectionSliderCategories/SectionSliderCategories";
 import SectionBecomeAnAuthor from "src/components/app/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import SectionVideos from "src/components/containers/PageHome/SectionVideos";
 import {useContext, useEffect, useState} from "react";
 import {MARKETPLACE_ADDRESS} from "src/constant/addresses";
 import {NFTMarketplaceContext} from "src/context/NFTMarketplaceContext";
@@ -122,7 +121,7 @@ export default function HomePage({users, nfts, categories}) {
 					</div>
 					
 					{/* SECTION */}
-					<SectionVideos/>
+					{/*<SectionVideos/>*/}
 				</div>
 			</div>
 		</>

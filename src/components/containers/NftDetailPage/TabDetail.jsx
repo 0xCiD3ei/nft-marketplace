@@ -13,9 +13,7 @@ const TabDetail = ({owner, nft}) => {
 					return (
 						<li
 							key={index}
-							className={`relative py-4 ${
-								index % 2 === 1 ? "bg-neutral-100" : ""
-							}`}
+							className={`relative py-4`}
 						>
 							<div className="flex items-center">
 								{/*<Avatar sizeClass="h-10 w-10" src={''} radius="rounded-full"/>*/}
