@@ -66,7 +66,9 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 	useEffect(() => {
 		(async () => {
 			const response = await webClientService.getCategories();
-			setCategories(response?.data);
+			if (response.code === 200) {
+				setCategories(response?.data);
+			}
 		})()
 	}, []);
 	
@@ -161,6 +163,7 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 				enqueueSnackbar('Buy NFT successfully', {
 					variant: 'success'
 				})
+				await router.push(`/author/${address}`);
 			} else {
 				enqueueSnackbar('No listing found', {
 					variant: 'error'
@@ -561,10 +564,12 @@ export default function NFTDetailPage({className = "", isPreviewMode, nft}) {
 			{!isPreviewMode && (
 				<div className="container py-24 lg:py-32">
 					{/* SECTION 1 */}
-					<div className="relative py-24 lg:py-28">
-						<BackgroundSection/>
-						<SectionSliderCategories categories={categories || []}/>
-					</div>
+					{categories?.length > 0 && (
+						<div className="relative py-24 lg:py-28">
+							<BackgroundSection/>
+							<SectionSliderCategories categories={categories || []}/>
+						</div>
+					)}
 					
 					{/* SECTION */}
 					<SectionBecomeAnAuthor className="pt-24 lg:pt-32"/>
